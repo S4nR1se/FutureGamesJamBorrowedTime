@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCManager : MonoBehaviour
+public class NPCManager : Manager
 {
-    private List<NPC> _activeNPC;
+    private List<NPC> _activeNPC = new();
 
-    public void Initialize()
+    public override void Initialize()
     {
-
+        _activeNPC.Clear();
     }
 }
