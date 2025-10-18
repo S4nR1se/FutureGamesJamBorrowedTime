@@ -9,4 +9,5 @@ public abstract class NPC : MonoBehaviour
 public interface IWorker
 {
     abstract Occupation Occupation { get;}
+    void AssignOccupation(Occupation occupation);
 }

@@ -2,11 +2,25 @@ using UnityEngine;
 
 public class Peasant : NPC, IWorker
 {
-    private readonly Occupation _occupation;
-    Occupation IWorker.Occupation => _occupation;
+    public Occupation Occupation => _occupation;
+    private Occupation _occupation;
 
-    public Peasant()
+    private RoamingBehaviour _roamingBehaviour;
+
+    private void Awake()
     {
-        _occupation = new FarmerOccupation();
+        _roamingBehaviour = new RoamingBehaviour(this, 3);
+    }
+    private void Update()
+    {
+        Roam();
+    }
+    public void Roam()
+    {
+        _roamingBehaviour.Roam();
+    }
+    public void AssignOccupation(Occupation occupation)
+    {
+        _occupation = occupation;
     }
 }
