@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SettingsManager : MonoBehaviour
+public class SettingsManager : Manager
 {
     public static SettingsManager Instance {get; private set;}
 
@@ -16,7 +16,7 @@ public class SettingsManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    public void Initialize()
+    public override void Initialize()
     {
     }
     private void OnDestroy()
