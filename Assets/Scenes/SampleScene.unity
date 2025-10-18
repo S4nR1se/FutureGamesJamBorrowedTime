@@ -507,7 +507,7 @@ GameObject:
   - component: {fileID: 819606170}
   - component: {fileID: 819606169}
   - component: {fileID: 819606168}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Cell Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
