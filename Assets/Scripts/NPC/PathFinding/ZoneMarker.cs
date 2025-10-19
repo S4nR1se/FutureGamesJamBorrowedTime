@@ -91,7 +91,6 @@ public class ZoneMarker : MonoBehaviour
         {
             if (_npcsInZone.Add(npc))
             {
-                _zone.TryEnter();
                 npc.SetCurrentZone(_zone);
                 Debug.Log($"NPC {npc.name} entered zone {zoneName}");
             }
@@ -105,7 +104,6 @@ public class ZoneMarker : MonoBehaviour
        {
            if (_npcsInZone.Remove(npc))
            {
-               _zone.Exit();
                npc.ClearCurrentZone();
                Debug.Log($"NPC {npc.name} exited zone {zoneName}");
            }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ChurchOccupation : Occupation
 {
-    public ChurchOccupation(Zone workZone) : base(workZone)
+    public ChurchOccupation(ZoneType workZoneType) : base(workZoneType)
     {
     }
 }

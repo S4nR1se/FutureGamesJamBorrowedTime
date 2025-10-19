@@ -12,7 +12,7 @@ public class GoToZoneBehaviour
     private float _timeSinceLastDestination;
     private const float DESTINATIONTIMEOUT = 1f;
     private const float MINVELOCITYTHRESHOLD = 0.5f;
-    private const float ARRIVAL_THRESHOLD = 2f;
+    private const float ARRIVAL_THRESHOLD = 1f;
 
     public event Action<Zone> OnArrived;
 

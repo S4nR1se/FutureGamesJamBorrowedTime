@@ -8,20 +8,37 @@ public abstract class NPC : MonoBehaviour
 
     private Zone _currentZone;
 
-    public abstract void Initialize(string name, int lifeSpan, float movementSpeed);
+    protected ZoneType _restZoneType;
+
+    public abstract void Initialize(string name, int lifeSpan, float movementSpeed, Occupation occupation = null, ZoneType restZoneType = ZoneType.House);
+    protected Occupation CreateDefaultOccupation()
+    {
+        return new FarmerOccupation(ZoneType.Farm);
+    }
     public void SetCurrentZone(Zone zone)
     {
         _currentZone = zone;
+    }
+    public void SetRestZoneType(ZoneType restZoneType)
+    {
+        _restZoneType = restZoneType;
     }
     public void ClearCurrentZone()
     {
         _currentZone = null;
     }
     public Zone GetCurrentZone() => _currentZone;
+    public abstract void GoToZone(ZoneType zoneType);
 }
 
 public interface IWorker
 {
-    abstract Occupation Occupation { get;}
+    Occupation Occupation { get;}
     void AssignOccupation(Occupation occupation);
+}
+public interface IPeasant
+{
+    int Age { get; }
+    int StarvationValue { get; }
+    int DreadFactor { get; }
 }

@@ -2,9 +2,9 @@ using UnityEngine;
 
 public abstract class Occupation
 {
-    public Zone WorkZone { get; protected set; }
-    protected Occupation(Zone workZone)
+    public ZoneType WorkZoneType { get; protected set; }
+    protected Occupation(ZoneType workZoneType)
     {
-        WorkZone = workZone;
+        WorkZoneType = workZoneType;
     }
 }

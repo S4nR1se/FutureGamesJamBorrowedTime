@@ -7,6 +7,6 @@ public class NPCManager : Manager
 
     public override void Initialize()
     {
-        _activeNPC.Clear();
+
     }
 }
