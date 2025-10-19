@@ -13,7 +13,7 @@ public abstract class NPC : MonoBehaviour
     public abstract void Initialize(string name, int lifeSpan, float movementSpeed, Occupation occupation = null, ZoneType restZoneType = ZoneType.House);
     protected Occupation CreateDefaultOccupation()
     {
-        return new FarmerOccupation(ZoneType.Farm);
+        return new FarmerOccupation();
     }
     public void SetCurrentZone(Zone zone)
     {
@@ -30,7 +30,13 @@ public abstract class NPC : MonoBehaviour
     public Zone GetCurrentZone() => _currentZone;
     public abstract void GoToRest();
 }
-
+public enum TravelPurpose
+{
+    None,
+    Work,
+    Rest,
+    Other
+}
 public interface IWorker
 {
     Occupation Occupation { get;}

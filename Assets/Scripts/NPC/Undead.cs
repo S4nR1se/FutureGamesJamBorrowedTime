@@ -15,15 +15,33 @@ public class Undead : NPC, IWorker, IPoolable
     private Zone _reservedZone;
     private Zone _occupiedZone;
 
+    private TravelPurpose _travelPurpose = TravelPurpose.None;
+
+    private void OnEnable()
+    {
+        PlayingState.OnPlayingStateUpdate += UpdateComponent;
+    }
+    private void OnDisable()
+    {
+        PlayingState.OnPlayingStateUpdate -= UpdateComponent;
+
+        ReleaseReservation();
+
+        if (_occupiedZone != null)
+        {
+            _occupiedZone.Exit();
+            Debug.Log($"{Name} disabled, exited {_occupiedZone.Name}");
+            _occupiedZone = null;
+        }
+    }
     public override void Initialize(string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.Graveyard)
     {
+
         Name = name;
         LifeSpan = lifeSpan;
         MovementSpeed = movementSpeed;
-
         _occupation = occupation ?? CreateDefaultOccupation();
         SetRestZoneType(restZoneType);
-
         Zone startZone = GetCurrentZone() ?? GameManager.Instance.GetManager<ZoneManager>().GetClosestZone(transform.position);
         _roamingBehaviour = new RoamingBehaviour(this, MovementSpeed, startZone);
 
@@ -32,7 +50,7 @@ public class Undead : NPC, IWorker, IPoolable
             _occupiedZone = startZone;
         }
     }
-    private void Update()
+    private void UpdateComponent()
     {
         if (_isTraveling)
         {
@@ -47,6 +65,12 @@ public class Undead : NPC, IWorker, IPoolable
     public void AssignOccupation(Occupation occupation)
     {
         _occupation = occupation;
+
+        if (_isTraveling && _travelPurpose == TravelPurpose.Work)
+        {
+            CancelTravel();
+            GoToWork();
+        }
     }
 
     public void Roam()
@@ -73,14 +97,6 @@ public class Undead : NPC, IWorker, IPoolable
                 _goToZoneBehaviour.OnArrived += OnArrivedAtDestination;
                 _isTraveling = true;
             }
-            else
-            {
-                Debug.LogWarning($"{Name} couldn't reserve {travelZone.Name} - zone is full");
-            }
-        }
-        else
-        {
-            Debug.LogWarning($"{Name} couldn't find available zone of type {zoneType}");
         }
     }
 
@@ -88,12 +104,14 @@ public class Undead : NPC, IWorker, IPoolable
     public void GoToWork()
     {
         GoToZone(Occupation.WorkZoneType);
+        _travelPurpose = TravelPurpose.Work;
     }
 
     [ContextMenu("Rest")]
     public override void GoToRest()
     {
         GoToZone(_restZoneType);
+        _travelPurpose = TravelPurpose.Rest;
     }
 
     private void OnArrivedAtDestination(Zone zone)
@@ -109,6 +127,8 @@ public class Undead : NPC, IWorker, IPoolable
         _isTraveling = false;
         _roamingBehaviour.SetTargetZone(zone);
         _goToZoneBehaviour.OnArrived -= OnArrivedAtDestination;
+
+        _travelPurpose = TravelPurpose.None;
     }
     private void ReleaseReservation()
     {
@@ -147,19 +167,6 @@ public class Undead : NPC, IWorker, IPoolable
             _goToZoneBehaviour.OnArrived -= OnArrivedAtDestination;
         }
     }
-
-    private void OnDisable()
-    {
-        ReleaseReservation();
-
-        if (_occupiedZone != null)
-        {
-            _occupiedZone.Exit();
-            Debug.Log($"{Name} disabled, exited {_occupiedZone.Name}");
-            _occupiedZone = null;
-        }
-    }
-
     public void ReturnToPool(ObjectPool pool)
     {
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
