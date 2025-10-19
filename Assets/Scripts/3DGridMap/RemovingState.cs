@@ -44,7 +44,7 @@ public class RemovingState : iBuildingState
 
         if(selectedData == null)
         {
-
+            //Sound
         }
         else
         {
