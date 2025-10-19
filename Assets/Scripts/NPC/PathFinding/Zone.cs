@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class Zone
     public int Capacity { get; private set; }
     public int CurrentOccupancy { get; private set; }
     public float Radius { get; private set; }
+    private HashSet<NPC> _npcsInZone = new HashSet<NPC>(); // Moved from ZoneMarker
 
     public Zone(string name, ZoneType type, Vector3 center, float radius, NavMeshSurface parentSurface = null, int capacity = -1)
     {
@@ -21,6 +23,7 @@ public class Zone
         Capacity = capacity; // -1 means unlimited
         CurrentOccupancy = 0;
     }
+
     public bool ContainsPosition(Vector3 position)
     {
         return Vector3.Distance(position, Center) <= Radius;
@@ -32,16 +35,30 @@ public class Zone
         return CurrentOccupancy >= Capacity;
     }
 
-    public bool TryEnter()
+    public bool TryEnter(NPC npc)
     {
         if (IsFull()) return false;
-        CurrentOccupancy++;
-        return true;
+        if (_npcsInZone.Add(npc))
+        {
+            CurrentOccupancy++;
+            OnNPCEnter(npc);
+            return true;
+        }
+        return false;
     }
 
-    public void Exit()
+    public void Exit(NPC npc)
     {
-        CurrentOccupancy = Mathf.Max(0, CurrentOccupancy - 1);
+        if (_npcsInZone.Remove(npc))
+        {
+            CurrentOccupancy = Mathf.Max(0, CurrentOccupancy - 1);
+            OnNPCExit(npc);
+        }
+    }
+
+    public IEnumerable<NPC> GetNPCsInZone()
+    {
+        return _npcsInZone;
     }
 
     public Vector3 GetRandomPointInZone()
@@ -63,6 +80,19 @@ public class Zone
     {
         return Vector3.Distance(Center, position);
     }
+    public virtual void OnNPCEnter(NPC npc)
+    {
+        Debug.Log($"NPC {npc.name} entered generic zone {Name}");
+    }
+
+    public virtual void OnNPCExit(NPC npc)
+    {
+        Debug.Log($"NPC {npc.name} exited generic zone {Name}");
+    }
+
+    public virtual void UpdateLogic(float deltaTime)
+    {
+    }
 }
 
 public enum ZoneType
@@ -72,5 +102,7 @@ public enum ZoneType
     Church,
     Zone,
     ConstructionSite,
+    Road,
+    Workshop,
     Graveyard
 }
