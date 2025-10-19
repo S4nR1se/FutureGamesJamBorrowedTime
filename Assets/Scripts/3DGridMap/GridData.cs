@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -59,5 +60,23 @@ public class GridData
         }
 
         return true;
+    }
+
+    public int GetRepresantationIndex(Vector3Int gridPosition)
+    {
+        if(_placedObjects.ContainsKey(gridPosition) == false)
+        {
+            return -1;
+        }
+
+        return _placedObjects[gridPosition].PlacedObjectIndex;
+    }
+
+    public void RemoveObjectAt(Vector3Int gridPosition)
+    {
+        foreach(var pos in _placedObjects[gridPosition].OccupiedPositions)
+        {
+            _placedObjects.Remove(pos);
+        }
     }
 }

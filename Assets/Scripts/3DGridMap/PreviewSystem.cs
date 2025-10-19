@@ -1,6 +1,4 @@
-using System.Drawing;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PreviewSystem : MonoBehaviour
 {
@@ -55,14 +53,22 @@ public class PreviewSystem : MonoBehaviour
     public void StopShowingPreview()
     {
         _cellIndicator.SetActive(false);
-        Destroy(_previewObject);
+        if (_previewObject != null)
+        {
+            Destroy(_previewObject);
+        }
     }
 
     public void UpdatePosition(Vector3 Position, bool Validity)
     {
-        MovePreview(Position);
+        if(_previewObject != null)
+        {
+            MovePreview(Position);
+            ApplyFeedbackToPreview(Validity);
+        }
+
         MoveCursor(Position);
-        ApplyFeedback(Validity);
+        ApplyFeedbackToCursor(Validity);
     }
 
     private void MovePreview(Vector3 Position)
@@ -76,11 +82,24 @@ public class PreviewSystem : MonoBehaviour
         _cellIndicator.transform.position = Position;
     }
 
-    private void ApplyFeedback(bool Validity)
+    private void ApplyFeedbackToPreview(bool Validity)
+    {
+        UnityEngine.Color c = Validity ? UnityEngine.Color.white : UnityEngine.Color.red;
+        c.a = 0.5f;
+        _previewMaterialInstance.color = c;
+    }
+
+    private void ApplyFeedbackToCursor(bool Validity)
     {
         UnityEngine.Color c = Validity ? UnityEngine.Color.white : UnityEngine.Color.red;
         c.a = 0.5f;
         _cellIndicatorRender.material.color = c;
-        _previewMaterialInstance.color = c;
+    }
+
+    public void StartShowingRemovePreview()
+    {
+        _cellIndicator.SetActive(true);
+        PrepareCursor(Vector2Int.one);
+        ApplyFeedbackToCursor(false);
     }
 }
