@@ -12,9 +12,11 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField] private int _selectedObjectIndex = -1;
     [SerializeField] private GameObject _gridVisualization;
     [SerializeField] private PreviewSystem _preview;
+    
+    [SerializeField] private ObjectPlacer _objectPlacer;
 
     private GridData _mapGroundData, _placedObjectsData;
-    private List<GameObject> _placedGameObjects = new();
+    //private List<GameObject> _placedGameObjects = new();
     private Vector3Int _lastDetectedPosition = Vector3Int.zero;
 
 
@@ -55,12 +57,15 @@ public class PlacementSystem : MonoBehaviour
             return;
         }
 
-        GameObject NewTileObject = Instantiate(_dataBase.Get_Objects()[_selectedObjectIndex].Prefab);
-        NewTileObject.transform.position = _grid.CellToWorld(GridPosition);
-        _placedGameObjects.Add(NewTileObject);
+        int index = _objectPlacer.PlaceObject(_dataBase.Get_Objects()[_selectedObjectIndex].Prefab, _grid.CellToWorld(GridPosition));
+
+        //GameObject NewTileObject = Instantiate(_dataBase.Get_Objects()[_selectedObjectIndex].Prefab);
+        //NewTileObject.transform.position = _grid.CellToWorld(GridPosition);
+        //_placedGameObjects.Add(NewTileObject);
 
         GridData SelectedData = _dataBase.ObjectsData[_selectedObjectIndex].ID == 0 ? _mapGroundData : _placedObjectsData;
-        SelectedData.AddObjectAt(GridPosition, _dataBase.ObjectsData[_selectedObjectIndex].Size, _dataBase.ObjectsData[_selectedObjectIndex].ID, _placedGameObjects.Count -1);
+        //SelectedData.AddObjectAt(GridPosition, _dataBase.ObjectsData[_selectedObjectIndex].Size, _dataBase.ObjectsData[_selectedObjectIndex].ID, _placedGameObjects.Count -1);
+        SelectedData.AddObjectAt(GridPosition, _dataBase.ObjectsData[_selectedObjectIndex].Size, _dataBase.ObjectsData[_selectedObjectIndex].ID, index);
 
         _preview.UpdatePosition(_grid.CellToWorld(GridPosition),false);
     }
