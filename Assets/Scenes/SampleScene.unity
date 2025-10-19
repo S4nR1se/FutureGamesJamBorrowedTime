@@ -201,7 +201,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 225347358}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1676179522}
+        m_TargetAssemblyTypeName: PlacementSystem, Assembly-CSharp
+        m_MethodName: StartPlacement
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &225347358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,17 +524,37 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1815756521}
     m_Modifications:
+    - target: {fileID: 144838390695734784, guid: 0214beb6174cdc5488c55f918a9bb4d7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 144838390695734784, guid: 0214beb6174cdc5488c55f918a9bb4d7, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 144838390695734784, guid: 0214beb6174cdc5488c55f918a9bb4d7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 144838390695734784, guid: 0214beb6174cdc5488c55f918a9bb4d7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 144838390695734784, guid: 0214beb6174cdc5488c55f918a9bb4d7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 367180351128772137, guid: 0214beb6174cdc5488c55f918a9bb4d7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.02
+      value: -0.51
       objectReference: {fileID: 0}
     - target: {fileID: 367180351128772137, guid: 0214beb6174cdc5488c55f918a9bb4d7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.05
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: 367180351128772137, guid: 0214beb6174cdc5488c55f918a9bb4d7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 367180351128772137, guid: 0214beb6174cdc5488c55f918a9bb4d7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -788,8 +820,8 @@ Transform:
   m_GameObject: {fileID: 699389901}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.02, z: 0}
-  m_LocalScale: {x: 0.9, y: 1, z: 0.9}
+  m_LocalPosition: {x: -0, y: 0.01, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1021514851}
@@ -1408,7 +1440,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1644,12 +1676,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlacementSystem
   _mouseIndicator: {fileID: 1694517947}
-  _cellIndicator: {fileID: 1369073083}
   _inputManager: {fileID: 1009446940}
   _grid: {fileID: 896177997}
   _dataBase: {fileID: 11400000, guid: 8d274dd21f79b87419266beaf6c7508a, type: 2}
   _selectedObjectIndex: -1
   _gridVisualization: {fileID: 699389901}
+  _preview: {fileID: 1710162264}
 --- !u!1 &1694517947
 GameObject:
   m_ObjectHideFlags: 0
@@ -1678,8 +1710,8 @@ Transform:
   m_GameObject: {fileID: 1694517947}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: -0.93, y: -0.04, z: 0.05}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1815756521}
@@ -1761,6 +1793,53 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1694517947}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1710162263
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1710162265}
+  - component: {fileID: 1710162264}
+  m_Layer: 0
+  m_Name: PreviewSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1710162264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710162263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dea05388d0225a748a6a5c08c76c3824, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PreviewSystem
+  _previewYOffset: 0.06
+  _cellIndicator: {fileID: 1369073083}
+  _previewMaterialPrefab: {fileID: 2100000, guid: 938bd5de358f76340b60e5d13fb5ddd7, type: 2}
+--- !u!4 &1710162265
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710162263}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1815756521}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1815756520
 GameObject:
   m_ObjectHideFlags: 0
@@ -1795,6 +1874,7 @@ Transform:
   - {fileID: 1694517948}
   - {fileID: 1021514851}
   - {fileID: 1369073084}
+  - {fileID: 1710162265}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1876392200
@@ -1854,7 +1934,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Desk
+  m_text: Bed
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

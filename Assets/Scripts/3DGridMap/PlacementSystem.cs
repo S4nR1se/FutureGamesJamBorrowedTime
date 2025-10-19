@@ -24,6 +24,7 @@ public class PlacementSystem : MonoBehaviour
         StopPlacement();
         _mapGroundData = new GridData();
         _placedObjectsData = new GridData();
+        //_previewRenderer = _cellIndicator.GetComponentInChildren<Renderer>();
     }
 
     public void StartPlacement(int ID)
@@ -37,6 +38,7 @@ public class PlacementSystem : MonoBehaviour
         }
         _gridVisualization.SetActive(true);
         _preview.StartShowingPlacementPreview(_dataBase.ObjectsData[_selectedObjectIndex].Prefab, _dataBase.ObjectsData[_selectedObjectIndex].Size);
+        //_cellIndicator.SetActive(true);
         _inputManager.OnClicked += PlaceStructure;
         _inputManager.OnExit += StopPlacement;
     }
@@ -51,7 +53,7 @@ public class PlacementSystem : MonoBehaviour
         Vector3Int GridPosition = _grid.WorldToCell(MousePosition);
 
         bool PlacementValidity = CheckPlacementValidity(GridPosition, _selectedObjectIndex);
-        if(!PlacementValidity)
+        if(PlacementValidity == false)
         {
             return;
         }
@@ -76,6 +78,7 @@ public class PlacementSystem : MonoBehaviour
     {
         _selectedObjectIndex = -1;
         _gridVisualization.SetActive(false);
+        //_cellIndicator.SetActive(false);
         _preview.StopShowingPreview();
         _inputManager.OnClicked -= PlaceStructure;
         _inputManager.OnExit -= StopPlacement;
@@ -95,7 +98,10 @@ public class PlacementSystem : MonoBehaviour
         if(_lastDetectedPosition != GridPosition)
         {
             bool PlacementValidity = CheckPlacementValidity(GridPosition, _selectedObjectIndex);
+            //_previewRenderer.material.color = PlacementValidity ? Color.white : Color.red;
+
             _mouseIndicator.transform.position = MousePosition;
+            //_cellIndicator.transform.position = _grid.CellToWorld(GridPosition);
             _preview.UpdatePosition(_grid.CellToWorld(GridPosition), PlacementValidity);
             _lastDetectedPosition = GridPosition;
         }

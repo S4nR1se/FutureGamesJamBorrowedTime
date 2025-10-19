@@ -40,7 +40,7 @@ public class GridData
         {
             for (int y = 0; y < ObjectSize.y; y++)
             {
-                ReturnValues.Add(GridPosition + new Vector3Int(x, 0, y));
+                ReturnValues.Add(GridPosition + new Vector3Int(x, y, 0));
             }
         }
 
@@ -54,6 +54,7 @@ public class GridData
         {
             if(_placedObjects.ContainsKey(pos))
             {
+                Debug.Log("New key");
                 return false;
             }
         }
