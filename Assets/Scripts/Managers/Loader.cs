@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Loader : MonoBehaviour
 {
-    [SerializeField] GameObject save_manager;
+    [SerializeField] GameObject _saveManager;
 
     private void Awake()
     {
@@ -11,9 +11,9 @@ public class Loader : MonoBehaviour
         //    Instantiate(settings_menu);
         //}
 
-        if (SaveManager.save_instance == null)
+        if (SaveManager.SaveInstance == null)
         {
-            Instantiate(save_manager);
+            Instantiate(_saveManager);
         }
     }
 }

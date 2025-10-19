@@ -5,24 +5,24 @@ using UnityEngine;
 public class SaveManager : MonoBehaviour
 {
     [Serializable]
-    public struct Data_To_Save
+    public struct DataToSave
     {
-        public string name;
-        public int score;
+        public string Name;
+        public int Score;
     }
 
-    [SerializeField] string save_file_name = "";
+    [SerializeField] private string _saveFileName = "";
 
-    public static SaveManager save_instance = null;
-    public Data_To_Save player_data;
+    public static SaveManager SaveInstance = null;
+    public DataToSave PlayerData;
 
     void Awake()
     {
-        if (save_instance == null)
+        if (SaveInstance == null)
         {
-            save_instance = this;
+            SaveInstance = this;
         }
-        else if (save_instance != this)
+        else if (SaveInstance != this)
         {
             Destroy(this.gameObject);
         }
@@ -37,7 +37,7 @@ public class SaveManager : MonoBehaviour
 
     void Save_Data()
     {
-        string json_file = JsonUtility.ToJson(player_data, true);
+        string json_file = JsonUtility.ToJson(PlayerData, true);
         File.WriteAllText(Get_Path(), json_file);
     }
 
@@ -49,7 +49,7 @@ public class SaveManager : MonoBehaviour
             return;
         }
         string jason_file = File.ReadAllText(Get_Path());
-        player_data = JsonUtility.FromJson<Data_To_Save>(jason_file);
+        PlayerData = JsonUtility.FromJson<DataToSave>(jason_file);
     }
 
     //public void Set_Score(int score)
@@ -97,6 +97,6 @@ public class SaveManager : MonoBehaviour
 
     string Get_Path()
     {
-        return Application.persistentDataPath + "/" + save_file_name + ".json";
+        return Application.persistentDataPath + "/" + _saveFileName + ".json";
     }
 }
