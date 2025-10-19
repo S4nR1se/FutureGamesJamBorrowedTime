@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlacementSystem : MonoBehaviour
@@ -10,9 +12,17 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField] private int _selectedObjectIndex = -1;
     [SerializeField] private GameObject _gridVisualization;
 
+    private GridData _mapGroundData, _placedObjectsData;
+    private Renderer _previewRenderer;
+    private List<GameObject> _placedGameObjects = new();
+
+
     private void Start()
     {
         StopPlacement();
+        _mapGroundData = new GridData();
+        _placedObjectsData = new GridData();
+        _previewRenderer = _cellIndicator.GetComponentInChildren<Renderer>();
     }
 
     public void StartPlacement(int ID)
@@ -38,8 +48,25 @@ public class PlacementSystem : MonoBehaviour
         }
         Vector3 MousePosition = _inputManager.GetSelectedMapPosition();
         Vector3Int GridPosition = _grid.WorldToCell(MousePosition);
+
+        bool PlacementValidity = CheckPlacementValidity(GridPosition, _selectedObjectIndex);
+        if(!PlacementValidity)
+        {
+            return;
+        }
+
         GameObject NewTileObject = Instantiate(_dataBase.Get_Objects()[_selectedObjectIndex].Prefab);
         NewTileObject.transform.position = _grid.CellToWorld(GridPosition);
+        _placedGameObjects.Add(NewTileObject);
+
+        GridData SelectedData = _dataBase.ObjectsData[_selectedObjectIndex].ID == 0 ? _mapGroundData : _placedObjectsData;
+        SelectedData.AddObjectAt(GridPosition, _dataBase.ObjectsData[_selectedObjectIndex].Size, _dataBase.ObjectsData[_selectedObjectIndex].ID, _placedGameObjects.Count -1);
+    }
+
+    private bool CheckPlacementValidity(Vector3Int GridPosition,int SelectedObjectIndex)
+    {
+        GridData SelectedData = _dataBase.ObjectsData[SelectedObjectIndex].ID == 0 ? _mapGroundData : _placedObjectsData;
+        return SelectedData.CanPlaceObjectAt(GridPosition, _dataBase.ObjectsData[SelectedObjectIndex].Size);
     }
 
     private void StopPlacement()
@@ -60,6 +87,10 @@ public class PlacementSystem : MonoBehaviour
 
         Vector3 MousePosition = _inputManager.GetSelectedMapPosition();
         Vector3Int GridPosition = _grid.WorldToCell(MousePosition);
+        
+        bool PlacementValidity = CheckPlacementValidity(GridPosition, _selectedObjectIndex);
+        _previewRenderer.material.color = PlacementValidity ? Color.white : Color.red;
+
         _mouseIndicator.transform.position = MousePosition;
         _cellIndicator.transform.position = _grid.CellToWorld(GridPosition);
     }

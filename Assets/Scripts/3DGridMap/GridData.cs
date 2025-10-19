@@ -15,7 +15,7 @@ public class PlacementData
     }
 }
 
-public class GridData : MonoBehaviour
+public class GridData
 {
     Dictionary<Vector3Int, PlacementData> _placedObjects = new();
 
