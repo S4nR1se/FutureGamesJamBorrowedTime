@@ -54,7 +54,6 @@ public class GridData
         {
             if(_placedObjects.ContainsKey(pos))
             {
-                Debug.Log("New key");
                 return false;
             }
         }
