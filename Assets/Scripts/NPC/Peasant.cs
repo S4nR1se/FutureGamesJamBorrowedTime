@@ -1,8 +1,10 @@
 using UnityEditor.Overlays;
 using UnityEngine;
 
-public class Peasant : NPC, IWorker, IPeasant
+public class Peasant : NPC, IWorker, IPeasant, IPoolable
 {
+    public GameObject PoolableComponent => gameObject;
+
     public Occupation Occupation => _occupation;
     public int Age => _age;
     public int StarvationValue => _starvationValue;
@@ -23,6 +25,7 @@ public class Peasant : NPC, IWorker, IPeasant
 
     public override void Initialize(string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.House)
     {
+
         Name = name;
         LifeSpan = lifeSpan;
         MovementSpeed = movementSpeed;
@@ -35,11 +38,6 @@ public class Peasant : NPC, IWorker, IPeasant
         {
             _occupiedZone = startZone;
         }
-    }
-
-    private void Start()
-    {
-        Initialize();
     }
 
     private void Update()
@@ -68,8 +66,7 @@ public class Peasant : NPC, IWorker, IPeasant
     {
         _goToZoneBehaviour?.GoToZone();
     }
-
-    public override void GoToZone(ZoneType zoneType)
+    private void GoToZone(ZoneType zoneType)
     {
         ReleaseReservation();
 
@@ -102,7 +99,7 @@ public class Peasant : NPC, IWorker, IPeasant
     }
 
     [ContextMenu("Rest")]
-    public void GoRest()
+    public override void GoToRest()
     {
         GoToZone(_restZoneType);
     }
@@ -169,5 +166,33 @@ public class Peasant : NPC, IWorker, IPeasant
             Debug.Log($"{Name} disabled, exited {_occupiedZone.Name}");
             _occupiedZone = null;
         }
+    }
+
+    public void ReturnToPool(ObjectPool pool)
+    {
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent != null)
+        {
+            agent.enabled = false;
+        }
+
+        ReleaseReservation();
+
+        if (_occupiedZone != null)
+        {
+            _occupiedZone.Exit();
+            _occupiedZone = null;
+        }
+
+        ClearCurrentZone();
+
+        _isTraveling = false;
+        if (_goToZoneBehaviour != null)
+        {
+            _goToZoneBehaviour.OnArrived -= OnArrivedAtDestination;
+            _goToZoneBehaviour = null;
+        }
+
+        pool.Release(this);
     }
 }

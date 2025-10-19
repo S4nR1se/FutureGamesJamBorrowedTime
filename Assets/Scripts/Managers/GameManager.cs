@@ -18,11 +18,16 @@ public class GameManager : StateMachine
         DontDestroyOnLoad(gameObject);
 
         RegisterManagers();
+        InitializeManagers();
 
         RegisterState(new PlayingState());
         SwitchState<PlayingState>();
     }
-
+    private void Update()
+    {
+        UpdateStateMachine();
+        FixedUpdateStateMachine();
+    }
     private void RegisterManagers()
     {
         Manager[] foundManagers = GetComponentsInChildren<Manager>();
@@ -33,8 +38,14 @@ public class GameManager : StateMachine
             if (!_managers.ContainsKey(managerType))
             {
                 _managers[managerType] = manager;
-                manager.Initialize();
             }
+        }
+    }
+    private void InitializeManagers()
+    {
+        foreach (Manager manager in _managers.Values)
+        {
+            manager.Initialize();
         }
     }
     public T GetManager<T>() where T : Manager

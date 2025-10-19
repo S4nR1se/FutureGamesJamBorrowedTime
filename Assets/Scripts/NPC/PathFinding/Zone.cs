@@ -56,7 +56,7 @@ public class Zone
             return hit.position;
         }
 
-        return Center; // Fallback
+        return Center;
     }
 
     public float GetDistanceTo(Vector3 position)
@@ -70,5 +70,7 @@ public enum ZoneType
     House,
     Farm,
     Church,
-    ConstructionSite
+    Zone,
+    ConstructionSite,
+    Graveyard
 }

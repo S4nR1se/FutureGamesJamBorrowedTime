@@ -28,13 +28,14 @@ public abstract class NPC : MonoBehaviour
         _currentZone = null;
     }
     public Zone GetCurrentZone() => _currentZone;
-    public abstract void GoToZone(ZoneType zoneType);
+    public abstract void GoToRest();
 }
 
 public interface IWorker
 {
     Occupation Occupation { get;}
     void AssignOccupation(Occupation occupation);
+    void GoToWork();
 }
 public interface IPeasant
 {
