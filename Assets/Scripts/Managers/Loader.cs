@@ -2,14 +2,15 @@ using UnityEngine;
 
 public class Loader : MonoBehaviour
 {
-    [SerializeField] GameObject _saveManager;
+    [SerializeField] GameObject _saveManager = null;
+    [SerializeField] GameObject _settingsManager = null;
 
     private void Awake()
     {
-        //if (SettingsMenu.sm_instance == null)
-        //{
-        //    Instantiate(settings_menu);
-        //}
+        if (SettingsManager.SettingsMInstance == null)
+        {
+            Instantiate(_settingsManager);
+        }
 
         if (SaveManager.SaveInstance == null)
         {
