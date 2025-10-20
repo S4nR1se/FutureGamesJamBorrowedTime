@@ -119,6 +119,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &151148891
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 151148892}
+  - component: {fileID: 151148893}
+  m_Layer: 0
+  m_Name: TImeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &151148892
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 151148891}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1325548494}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &151148893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 151148891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d2b09f59d2e5824eb1a0dd3a77776f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TimeManager
 --- !u!1 &216350451
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,6 +303,7 @@ GameObject:
   - component: {fileID: 235907398}
   - component: {fileID: 235907397}
   - component: {fileID: 235907396}
+  - component: {fileID: 235907401}
   m_Layer: 0
   m_Name: Farm
   m_TagString: Untagged
@@ -280,10 +325,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ZoneMarker
   zoneName: Farm
   zoneType: 1
-  parentSurface: {fileID: 1079284090}
-  capacity: 1
-  autoCalculateRadius: 1
-  manualRadius: 10
 --- !u!65 &235907397
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -376,6 +417,73 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &235907401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235907395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19d0109ac0a4dd84dbfc254aef95b2f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Farm
+--- !u!1 &317333550
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 317333551}
+  - component: {fileID: 317333552}
+  m_Layer: 0
+  m_Name: ResourceManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &317333551
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 317333550}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1325548494}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &317333552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 317333550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51214247d8bfd6a4baf2055bdba1964d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ResourceManager
+  _resourceList:
+  - ResourceType: 0
+    Amount: 0
+  - ResourceType: 1
+    Amount: 0
+  - ResourceType: 2
+    Amount: 0
+  - ResourceType: 3
+    Amount: 0
+  - ResourceType: 4
+    Amount: 0
 --- !u!1 &391714251
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,7 +721,7 @@ GameObject:
   - component: {fileID: 1079284096}
   - component: {fileID: 1079284095}
   m_Layer: 0
-  m_Name: House
+  m_Name: Home
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -734,12 +842,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98767d1ca9d043d4b995ad0ffeb2b94c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZoneMarker
-  zoneName: House
+  zoneName: Home
   zoneType: 0
-  parentSurface: {fileID: 1079284090}
-  capacity: 2
-  autoCalculateRadius: 1
-  manualRadius: 10
 --- !u!65 &1079284096
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -837,6 +941,9 @@ Transform:
   m_Children:
   - {fileID: 1223857960}
   - {fileID: 904801463}
+  - {fileID: 317333551}
+  - {fileID: 151148892}
+  - {fileID: 2004052613}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1325548495
@@ -851,6 +958,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5877a30b49c5fe54fb9ef96e5cbd56c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+--- !u!1 &2004052612
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2004052613}
+  - component: {fileID: 2004052614}
+  m_Layer: 0
+  m_Name: BuildingManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2004052613
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2004052612}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1325548494}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2004052614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2004052612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e5e15cc049919146a35459cfe7361db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BuildingsManagers
 --- !u!1 &2134480790
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,6 +1015,7 @@ GameObject:
   - component: {fileID: 2134480793}
   - component: {fileID: 2134480792}
   - component: {fileID: 2134480791}
+  - component: {fileID: 2134480796}
   m_Layer: 0
   m_Name: Farm (1)
   m_TagString: Untagged
@@ -885,10 +1037,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ZoneMarker
   zoneName: Farm
   zoneType: 1
-  parentSurface: {fileID: 1079284090}
-  capacity: 1
-  autoCalculateRadius: 1
-  manualRadius: 10
 --- !u!65 &2134480792
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -981,6 +1129,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2134480796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134480790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19d0109ac0a4dd84dbfc254aef95b2f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Farm
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

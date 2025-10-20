@@ -29,23 +29,26 @@ public class Undead : NPC, IWorker, IPoolable
 
         if (_occupiedZone != null)
         {
-            _occupiedZone.Exit();
+            _occupiedZone.Exit(this);
             Debug.Log($"{Name} disabled, exited {_occupiedZone.Name}");
             _occupiedZone = null;
         }
     }
-    public override void Initialize(string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.Graveyard)
+    public override void Initialize(string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.Graveyard, DayCycle activeCycle = DayCycle.Night)
     {
-
         Name = name;
         LifeSpan = lifeSpan;
         MovementSpeed = movementSpeed;
+
+        _activeCycle = activeCycle;
+
         _occupation = occupation ?? CreateDefaultOccupation();
         SetRestZoneType(restZoneType);
+
         Zone startZone = GetCurrentZone() ?? GameManager.Instance.GetManager<ZoneManager>().GetClosestZone(transform.position);
         _roamingBehaviour = new RoamingBehaviour(this, MovementSpeed, startZone);
 
-        if (startZone != null && startZone.TryEnter())
+        if (startZone != null && startZone.TryEnter(this))
         {
             _occupiedZone = startZone;
         }
@@ -90,7 +93,7 @@ public class Undead : NPC, IWorker, IPoolable
 
         if (travelZone != null)
         {
-            if (travelZone.TryEnter())
+            if (travelZone.TryEnter(this))
             {
                 _reservedZone = travelZone;
                 _goToZoneBehaviour = new GoToZoneBehaviour(this, MovementSpeed, travelZone);
@@ -107,18 +110,11 @@ public class Undead : NPC, IWorker, IPoolable
         _travelPurpose = TravelPurpose.Work;
     }
 
-    [ContextMenu("Rest")]
-    public override void GoToRest()
-    {
-        GoToZone(_restZoneType);
-        _travelPurpose = TravelPurpose.Rest;
-    }
-
     private void OnArrivedAtDestination(Zone zone)
     {
         if (_occupiedZone != null && _occupiedZone != zone)
         {
-            _occupiedZone.Exit();
+            _occupiedZone.Exit(this);
         }
 
         _occupiedZone = _reservedZone;
@@ -134,7 +130,7 @@ public class Undead : NPC, IWorker, IPoolable
     {
         if (_reservedZone != null)
         {
-            _reservedZone.Exit();
+            _reservedZone.Exit(this);
             _reservedZone = null;
         }
     }
@@ -159,7 +155,7 @@ public class Undead : NPC, IWorker, IPoolable
 
         if (_occupiedZone != null)
         {
-            _occupiedZone.Exit();
+            _occupiedZone.Exit(this);
         }
 
         if (_goToZoneBehaviour != null)
@@ -179,7 +175,7 @@ public class Undead : NPC, IWorker, IPoolable
 
         if (_occupiedZone != null)
         {
-            _occupiedZone.Exit();
+            _occupiedZone.Exit(this);
             _occupiedZone = null;
         }
 

@@ -1,13 +1,21 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 public class ZoneManager : Manager
 {
+    public NavMeshSurface ParentSurface {  get; private set; }
+
     private Dictionary<ZoneType, List<Zone>> _zonesByType = new();
     private List<Zone> _allZones = new();
     public override void Initialize()
     {
+        if (ParentSurface == null)
+        {
+            ParentSurface = FindFirstObjectByType<NavMeshSurface>();
+        }
+
         foreach (ZoneType type in System.Enum.GetValues(typeof(ZoneType)))
         {
             _zonesByType[type] = new List<Zone>();
@@ -19,6 +27,8 @@ public class ZoneManager : Manager
             Zone zone = marker.CreateZone();
             RegisterZone(zone);
         }
+
+        RebuildNavMesh();
     }
     public void RegisterZone(Zone zone)
     {
@@ -30,21 +40,29 @@ public class ZoneManager : Manager
         if (!_allZones.Contains(zone))
         {
             _allZones.Add(zone);
-        }
-
-        if (!_zonesByType[zone.Type].Contains(zone))
-        {
             _zonesByType[zone.Type].Add(zone);
-            Debug.Log($"Registered zone: {zone.Name} ({zone.Type})");
+
+            RebuildNavMesh();
         }
     }
     public void UnregisterZone(Zone zone)
     {
         if (zone == null) return;
 
-        _allZones.Remove(zone);
-        _zonesByType[zone.Type].Remove(zone);
-        Debug.Log($"Unregistered zone: {zone.Name}");
+        if (_allZones.Remove(zone))
+        {
+            _zonesByType[zone.Type].Remove(zone);
+
+            RebuildNavMesh();
+        }
+    }
+    public void RebuildNavMesh()
+    {
+        if (ParentSurface != null)
+        {
+            ParentSurface.BuildNavMesh();
+            Debug.Log("NavMesh rebuild complete.");
+        }
     }
     public List<Zone> GetZonesOfType(ZoneType zoneType)
     {

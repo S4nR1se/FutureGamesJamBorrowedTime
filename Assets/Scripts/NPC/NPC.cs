@@ -10,7 +10,9 @@ public abstract class NPC : MonoBehaviour
 
     protected ZoneType _restZoneType;
 
-    public abstract void Initialize(string name, int lifeSpan, float movementSpeed, Occupation occupation = null, ZoneType restZoneType = ZoneType.House);
+    protected DayCycle _activeCycle;
+
+    public abstract void Initialize(string name, int lifeSpan, float movementSpeed, Occupation occupation = null, ZoneType restZoneType = ZoneType.House, DayCycle activeCycle = DayCycle.Day);
     protected Occupation CreateDefaultOccupation()
     {
         return new FarmerOccupation();
@@ -28,7 +30,6 @@ public abstract class NPC : MonoBehaviour
         _currentZone = null;
     }
     public Zone GetCurrentZone() => _currentZone;
-    public abstract void GoToRest();
 }
 public enum TravelPurpose
 {
@@ -48,4 +49,5 @@ public interface IPeasant
     int Age { get; }
     int StarvationValue { get; }
     int DreadFactor { get; }
+    void GoToRest();
 }

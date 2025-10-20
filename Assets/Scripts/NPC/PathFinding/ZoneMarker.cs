@@ -8,16 +8,14 @@ public class ZoneMarker : MonoBehaviour
     [Header("Zone Configuration")]
     [SerializeField] private string zoneName = "New Zone";
     [SerializeField] private ZoneType zoneType = ZoneType.House;
-    [SerializeField] private NavMeshSurface parentSurface;
-    [SerializeField] private int capacity = -1; // -1 = unlimited
 
-    [Header("Zone Size")]
-    [SerializeField] private bool autoCalculateRadius = true;
-    [SerializeField] private float manualRadius = 10f;
+    private bool _autoCalculateRadius = true;
+    private const float MANUALRADIUS = 10f;
 
     private Zone _zone;
     private Collider _collider;
-    private HashSet<NPC> _npcsInZone = new HashSet<NPC>();
+
+    private NavMeshSurface _parentSurface;
 
     private void Awake()
     {
@@ -28,12 +26,20 @@ public class ZoneMarker : MonoBehaviour
     {
         if (_zone == null)
         {
+            ZoneManager zoneManager = GameManager.Instance.GetManager<ZoneManager>();
+            _parentSurface = zoneManager.ParentSurface;
+
             _zone = CreateZone();
 
-            ZoneManager zoneManager = GameManager.Instance.GetManager<ZoneManager>();
             if (zoneManager != null)
             {
                 zoneManager.RegisterZone(_zone);
+            }
+
+            Building associatedBuilding = GetComponent<Building>();
+            if(associatedBuilding != null)
+            {
+                associatedBuilding.Initialize();
             }
         }
     }
@@ -43,23 +49,29 @@ public class ZoneMarker : MonoBehaviour
         Vector3 center = transform.position;
         float radius = CalculateRadius();
 
-        _zone = new Zone(
-            zoneName,
-            zoneType,
-            center,
-            radius,
-            parentSurface,
-            capacity
-        );
+        int capacity = GetCapacityForType(zoneType);
+        return new Zone(zoneName, zoneType, center, radius, _parentSurface, capacity);
+    }
 
-        return _zone;
+    private int GetCapacityForType(ZoneType type)
+    {
+        return type switch
+        {
+            ZoneType.House => 10,
+            ZoneType.Farm => 5,
+            ZoneType.Church => 10,
+            ZoneType.Workshop => 5,
+            ZoneType.ConstructionSite => -1,
+            ZoneType.Graveyard => -1,
+            _ => -1 // Default unlimited
+        };
     }
 
     private float CalculateRadius()
     {
-        if (!autoCalculateRadius)
+        if (!_autoCalculateRadius)
         {
-            return manualRadius;
+            return MANUALRADIUS;
         }
 
         if (_collider == null)
@@ -82,39 +94,42 @@ public class ZoneMarker : MonoBehaviour
         {
             return capsule.radius * Mathf.Max(transform.localScale.x, transform.localScale.z);
         }
-        return manualRadius;
+        return MANUALRADIUS;
     }
+
     private void OnTriggerEnter(Collider other)
     {
         NPC npc = other.GetComponent<NPC>();
         if (npc != null && _zone != null)
         {
-            if (_npcsInZone.Add(npc))
+            if (_zone.TryEnter(npc))
             {
                 npc.SetCurrentZone(_zone);
-                Debug.Log($"NPC {npc.name} entered zone {zoneName}");
             }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-       NPC npc = other.GetComponent<NPC>();
-       if (npc != null && _zone != null)
-       {
-           if (_npcsInZone.Remove(npc))
-           {
-               npc.ClearCurrentZone();
-               Debug.Log($"NPC {npc.name} exited zone {zoneName}");
-           }
-       }
+        NPC npc = other.GetComponent<NPC>();
+        if (npc != null && _zone != null)
+        {
+            _zone.Exit(npc);
+            npc.ClearCurrentZone();
+        }
     }
+
     public Zone GetZone() => _zone;
+
     public void UpdateZone()
     {
         if (_zone != null)
         {
+            ZoneManager zoneManager = GameManager.Instance.GetManager<ZoneManager>();
+            zoneManager.UnregisterZone(_zone);
+
             _zone = CreateZone();
+            zoneManager.RegisterZone(_zone);
         }
     }
 }
