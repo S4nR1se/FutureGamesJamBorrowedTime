@@ -17,11 +17,6 @@ public class ZoneMarker : MonoBehaviour
 
     private NavMeshSurface _parentSurface;
 
-    private void Awake()
-    {
-        _collider = GetComponent<Collider>();
-    }
-
     private void Start()
     {
         if (_zone == null)
