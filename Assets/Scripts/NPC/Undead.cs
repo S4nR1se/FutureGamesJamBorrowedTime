@@ -71,9 +71,9 @@ public class Undead : NPC, IWorker, IPoolable
 
         if (_isTraveling && _travelPurpose == TravelPurpose.Work)
         {
-            CancelTravel();
-            GoToWork();
+            CancelTravel(); 
         }
+        GoToWork();
     }
 
     public void Roam()

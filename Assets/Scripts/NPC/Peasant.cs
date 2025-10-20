@@ -82,7 +82,12 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
         {
             CancelTravel();
             GoToWork();
+        } 
+        else if (!_isTraveling && _occupiedZone.Type == Occupation.WorkZoneType)
+        {
+            GoToWork();
         }
+        
     }
 
     public void Roam()
