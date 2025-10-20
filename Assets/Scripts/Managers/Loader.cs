@@ -4,6 +4,7 @@ public class Loader : MonoBehaviour
 {
     [SerializeField] GameObject _saveManager = null;
     [SerializeField] GameObject _settingsManager = null;
+    [SerializeField] GameObject _soundManager = null;
 
     private void Awake()
     {
@@ -15,6 +16,11 @@ public class Loader : MonoBehaviour
         if (SaveManager.SaveInstance == null)
         {
             Instantiate(_saveManager);
+        }
+
+        if (SoundManager.Instance == null)
+        {
+            Instantiate(_soundManager);
         }
     }
 }
