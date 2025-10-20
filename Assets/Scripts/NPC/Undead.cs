@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Undead : NPC, IWorker, IPoolable
+public abstract class Undead : NPC, IWorker, IPoolable
 {
     public GameObject PoolableComponent => gameObject;
 
@@ -30,10 +30,10 @@ public class Undead : NPC, IWorker, IPoolable
         if (_occupiedZone != null)
         {
             _occupiedZone.Exit(this);
-            Debug.Log($"{Name} disabled, exited {_occupiedZone.Name}");
             _occupiedZone = null;
         }
     }
+    public abstract int GetPurrCost();
     public override void Initialize(string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.Graveyard, DayCycle activeCycle = DayCycle.Night)
     {
         Name = name;
@@ -73,7 +73,7 @@ public class Undead : NPC, IWorker, IPoolable
         {
             CancelTravel(); 
         }
-        GoToWork();
+        GoToWork(_activeCycle);
     }
 
     public void Roam()
@@ -104,8 +104,9 @@ public class Undead : NPC, IWorker, IPoolable
     }
 
     [ContextMenu("Work")]
-    public void GoToWork()
+    public void GoToWork(DayCycle currentCycle)
     {
+        //Ignores Cycles Simply works
         GoToZone(Occupation.WorkZoneType);
         _travelPurpose = TravelPurpose.Work;
     }

@@ -81,13 +81,12 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
         if (_isTraveling && _travelPurpose == TravelPurpose.Work)
         {
             CancelTravel();
-            GoToWork();
+            GoToWork(_activeCycle);
         } 
         else if (!_isTraveling && _occupiedZone.Type == Occupation.WorkZoneType)
         {
-            GoToWork();
+            GoToWork(_activeCycle);
         }
-        
     }
 
     public void Roam()
@@ -118,8 +117,9 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
     }
 
     [ContextMenu("Work")]
-    public void GoToWork()
+    public void GoToWork(DayCycle currentCycle)
     {
+        if (currentCycle != _activeCycle) return;
         GoToZone(Occupation.WorkZoneType);
         _travelPurpose = TravelPurpose.Work;
     }
