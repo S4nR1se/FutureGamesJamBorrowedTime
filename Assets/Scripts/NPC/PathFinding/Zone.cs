@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
 
@@ -10,6 +12,11 @@ public class Zone
     public int Capacity { get; private set; }
     public int CurrentOccupancy { get; private set; }
     public float Radius { get; private set; }
+    private HashSet<NPC> _npcsInZone = new HashSet<NPC>();
+
+    // Events for entry/exit (buildings can subscribe)
+    public event Action<NPC> NPCEntered;
+    public event Action<NPC> NPCExited;
 
     public Zone(string name, ZoneType type, Vector3 center, float radius, NavMeshSurface parentSurface = null, int capacity = -1)
     {
@@ -21,6 +28,7 @@ public class Zone
         Capacity = capacity; // -1 means unlimited
         CurrentOccupancy = 0;
     }
+
     public bool ContainsPosition(Vector3 position)
     {
         return Vector3.Distance(position, Center) <= Radius;
@@ -28,25 +36,39 @@ public class Zone
 
     public bool IsFull()
     {
-        if (Capacity < 0) return false; // Unlimited capacity
+        if (Capacity < 0) return false;
         return CurrentOccupancy >= Capacity;
     }
 
-    public bool TryEnter()
+    public bool TryEnter(NPC npc)
     {
         if (IsFull()) return false;
-        CurrentOccupancy++;
-        return true;
+        if (_npcsInZone.Add(npc))
+        {
+            CurrentOccupancy++;
+            NPCEntered?.Invoke(npc);
+            return true;
+        }
+        return false;
     }
 
-    public void Exit()
+    public void Exit(NPC npc)
     {
-        CurrentOccupancy = Mathf.Max(0, CurrentOccupancy - 1);
+        if (_npcsInZone.Remove(npc))
+        {
+            CurrentOccupancy = Mathf.Max(0, CurrentOccupancy - 1);
+            NPCExited?.Invoke(npc);
+        }
+    }
+
+    public IEnumerable<NPC> GetNPCsInZone()
+    {
+        return _npcsInZone;
     }
 
     public Vector3 GetRandomPointInZone()
     {
-        Vector2 randomCircle = Random.insideUnitCircle * Radius;
+        Vector2 randomCircle = UnityEngine.Random.insideUnitCircle * Radius;
         Vector3 randomDirection = new Vector3(randomCircle.x, 0, randomCircle.y);
         randomDirection += Center;
 
@@ -72,5 +94,7 @@ public enum ZoneType
     Church,
     Zone,
     ConstructionSite,
+    Road,
+    Workshop,
     Graveyard
 }

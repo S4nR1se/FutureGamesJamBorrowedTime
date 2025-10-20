@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEditor.Overlays;
 using UnityEngine;
 
@@ -37,23 +38,26 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
 
         if (_occupiedZone != null)
         {
-            _occupiedZone.Exit();
+            _occupiedZone.Exit(this);
             Debug.Log($"{Name} disabled, exited {_occupiedZone.Name}");
             _occupiedZone = null;
         }
     }
-    public override void Initialize(string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.House)
+    public override void Initialize(string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.House, DayCycle activeCycle = DayCycle.Day)
     {
-
         Name = name;
         LifeSpan = lifeSpan;
         MovementSpeed = movementSpeed;
+
+        _activeCycle = activeCycle;
+
         _occupation = occupation ?? CreateDefaultOccupation();
         SetRestZoneType(restZoneType);
+
         Zone startZone = GetCurrentZone() ?? GameManager.Instance.GetManager<ZoneManager>().GetClosestZone(transform.position);
         _roamingBehaviour = new RoamingBehaviour(this, MovementSpeed, startZone);
 
-        if (startZone != null && startZone.TryEnter())
+        if (startZone != null && startZone.TryEnter(this))
         {
             _occupiedZone = startZone;
         }
@@ -98,7 +102,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
 
         if (travelZone != null)
         {
-            if (travelZone.TryEnter())
+            if (travelZone.TryEnter(this))
             {
                 _reservedZone = travelZone;
                 _goToZoneBehaviour = new GoToZoneBehaviour(this, MovementSpeed, travelZone);
@@ -116,7 +120,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
     }
 
     [ContextMenu("Rest")]
-    public override void GoToRest()
+    public void GoToRest()
     {
         GoToZone(_restZoneType);
         _travelPurpose = TravelPurpose.Rest;
@@ -126,7 +130,12 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
     {
         if (_occupiedZone != null && _occupiedZone != zone)
         {
-            _occupiedZone.Exit();
+            if (_occupiedZone.GetNPCsInZone().Contains(this))
+            {
+                _occupiedZone.Exit(this);
+                Debug.Log($"{Name} exited {_occupiedZone.Name} to enter {zone.Name}");
+            }
+            _occupiedZone = null;
         }
 
         _occupiedZone = _reservedZone;
@@ -142,7 +151,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
     {
         if (_reservedZone != null)
         {
-            _reservedZone.Exit();
+            _reservedZone.Exit(this);
             _reservedZone = null;
         }
     }
@@ -167,7 +176,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
 
         if (_occupiedZone != null)
         {
-            _occupiedZone.Exit();
+            _occupiedZone.Exit(this);
         }
 
         if (_goToZoneBehaviour != null)
@@ -187,7 +196,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
 
         if (_occupiedZone != null)
         {
-            _occupiedZone.Exit();
+            _occupiedZone.Exit(this);
             _occupiedZone = null;
         }
 
