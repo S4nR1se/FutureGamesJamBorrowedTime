@@ -34,14 +34,17 @@ public class Undead : NPC, IWorker, IPoolable
             _occupiedZone = null;
         }
     }
-    public override void Initialize(string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.Graveyard)
+    public override void Initialize(string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.Graveyard, DayCycle activeCycle = DayCycle.Night)
     {
-
         Name = name;
         LifeSpan = lifeSpan;
         MovementSpeed = movementSpeed;
+
+        _activeCycle = activeCycle;
+
         _occupation = occupation ?? CreateDefaultOccupation();
         SetRestZoneType(restZoneType);
+
         Zone startZone = GetCurrentZone() ?? GameManager.Instance.GetManager<ZoneManager>().GetClosestZone(transform.position);
         _roamingBehaviour = new RoamingBehaviour(this, MovementSpeed, startZone);
 
@@ -105,13 +108,6 @@ public class Undead : NPC, IWorker, IPoolable
     {
         GoToZone(Occupation.WorkZoneType);
         _travelPurpose = TravelPurpose.Work;
-    }
-
-    [ContextMenu("Rest")]
-    public override void GoToRest()
-    {
-        GoToZone(_restZoneType);
-        _travelPurpose = TravelPurpose.Rest;
     }
 
     private void OnArrivedAtDestination(Zone zone)

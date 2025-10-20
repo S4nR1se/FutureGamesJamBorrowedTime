@@ -42,14 +42,17 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
             _occupiedZone = null;
         }
     }
-    public override void Initialize(string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.House)
+    public override void Initialize(string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.House, DayCycle activeCycle = DayCycle.Day)
     {
-
         Name = name;
         LifeSpan = lifeSpan;
         MovementSpeed = movementSpeed;
+
+        _activeCycle = activeCycle;
+
         _occupation = occupation ?? CreateDefaultOccupation();
         SetRestZoneType(restZoneType);
+
         Zone startZone = GetCurrentZone() ?? GameManager.Instance.GetManager<ZoneManager>().GetClosestZone(transform.position);
         _roamingBehaviour = new RoamingBehaviour(this, MovementSpeed, startZone);
 
@@ -116,7 +119,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
     }
 
     [ContextMenu("Rest")]
-    public override void GoToRest()
+    public void GoToRest()
     {
         GoToZone(_restZoneType);
         _travelPurpose = TravelPurpose.Rest;

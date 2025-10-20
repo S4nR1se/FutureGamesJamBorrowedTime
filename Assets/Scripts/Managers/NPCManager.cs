@@ -7,14 +7,24 @@ public class NPCManager : Manager
     private ZoneManager _zoneManager;
 
     private List<NPC> _activeNPCs = new();
+    private List<IWorker> _workers = new();
     private Dictionary<System.Type, List<NPC>> _npcsByType = new();
 
     private PeasantPool _peasantPool;
     private UndeadPool _undeadPool;
 
+    private NPCScheduler _scheduler;
+
     public override void Initialize()
     {
         _zoneManager = GameManager.Instance.GetManager<ZoneManager>();
+
+        _scheduler = GetComponent<NPCScheduler>();
+        if( _scheduler != null)
+        {
+            TimeManager timeManager = GameManager.Instance.GetManager<TimeManager>();
+            _scheduler.Initialize(this, timeManager);
+        }
 
         _peasantPool = GetComponent<PeasantPool>();
         _undeadPool = GetComponent<UndeadPool>();
@@ -47,6 +57,11 @@ public class NPCManager : Manager
             _npcsByType[npcType] = new List<NPC>();
         }
         _npcsByType[npcType].Add(npc);
+
+        if(npc is IWorker worker)
+        {
+            _workers.Add(worker);
+        }
     }
 
     public void UnregisterNPC(NPC npc)
@@ -63,6 +78,11 @@ public class NPCManager : Manager
                 {
                     _npcsByType.Remove(npcType);
                 }
+            }
+
+            if (npc is IWorker worker)
+            {
+                _workers.Remove(worker);
             }
 
             if (npc is Peasant peasant && _peasantPool != null)
@@ -171,6 +191,10 @@ public class NPCManager : Manager
     {
         if (zone == null) return new List<NPC>();
         return _activeNPCs.Where(npc => npc.GetCurrentZone() == zone).ToList();
+    }
+    public List<IWorker> GetAllWorkers()
+    {
+        return new List<IWorker>(_workers);
     }
 
     public int GetActivePeasantCount()

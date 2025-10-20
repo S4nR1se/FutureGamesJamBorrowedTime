@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 
 public class TimeManager : Manager
 {
+    public event Action<DayCycle> OnTimePassage;
     public DayCycle CurrentDayCycle { get; private set; } = DayCycle.Day;
     public float LevelTime { get; private set; }
     private const float CYCLEDURATION = 60f;
@@ -24,8 +26,15 @@ public class TimeManager : Manager
 
         if (Mathf.FloorToInt(LevelTime / CYCLEDURATION) > Mathf.FloorToInt((LevelTime - Time.deltaTime) / CYCLEDURATION))
         {
-            CurrentDayCycle = (CurrentDayCycle == DayCycle.Day) ? DayCycle.Night : DayCycle.Day;
+            PassTime();
         }
+    }
+
+    [ContextMenu("PassTime")]
+    public void PassTime()
+    {
+        CurrentDayCycle = (CurrentDayCycle == DayCycle.Day) ? DayCycle.Night : DayCycle.Day;
+        OnTimePassage?.Invoke(CurrentDayCycle);
     }
 }
 
