@@ -29,6 +29,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void Play_Game()
     {
+        SoundManager.Instance.StopAllSounds();
         SceneManager.LoadSceneAsync("SampleScene");
     }
 

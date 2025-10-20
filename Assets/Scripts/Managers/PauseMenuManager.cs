@@ -3,23 +3,25 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenuManager : MonoBehaviour
 {
-    private void Awake()
+    [SerializeField] private GameObject _pauseMenu = null;
+
+    private void Start()
     {
-        this.gameObject.SetActive(false);
+        _pauseMenu.gameObject.SetActive(false);
     }
 
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            this.gameObject.SetActive(true);
+            _pauseMenu.gameObject.SetActive(true);
             //switch state to pause state
         }
     }
 
     public void ContinueGame()
    {
-        this.gameObject.SetActive(false);
+        _pauseMenu.gameObject.SetActive(false);
         //switch state to playing state
     }
 
@@ -30,6 +32,7 @@ public class PauseMenuManager : MonoBehaviour
 
    public void ExitGame()
    {
-       SceneManager.LoadSceneAsync("MainMenu");
+        SoundManager.Instance.StopAllSounds();
+        SceneManager.LoadSceneAsync("MainMenu");
    }
 }

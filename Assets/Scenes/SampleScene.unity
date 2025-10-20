@@ -303,7 +303,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 378970922}
+      - m_Target: {fileID: 643888584}
         m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
         m_MethodName: ContinueGame
         m_Mode: 1
@@ -685,7 +685,6 @@ GameObject:
   - component: {fileID: 378970920}
   - component: {fileID: 378970919}
   - component: {fileID: 378970918}
-  - component: {fileID: 378970922}
   m_Layer: 5
   m_Name: PauseMenu
   m_TagString: Untagged
@@ -779,18 +778,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &378970922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 378970917}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b2784431fcb2b040b36970df7fb79e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PauseMenuManager
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1238,7 +1225,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 378970922}
+      - m_Target: {fileID: 643888584}
         m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
         m_MethodName: OpenSettingsMenu
         m_Mode: 1
@@ -1298,6 +1285,7 @@ GameObject:
   m_Component:
   - component: {fileID: 643888583}
   - component: {fileID: 643888582}
+  - component: {fileID: 643888584}
   - component: {fileID: 643888581}
   m_Layer: 0
   m_Name: GameManager
@@ -1415,7 +1403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5877a30b49c5fe54fb9ef96e5cbd56c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  _inGameAudioClip: {fileID: 8300000, guid: d868133b07160a6479a37e4bd2523b86, type: 3}
+  _inGameAudioClip: {fileID: 8300000, guid: e2b7217853bbd154d9144ca303ebc008, type: 3}
 --- !u!4 &643888583
 Transform:
   m_ObjectHideFlags: 0
@@ -1431,6 +1419,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &643888584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 643888580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b2784431fcb2b040b36970df7fb79e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseMenuManager
+  _pauseMenu: {fileID: 378970917}
 --- !u!1 &758030272
 GameObject:
   m_ObjectHideFlags: 0
@@ -1778,7 +1779,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 378970922}
+      - m_Target: {fileID: 643888584}
         m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
         m_MethodName: ExitGame
         m_Mode: 1
