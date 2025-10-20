@@ -40,7 +40,7 @@ public class PlayerInputManager : Manager
     }
     private void MouseInput()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        if(EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
@@ -55,7 +55,6 @@ public class PlayerInputManager : Manager
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _interactableLayer))
         {
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
-
             if (interactable != null && interactable != _currentHover)
             {
                 _currentHover?.OnHoverExit();

@@ -59,9 +59,9 @@ public class GridManager : Manager
                     {
                         _buildings.Add(new Vector2Int(x, y), building);
                         // Mark all cells in building's footprint as occupied
-                        for (int bx = x; bx < x + building.size.x; bx++)
+                        for (int bx = x; bx < x + building.Size.x; bx++)
                         {
-                            for (int by = y; by < y + building.size.y; by++)
+                            for (int by = y; by < y + building.Size.y; by++)
                             {
                                 if (bx < GridSize && by < GridSize)
                                 {

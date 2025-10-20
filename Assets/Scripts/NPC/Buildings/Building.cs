@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class Building : MonoBehaviour
 {
-    public Vector2Int size { get; private set; } = new Vector2Int(1, 1);
+    public Vector2Int Size { get; private set; } = new Vector2Int(1, 1);
     public int BuildTime { get; protected set; }
     public int MaterialCost { get; protected set; }
     protected Zone AssociatedZone { get; private set; }
