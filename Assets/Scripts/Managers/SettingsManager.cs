@@ -1,14 +1,16 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class SettingsManager : MonoBehaviour
 {
     public static SettingsManager SettingsMInstance { get; private set; }
 
-    [SerializeField] private Slider _masterAudioSlider = null;
-    [SerializeField] private AudioSource _audio = null;
+    [SerializeField] private Slider _masterVolumeSlider = null;
+    [SerializeField] private Slider _musicVolumeSlider = null;
+    [SerializeField] private Slider _soundEffectsVolumeSlider = null;
 
     [SerializeField] private GameObject _audioCanvas = null;
     [SerializeField] private GameObject _controlsCanvas = null;
@@ -22,7 +24,6 @@ public class SettingsManager : MonoBehaviour
 
     private int _selectedResolution = 0;
     public Vector2 _resolution = new();
-
 
     private void Awake()
     {
@@ -52,8 +53,9 @@ public class SettingsManager : MonoBehaviour
         Screen.fullScreen = true;
         this.gameObject.SetActive(false);
         _resolutionsCanvas.SetActive(false);
-        _audioCanvas.SetActive(false);
+        _audioCanvas.SetActive(true);
         _cameraCanvas.SetActive(false);
+        _controlsCanvas.SetActive(false);
     }
 
     private void Update()
@@ -69,12 +71,20 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
-    private void UpdateMasterAudioVolume()
+    public void UpdateMasterAudioVolume()
     {
-        //_audio.volume = _masterAudioSlider.value;
+        SoundManager.Instance.SetMasterVolume(_masterVolumeSlider.value);
     }
 
+    public void UpdateMusicAudioVolume()
+    {
+        SoundManager.Instance.SetMusicVolume(_musicVolumeSlider.value);
+    }
 
+    public void UpdateSoundEffectsAudioVolume()
+    {
+        //SoundManager.Instance.SetSFXVolume(_soundEffectsVolumeSlider.value);
+    }
 
     public void OpenAudioPanel()
     {
@@ -144,6 +154,20 @@ public class SettingsManager : MonoBehaviour
         Screen.SetResolution((int)_resolutions[_selectedResolution].x, (int)_resolutions[_selectedResolution].y, true);
     }
 
+    public float GetMasterAudioSliderVolume()
+    {
+        return _masterVolumeSlider.value;
+    }
+
+    public float GetMusicAudioSliderVolume()
+    {
+        return _musicVolumeSlider.value;
+    }
+
+    public float GetSoundEffectsAudioSliderVolume()
+    {
+        return _soundEffectsVolumeSlider.value;
+    }
 
     public void CloseSettings()
     {
