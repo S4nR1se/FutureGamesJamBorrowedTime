@@ -41,7 +41,6 @@ public class ZoneManager : Manager
         {
             _allZones.Add(zone);
             _zonesByType[zone.Type].Add(zone);
-            Debug.Log($"Registered zone: {zone.Name} ({zone.Type})");
 
             RebuildNavMesh();
         }
@@ -53,7 +52,6 @@ public class ZoneManager : Manager
         if (_allZones.Remove(zone))
         {
             _zonesByType[zone.Type].Remove(zone);
-            Debug.Log($"Unregistered zone: {zone.Name}");
 
             RebuildNavMesh();
         }
@@ -62,7 +60,6 @@ public class ZoneManager : Manager
     {
         if (ParentSurface != null)
         {
-            Debug.Log("Rebuilding NavMesh for ParentSurface...");
             ParentSurface.BuildNavMesh();
             Debug.Log("NavMesh rebuild complete.");
         }

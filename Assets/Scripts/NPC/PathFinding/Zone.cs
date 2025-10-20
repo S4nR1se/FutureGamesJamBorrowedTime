@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
@@ -11,7 +12,11 @@ public class Zone
     public int Capacity { get; private set; }
     public int CurrentOccupancy { get; private set; }
     public float Radius { get; private set; }
-    private HashSet<NPC> _npcsInZone = new HashSet<NPC>(); // Moved from ZoneMarker
+    private HashSet<NPC> _npcsInZone = new HashSet<NPC>();
+
+    // Events for entry/exit (buildings can subscribe)
+    public event Action<NPC> NPCEntered;
+    public event Action<NPC> NPCExited;
 
     public Zone(string name, ZoneType type, Vector3 center, float radius, NavMeshSurface parentSurface = null, int capacity = -1)
     {
@@ -31,7 +36,7 @@ public class Zone
 
     public bool IsFull()
     {
-        if (Capacity < 0) return false; // Unlimited capacity
+        if (Capacity < 0) return false;
         return CurrentOccupancy >= Capacity;
     }
 
@@ -41,7 +46,7 @@ public class Zone
         if (_npcsInZone.Add(npc))
         {
             CurrentOccupancy++;
-            OnNPCEnter(npc);
+            NPCEntered?.Invoke(npc);
             return true;
         }
         return false;
@@ -52,7 +57,7 @@ public class Zone
         if (_npcsInZone.Remove(npc))
         {
             CurrentOccupancy = Mathf.Max(0, CurrentOccupancy - 1);
-            OnNPCExit(npc);
+            NPCExited?.Invoke(npc);
         }
     }
 
@@ -63,7 +68,7 @@ public class Zone
 
     public Vector3 GetRandomPointInZone()
     {
-        Vector2 randomCircle = Random.insideUnitCircle * Radius;
+        Vector2 randomCircle = UnityEngine.Random.insideUnitCircle * Radius;
         Vector3 randomDirection = new Vector3(randomCircle.x, 0, randomCircle.y);
         randomDirection += Center;
 
@@ -79,19 +84,6 @@ public class Zone
     public float GetDistanceTo(Vector3 position)
     {
         return Vector3.Distance(Center, position);
-    }
-    public virtual void OnNPCEnter(NPC npc)
-    {
-        Debug.Log($"NPC {npc.name} entered generic zone {Name}");
-    }
-
-    public virtual void OnNPCExit(NPC npc)
-    {
-        Debug.Log($"NPC {npc.name} exited generic zone {Name}");
-    }
-
-    public virtual void UpdateLogic(float deltaTime)
-    {
     }
 }
 

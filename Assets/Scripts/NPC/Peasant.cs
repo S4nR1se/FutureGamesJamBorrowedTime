@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEditor.Overlays;
 using UnityEngine;
 
@@ -129,7 +130,12 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
     {
         if (_occupiedZone != null && _occupiedZone != zone)
         {
-            _occupiedZone.Exit(this);
+            if (_occupiedZone.GetNPCsInZone().Contains(this))
+            {
+                _occupiedZone.Exit(this);
+                Debug.Log($"{Name} exited {_occupiedZone.Name} to enter {zone.Name}");
+            }
+            _occupiedZone = null;
         }
 
         _occupiedZone = _reservedZone;

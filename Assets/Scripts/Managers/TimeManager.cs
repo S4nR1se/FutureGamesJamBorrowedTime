@@ -3,14 +3,20 @@ using UnityEngine;
 
 public class TimeManager : Manager
 {
-    public event Action<DayCycle> OnTimePassage;
-    public DayCycle CurrentDayCycle { get; private set; } = DayCycle.Day;
+    public event Action OnCycleCalculation;
+    public event Action<DayCycle> OnCyclePassage;
+    public DayCycle CurrentDayCycle { get; private set; } = DayCycle.Night;
+
+    public int DayNumber {  get; private set; }
     public float LevelTime { get; private set; }
+
     private const float CYCLEDURATION = 60f;
 
     public override void Initialize()
     {
         LevelTime = 0;
+        DayNumber = 0;
+        CurrentDayCycle = DayCycle.Night;
     }
     private void OnEnable()
     {
@@ -33,8 +39,11 @@ public class TimeManager : Manager
     [ContextMenu("PassTime")]
     public void PassTime()
     {
+        OnCycleCalculation?.Invoke();
+
         CurrentDayCycle = (CurrentDayCycle == DayCycle.Day) ? DayCycle.Night : DayCycle.Day;
-        OnTimePassage?.Invoke(CurrentDayCycle);
+        if (CurrentDayCycle == DayCycle.Day) DayNumber++;
+        OnCyclePassage?.Invoke(CurrentDayCycle);
     }
 }
 

@@ -35,6 +35,12 @@ public class ZoneMarker : MonoBehaviour
             {
                 zoneManager.RegisterZone(_zone);
             }
+
+            Building associatedBuilding = GetComponent<Building>();
+            if(associatedBuilding != null)
+            {
+                associatedBuilding.Initialize();
+            }
         }
     }
 
@@ -43,33 +49,22 @@ public class ZoneMarker : MonoBehaviour
         Vector3 center = transform.position;
         float radius = CalculateRadius();
 
-        Zone zone = null;
-        switch (zoneType)
-        {
-            case ZoneType.House:
-                zone = new HouseZone(zoneName, center, radius, _parentSurface, 10);
-                break;
-            case ZoneType.Farm:
-                zone = new FarmZone(zoneName, center, radius, _parentSurface, 5);
-                break;
-            case ZoneType.Graveyard:
-                zone = new GraveYardZone(zoneName, center, radius, _parentSurface, -1);
-                break;
-            case ZoneType.Workshop:
-                zone = new WorkshopZone(zoneName, center, radius, _parentSurface, 5);
-                break;
-            case ZoneType.ConstructionSite:
-                zone = new ConstructionZone(zoneName, center, radius, _parentSurface, -1);
-                break;
-            case ZoneType.Church:
-                zone = new ChurchZone(zoneName, center, radius, _parentSurface, 10);
-                break;
-            default:
-                zone = new RoadZone(zoneName, center, radius, _parentSurface, -1);
-                break;
-        }
+        int capacity = GetCapacityForType(zoneType);
+        return new Zone(zoneName, zoneType, center, radius, _parentSurface, capacity);
+    }
 
-        return zone;
+    private int GetCapacityForType(ZoneType type)
+    {
+        return type switch
+        {
+            ZoneType.House => 10,
+            ZoneType.Farm => 5,
+            ZoneType.Church => 10,
+            ZoneType.Workshop => 5,
+            ZoneType.ConstructionSite => -1,
+            ZoneType.Graveyard => -1,
+            _ => -1 // Default unlimited
+        };
     }
 
     private float CalculateRadius()
@@ -110,7 +105,6 @@ public class ZoneMarker : MonoBehaviour
             if (_zone.TryEnter(npc))
             {
                 npc.SetCurrentZone(_zone);
-                Debug.Log($"NPC {npc.name} entered zone {zoneName}");
             }
         }
     }
@@ -122,7 +116,6 @@ public class ZoneMarker : MonoBehaviour
         {
             _zone.Exit(npc);
             npc.ClearCurrentZone();
-            Debug.Log($"NPC {npc.name} exited zone {zoneName}");
         }
     }
 

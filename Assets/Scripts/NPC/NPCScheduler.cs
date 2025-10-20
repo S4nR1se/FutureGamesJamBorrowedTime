@@ -10,20 +10,20 @@ public class NPCScheduler : MonoBehaviour
         _npcManager = npcManager;
         _timeManager = timeManager;
 
-        _timeManager.OnTimePassage += OnTimePassage;
+        _timeManager.OnCyclePassage += OnTimePassage;
     }
     private void OnEnable()
     {
         if(_timeManager != null)
         {
-            _timeManager.OnTimePassage += OnTimePassage;   
+            _timeManager.OnCyclePassage += OnTimePassage;   
         }
     }
     private void OnDisable()
     {
         if(_timeManager != null)
         {
-            _timeManager.OnTimePassage -= OnTimePassage;
+            _timeManager.OnCyclePassage -= OnTimePassage;
         }
     }
     private void OnTimePassage(DayCycle currentCycle)

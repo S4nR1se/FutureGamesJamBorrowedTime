@@ -34,7 +34,6 @@ public class GoToZoneBehaviour
         {
             _targetZone = newZone;
             _hasSetDestination = false;
-            Debug.Log($"{_npc.name} now heading to zone: {newZone.Name}");
         }
     }
     public void GoToZone()
@@ -45,11 +44,9 @@ public class GoToZoneBehaviour
             _agent.SetDestination(_targetPoint);
             _hasSetDestination = true;
             _timeSinceLastDestination = 0f;
-            Debug.Log($"{_npc.name} traveling to {_targetZone.Name}");
         }
         if (HasArrivedAtZone())
         {
-            Debug.Log($"{_npc.name} arrived at {_targetZone.Name}");
             OnArrived?.Invoke(_targetZone);
             return;
         }
@@ -86,7 +83,6 @@ public class GoToZoneBehaviour
     }
     private void HandleStuckNPC()
     {
-        Debug.LogWarning($"{_npc.name} stuck while traveling to {_targetZone.Name}, retrying...");
         _agent.ResetPath();
 
         _targetPoint = _targetZone.GetRandomPointInZone();
