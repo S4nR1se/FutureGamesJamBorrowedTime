@@ -8,17 +8,22 @@ public class MainMenuManager : MonoBehaviour
     AudioSource _mainMenuAudioSource = null;
     private void Awake()
     {
+        SetAudio();
+    }
+
+    private void SetAudio()
+    {
         SaveManager.SaveInstance.Load_Data();
         SoundManager.Instance.Initialize();
 
         _mainMenuAudioSource = GetComponent<AudioSource>();
         _mainMenuAudioSource.clip = _mainMenuMusic;
         SoundManager.Instance.RegisterBackgroundMusic(_mainMenuAudioSource);
-        
+
         SoundManager.Instance.SetMasterVolume(SettingsManager.SettingsMInstance.GetMasterAudioSliderVolume());
         SoundManager.Instance.SetMusicVolume(SettingsManager.SettingsMInstance.GetMusicAudioSliderVolume());
         //SoundManager.Instance.SetSFXVolume(SettingsManager.SettingsMInstance.GetSoundEffectsAudioSliderVolume());
-        
+
         SoundManager.Instance.PlayLoopingSound(_mainMenuAudioSource.clip, Vector3.one);
     }
 
