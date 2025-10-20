@@ -3,10 +3,10 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
-    //private void Awake()
-    //{
-    //    SaveManager.save_instance.Load_Data();
-    //}
+    private void Awake()
+    {
+        SaveManager.SaveInstance.Load_Data();
+    }
 
     public void Play_Game()
     {
@@ -15,7 +15,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void Open_Settings_Menu()
     {
-        //SettingsMenu.sm_instance.gameObject.SetActive(true);
+        SettingsManager.SettingsMInstance.gameObject.SetActive(true);
     }
 
     public void Open_Stats_Menu()
