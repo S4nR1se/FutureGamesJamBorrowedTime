@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ab16ae254c72bd43b56ed2f61e6128c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  tileType: 2
+  tileType: 1
 --- !u!114 &-4761672134288230400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98767d1ca9d043d4b995ad0ffeb2b94c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZoneMarker
-  zoneName: New Zone
+  zoneName: Home
   zoneType: 0
 --- !u!65 &3828731887611888627
 BoxCollider:
@@ -152,12 +152,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 0.2, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.2, z: 0}
 --- !u!114 &7684023164186513264
 MonoBehaviour:
   m_ObjectHideFlags: 0
