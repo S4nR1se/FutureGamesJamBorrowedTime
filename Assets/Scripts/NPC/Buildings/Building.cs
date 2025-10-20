@@ -3,8 +3,8 @@ using UnityEngine;
 
 public abstract class Building : MonoBehaviour
 {
-    public int BuildTime { get; private set; }
-    public int MaterialCost { get; private set; }
+    public int BuildTime { get; protected set; }
+    public int MaterialCost { get; protected set; }
     protected Zone AssociatedZone { get; private set; }
     protected ResourceManager ResourceManager { get; private set; }
 

@@ -41,7 +41,6 @@ public class Farm : Building
     private void UpdateProduction()
     {
         ResourceManager.UpdateValue(Resources.FoodStock, _foodStockGenerated);
-        Debug.Log($"Farm {AssociatedZone.Name} produced {_foodStockGenerated} food with {AssociatedZone.CurrentOccupancy} NPCs.");
 
         _foodStockGenerated = 0;
     }
