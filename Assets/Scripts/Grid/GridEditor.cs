@@ -32,7 +32,7 @@ public class GridEditor : Editor
                 GameObject tile = (GameObject)PrefabUtility.InstantiatePrefab(gridManager.TilePrefab, gridParent.transform);
                 tile.transform.position = worldPos;
                 Tile tileComponent = tile.GetComponent<Tile>();
-                if (tileComponent) tileComponent.tileType = TileType.NonWalkable;
+                if (tileComponent) tileComponent.tileType = TileType.BaseTile;
             }
         }
     }

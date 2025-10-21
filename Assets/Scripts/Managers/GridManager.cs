@@ -24,7 +24,7 @@ public class GridManager : Manager
         _tileTypes = new TileType[GridSize, GridSize];
         InitializeGridFromScene();
     }
-   private void InitializeGridFromScene()
+    private void InitializeGridFromScene()
     {
         foreach (Tile tile in GetComponentsInChildren<Tile>())
         {
@@ -33,8 +33,7 @@ public class GridManager : Manager
             {
                 _tileObjects[gridPos.x, gridPos.y] = tile;
                 _tileTypes[gridPos.x, gridPos.y] = tile.tileType;
-                _occupancyGrid[gridPos.x, gridPos.y] = (tile.tileType == TileType.NonWalkable);
-                // Note: If tileType is Building, assume it's a pre-placed building (handle below)
+                _occupancyGrid[gridPos.x, gridPos.y] = (tile.tileType == TileType.BaseTile);
             }
         }
         for (int x = 0; x < GridSize; x++)
@@ -47,30 +46,10 @@ public class GridManager : Manager
                     GameObject tileObj = Instantiate(_tilePrefab, worldPos, Quaternion.identity, transform);
                     Tile tileComponent = tileObj.GetComponent<Tile>();
                     if (tileComponent == null) tileComponent = tileObj.AddComponent<Tile>();
-                    tileComponent.tileType = TileType.NonWalkable;
+                    tileComponent.tileType = TileType.BaseTile;
                     _tileObjects[x, y] = tileComponent;
-                    _tileTypes[x, y] = TileType.NonWalkable;
+                    _tileTypes[x, y] = TileType.BaseTile;
                     _occupancyGrid[x, y] = false;
-                }
-                else if (_tileTypes[x, y] == TileType.Building)
-                {
-                    Building building = _tileObjects[x, y].GetComponent<Building>();
-                    if (building != null)
-                    {
-                        _buildings.Add(new Vector2Int(x, y), building);
-                        // Mark all cells in building's footprint as occupied
-                        for (int bx = x; bx < x + building.Size.x; bx++)
-                        {
-                            for (int by = y; by < y + building.Size.y; by++)
-                            {
-                                if (bx < GridSize && by < GridSize)
-                                {
-                                    _occupancyGrid[bx, by] = true;
-                                    _tileTypes[bx, by] = TileType.Building;
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -83,9 +62,18 @@ public class GridManager : Manager
 
     public Vector2Int WorldToGrid(Vector3 worldPos)
     {
-        int x = Mathf.FloorToInt((worldPos.x - gridOrigin.x) / CellSize);
-        int y = Mathf.FloorToInt((worldPos.z - gridOrigin.z) / CellSize);
-        return new Vector2Int(Mathf.Clamp(x, 0, GridSize - 1), Mathf.Clamp(y, 0, GridSize - 1));
+        Vector3 relativePos = worldPos - gridOrigin;
+
+        float relX = (relativePos.x + CellSize * 0.5f) / CellSize;
+        float relZ = (relativePos.z + CellSize * 0.5f) / CellSize;
+
+        int x = Mathf.FloorToInt(relX);
+        int y = Mathf.FloorToInt(relZ);
+
+        x = Mathf.Clamp(x, 0, GridSize - 1);
+        y = Mathf.Clamp(y, 0, GridSize - 1);
+
+        return new Vector2Int(x, y);
     }
 
     public bool IsAreaFree(Vector2Int startPos, Vector2Int size)
@@ -99,6 +87,73 @@ public class GridManager : Manager
             }
         }
         return true;
+    }
+    public void ReplaceTile(Vector2Int gridPos, TileType newTileType, GameObject tilePrefab = null)
+    {
+        if (gridPos.x < 0 || gridPos.x >= GridSize || gridPos.y < 0 || gridPos.y >= GridSize)
+        {
+            return;
+        }
+        Tile oldTile = _tileObjects[gridPos.x, gridPos.y];
+        if (oldTile != null)
+        {
+            ZoneMarker oldZoneMarker = oldTile.GetComponent<ZoneMarker>();
+            if (oldZoneMarker != null)
+            {
+                Zone oldZone = oldZoneMarker.GetZone();
+                if (oldZone != null)
+                {
+                    ZoneManager zoneManager = GameManager.Instance.GetManager<ZoneManager>();
+                    if (zoneManager != null)
+                    {
+                        zoneManager.UnregisterZone(oldZone);
+                    }
+                }
+            }
+
+            Destroy(oldTile.gameObject);
+        }
+        Vector3 worldPos = GridToWorld(gridPos);
+        GameObject prefabToUse = tilePrefab ?? _tilePrefab;
+        GameObject newTileObj = Instantiate(prefabToUse, worldPos, Quaternion.identity, transform);
+
+        Tile newTile = newTileObj.GetComponent<Tile>();
+        if (newTile == null)
+            newTile = newTileObj.AddComponent<Tile>();
+
+        newTile.tileType = newTileType;
+        _tileObjects[gridPos.x, gridPos.y] = newTile;
+        _tileTypes[gridPos.x, gridPos.y] = newTileType;
+
+        _occupancyGrid[gridPos.x, gridPos.y] = (newTileType == TileType.BaseTile);
+
+        ZoneMarker zoneMarker = newTileObj.GetComponent<ZoneMarker>();
+        if (zoneMarker != null)
+        {
+            ZoneManager zoneManager = GameManager.Instance.GetManager<ZoneManager>();
+            if (zoneManager != null)
+            {
+                Zone zone = zoneMarker.CreateZone();
+                zoneManager.RegisterZone(zone);
+            }
+        }
+    }
+    public void ReplaceTileArea(Vector2Int start, Vector2Int size, TileType newTileType, GameObject tilePrefab = null)
+    {
+        for (int x = start.x; x < start.x + size.x; x++)
+        {
+            for (int y = start.y; y < start.y + size.y; y++)
+            {
+                ReplaceTile(new Vector2Int(x, y), newTileType, tilePrefab);
+            }
+        }
+    }
+    public Tile GetTileAt(Vector2Int gridPos)
+    {
+        if (gridPos.x < 0 || gridPos.x >= GridSize || gridPos.y < 0 || gridPos.y >= GridSize)
+            return null;
+
+        return _tileObjects[gridPos.x, gridPos.y];
     }
 }
 
