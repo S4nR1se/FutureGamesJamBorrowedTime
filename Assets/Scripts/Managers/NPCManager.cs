@@ -239,15 +239,10 @@ public class NPCManager : Manager
     }
     private string GenerateName(NPC npc)
     {
-        if(_nPCNames == null)
+        if(_nPCNames == null || _nPCNames.GetNPCNameListSize() == 0)
         {
             return "NPC";
-        }
-
-        if(_nPCNames.GetNPCNameListSize() == 0)
-        {
-            throw new System.Exception("The NPC Name list is empty!");
-        }    
+        }  
 
         int NameIndex = UnityEngine.Random.Range(0, _nPCNames.GetNPCNameListSize() - 1);
         string newName =  _nPCNames.Get_Objects()[NameIndex].Name;

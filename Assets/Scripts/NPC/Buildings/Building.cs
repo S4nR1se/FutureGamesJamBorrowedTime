@@ -8,8 +8,9 @@ public abstract class Building : MonoBehaviour, IInteractable
     public int MaterialCost { get; protected set; }
     protected Zone AssociatedZone { get; private set; }
     protected ResourceManager ResourceManager { get; private set; }
+    protected abstract Occupation AssociatedOccupation { get;}
 
-    public GameObject Component => throw new System.NotImplementedException();
+    public GameObject Component => gameObject;
 
     public virtual void Initialize()
     {
@@ -47,7 +48,12 @@ public abstract class Building : MonoBehaviour, IInteractable
 
     public virtual void OnSelect(PlayerInputManager playerInputManager)
     {
+        IWorker prevWorker = playerInputManager.PreviousWorkerSelection;
 
+        if (prevWorker != null)
+        {
+            prevWorker.AssignOccupation(AssociatedOccupation);
+        }
     }
 
     public virtual void OnDeselect()

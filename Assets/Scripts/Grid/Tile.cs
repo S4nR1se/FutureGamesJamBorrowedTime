@@ -33,4 +33,7 @@ public enum TileType
     House,
     Workshop,
     Temple,
+    Graveyard,
+    ConstructionSite,
+
 }

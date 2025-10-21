@@ -19,26 +19,21 @@ public class TilePlacementManager : Manager
         Debug.Log($"Selected building: {_selectedTileType}");
     }
 
-    public void TryPlaceBuilding(Vector3 worldPosition)
+    public void TryPlaceBuilding(Tile targetTile)
     {
-        if (_selectedTileType == TileType.BaseTile)
-        {
+        if (_selectedTileType == TileType.BaseTile || targetTile == null)
             return;
-        }
 
-        Vector2Int gridPos = _gridManager.WorldToGrid(worldPosition);
+        Vector2Int gridPos = _gridManager.WorldToGrid(targetTile.transform.position);
 
-        if (gridPos.x < 0 || gridPos.x >= _gridManager.GridSize ||
-            gridPos.y < 0 || gridPos.y >= _gridManager.GridSize)
+        if (_gridManager.GetTileAt(gridPos)?.tileType != TileType.BaseTile)
         {
+            Debug.Log("Cannot place building: Tile is already occupied.");
             return;
         }
         GameObject prefab = tileDatabase.GetPrefab(_selectedTileType);
-
         if (prefab == null)
-        {
             return;
-        }
 
         _gridManager.ReplaceTile(gridPos, _selectedTileType, prefab);
     }

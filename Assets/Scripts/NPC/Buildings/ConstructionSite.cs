@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class ConstructionSite : Building
 {
+    protected override Occupation AssociatedOccupation => new BuilderOccupation();
+
     private int _buildTimeDecrease = 0;
     private const int DECREASEPERPEASANT = 1;
     public override void Initialize()
