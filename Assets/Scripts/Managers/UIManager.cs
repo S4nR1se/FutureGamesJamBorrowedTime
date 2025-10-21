@@ -17,6 +17,9 @@ public class UIManager : Manager
     }
 
     [SerializeField] private HudComponent[] _hudComponents;
+    [SerializeField] private Dictionary<string, GameObject> _buildingPrefab;
+
+    private GameObject _selectedBuilding;
 
     private Dictionary<string, HudComponent> _hudComponentsDic;
 
@@ -117,9 +120,40 @@ public class UIManager : Manager
         _hudComponentsDic["Peasants"].Counter[0].text = NPCS.ToString();
     }
 
-    public void PlaceHouse()
+    private void SelectedBuildingCreation(GameObject Building)
     {
-        //_buildingsManager.SelectBuilding(TileType.House);
-        Debug.Log("house");
+        if(_selectedBuilding == null)
+        {
+            //Instatiate building prefab at mouse position
+            //Instatiate(Building, mousePosition);
+        }
+        else
+        {
+
+        }
+    }
+
+    public void PickHouse()
+    {
+        _buildingsManager.SelectBuilding(TileType.House);
+        //Instatiate building icon at mouse position
+    }
+
+    public void PickTemple()
+    {
+        _buildingsManager.SelectBuilding(TileType.Temple);
+        //Instatiate building icon at mouse position
+    }
+
+    public void PickFarm()
+    {
+        _buildingsManager.SelectBuilding(TileType.Farm);
+        //Instatiate building icon at mouse position
+    }
+
+    public void PickWorkshop()
+    {
+        _buildingsManager.SelectBuilding(TileType.Workshop);
+        //Instatiate building icon at mouse position
     }
 }
