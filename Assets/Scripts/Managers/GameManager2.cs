@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GameManager : StateMachine
+public class GameManager2 : StateMachine
 {
     [SerializeField] private AudioClip _inGameAudioClip;
     AudioSource _inGameAudioSource = null;
