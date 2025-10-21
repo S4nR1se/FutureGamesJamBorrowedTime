@@ -81,17 +81,19 @@ public class UIManager : Manager
     }
     private void OnResourceChange(Dictionary<Resources, int> resources)
     {
-        
+        if (resources == null || _hudComponentsDic == null)
+        {
+            return;
+        }
+
+        int ResourcesCounter = 0;
         foreach (var resource in resources)
         {
-            //hudComponentsDic["Resources"].Counter[i] = resource.Value;
+            if(ResourcesCounter < _hudComponentsDic["Resources"].Counter.Length)
+            {
+                _hudComponentsDic["Resources"].Counter[ResourcesCounter].text = resource.Value.ToString();
+            }
         }
-        for (int i = 0; i < resources.Count; ++i)
-        {
-           //resources.Keys
-
-        }
-
     }
     private void OnNPCAmountChange(Dictionary<System.Type, List<NPC>> npcsByType)
     {
