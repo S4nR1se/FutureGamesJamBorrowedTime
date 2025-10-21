@@ -21,21 +21,22 @@ public class ZoneMarker : MonoBehaviour
     {
         if (_zone == null)
         {
-            ZoneManager zoneManager = GameManager.Instance.GetManager<ZoneManager>();
-            _parentSurface = zoneManager.ParentSurface;
+            InitializeZone();
+        }
+    }
 
-            _zone = CreateZone();
+    public void InitializeZone()
+    {
+        ZoneManager zoneManager = GameManager.Instance.GetManager<ZoneManager>();
+        _parentSurface = zoneManager.ParentSurface;
 
-            if (zoneManager != null)
-            {
-                zoneManager.RegisterZone(_zone);
-            }
+        _zone = CreateZone();
+        zoneManager.RegisterZone(_zone);
 
-            Building associatedBuilding = GetComponent<Building>();
-            if(associatedBuilding != null)
-            {
-                associatedBuilding.Initialize();
-            }
+        Building associatedBuilding = GetComponent<Building>();
+        if (associatedBuilding != null)
+        {
+            associatedBuilding.Initialize();
         }
     }
 

@@ -48,7 +48,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         if (_occupiedZone != null)
         {
             _occupiedZone.Exit(this);
-            Debug.Log($"{Name} disabled, exited {_occupiedZone.Name}");
             _occupiedZone = null;
         }
     }
@@ -111,20 +110,33 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     }
     private void GoToZone(ZoneType zoneType)
     {
-        ReleaseReservation();
-
+        CancelTravel();
         Zone travelZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(zoneType);
 
-        if (travelZone != null)
+        if (travelZone == null)
         {
-            if (travelZone.TryEnter(this))
-            {
-                _reservedZone = travelZone;
-                _goToZoneBehaviour = new GoToZoneBehaviour(this, MovementSpeed, travelZone);
-                _goToZoneBehaviour.OnArrived += OnArrivedAtDestination;
-                _isTraveling = true;
-            }
+            return;
         }
+
+        if (travelZone.TryEnter(this))
+        {
+            _reservedZone = travelZone;
+
+            SetGoToZoneBehaviour(travelZone);
+
+            _isTraveling = true;
+            _travelPurpose = TravelPurpose.None;
+        }
+    }
+    private void SetGoToZoneBehaviour(Zone targetZone)
+    {
+        if (_goToZoneBehaviour != null)
+        {
+            _goToZoneBehaviour.OnArrived -= OnArrivedAtDestination;
+        }
+
+        _goToZoneBehaviour = new GoToZoneBehaviour(this, MovementSpeed, targetZone);
+        _goToZoneBehaviour.OnArrived += OnArrivedAtDestination;
     }
 
     [ContextMenu("Work")]
@@ -176,7 +188,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         if (_isTraveling)
         {
             _isTraveling = false;
-            ReleaseReservation();
 
             if (_goToZoneBehaviour != null)
             {
@@ -184,6 +195,8 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
                 _goToZoneBehaviour = null;
             }
         }
+
+        ReleaseReservation();
     }
 
     private void OnDestroy()

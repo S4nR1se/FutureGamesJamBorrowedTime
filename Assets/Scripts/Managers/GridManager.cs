@@ -1,10 +1,14 @@
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GridManager : Manager
 {
     public GameObject TilePrefab => _tilePrefab;
     [SerializeField] private GameObject _tilePrefab;
+
+    private NavMeshSurface _navMeshSurface;
 
     private Dictionary<Vector2Int, Building> _buildings = new Dictionary<Vector2Int, Building>();
     public Vector3 gridOrigin { get; private set; } = Vector3.zero;
@@ -23,6 +27,30 @@ public class GridManager : Manager
         _tileObjects = new Tile[GridSize, GridSize];
         _tileTypes = new TileType[GridSize, GridSize];
         InitializeGridFromScene();
+        SetupNavMeshSurface();
+        BakeNavMesh();
+    }
+    private void SetupNavMeshSurface()
+    {
+        _navMeshSurface = GetComponent<NavMeshSurface>();
+        if (_navMeshSurface == null)
+        {
+            _navMeshSurface = gameObject.AddComponent<NavMeshSurface>();
+        }
+        _navMeshSurface.collectObjects = CollectObjects.Children;
+
+        _navMeshSurface.overrideVoxelSize = true;
+        _navMeshSurface.voxelSize = 0.2f;
+
+        _navMeshSurface.useGeometry = NavMeshCollectGeometry.RenderMeshes;
+        _navMeshSurface.layerMask = ~0;
+    }
+    public void BakeNavMesh()
+    {
+        if (_navMeshSurface != null)
+        {
+            _navMeshSurface.BuildNavMesh();
+        }
     }
     private void InitializeGridFromScene()
     {
@@ -91,9 +119,8 @@ public class GridManager : Manager
     public void ReplaceTile(Vector2Int gridPos, TileType newTileType, GameObject tilePrefab = null)
     {
         if (gridPos.x < 0 || gridPos.x >= GridSize || gridPos.y < 0 || gridPos.y >= GridSize)
-        {
             return;
-        }
+
         Tile oldTile = _tileObjects[gridPos.x, gridPos.y];
         if (oldTile != null)
         {
@@ -113,6 +140,7 @@ public class GridManager : Manager
 
             Destroy(oldTile.gameObject);
         }
+
         Vector3 worldPos = GridToWorld(gridPos);
         GameObject prefabToUse = tilePrefab ?? _tilePrefab;
         GameObject newTileObj = Instantiate(prefabToUse, worldPos, Quaternion.identity, transform);
@@ -124,18 +152,12 @@ public class GridManager : Manager
         newTile.tileType = newTileType;
         _tileObjects[gridPos.x, gridPos.y] = newTile;
         _tileTypes[gridPos.x, gridPos.y] = newTileType;
-
         _occupancyGrid[gridPos.x, gridPos.y] = (newTileType == TileType.BaseTile);
 
         ZoneMarker zoneMarker = newTileObj.GetComponent<ZoneMarker>();
         if (zoneMarker != null)
         {
-            ZoneManager zoneManager = GameManager.Instance.GetManager<ZoneManager>();
-            if (zoneManager != null)
-            {
-                Zone zone = zoneMarker.CreateZone();
-                zoneManager.RegisterZone(zone);
-            }
+            zoneMarker.InitializeZone();
         }
     }
     public void ReplaceTileArea(Vector2Int start, Vector2Int size, TileType newTileType, GameObject tilePrefab = null)
