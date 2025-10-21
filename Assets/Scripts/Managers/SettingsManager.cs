@@ -110,18 +110,6 @@ public class SettingsManager : MonoBehaviour
         _audioCanvas.SetActive(false);
     }
 
-    public void OpenUIPanel()
-    {
-        _uiCanvas.SetActive(true);
-        _cameraCanvas.SetActive(false);
-    }
-
-    public void OpenCameraPanel()
-    {
-        _uiCanvas.SetActive(false);
-        _cameraCanvas.SetActive(true);
-    }
-
     public void Res_Left_Arrow()
     {
         _selectedResolution--;
