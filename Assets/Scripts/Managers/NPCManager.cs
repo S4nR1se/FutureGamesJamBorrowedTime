@@ -84,11 +84,13 @@ public class NPCManager : Manager
             if (_npcsByType.ContainsKey(npcType))
             {
                 _npcsByType[npcType].Remove(npc);
+                if(_npcsByType[npcType].Count >= 0)
+                {
+                    OnNPCAmountChange?.Invoke(_npcsByType);
+                }
                 if (_npcsByType[npcType].Count == 0)
                 {
                     _npcsByType.Remove(npcType);
-
-                    OnNPCAmountChange?.Invoke(_npcsByType);
                 }
             }
 

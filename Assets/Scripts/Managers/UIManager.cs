@@ -22,7 +22,7 @@ public class UIManager : Manager
     //[SerializeField] private int _borrowTime = 0;
     //[SerializeField] private int _summoning = 0;
     //[SerializeField] private int _graves = 0;
-    //[SerializeField] private int _peasants = 0;
+    private int _peasants = 0;
     //[SerializeField] private int _resources = 0;
     //[SerializeField] private int _buildings = 0;
     //[SerializeField] private int _purr = 0;
@@ -97,11 +97,12 @@ public class UIManager : Manager
     }
     private void OnNPCAmountChange(Dictionary<System.Type, List<NPC>> npcsByType)
     {
+        int NPCS = 0;
+        foreach (var npc in npcsByType)
+        {
+            NPCS += npc.Value.Count;
+        }
 
-    }
-
-    void SetHUDComponent(string Title, Dictionary<int, int> Counter1)
-    {
-
+        _hudComponentsDic["Peasants"].Counter[0].text = NPCS.ToString();
     }
 }
