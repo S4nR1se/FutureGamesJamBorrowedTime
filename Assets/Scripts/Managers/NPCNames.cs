@@ -12,10 +12,15 @@ public class NPCName
 [CreateAssetMenu(fileName = "NPCNames", menuName = "Scriptable Objects/NPCNames")]
 public class NPCNames : ScriptableObject
 {
-    public List<NPCName> NPCNamesList;
+    [SerializeField] private List<NPCName> NPCNamesList;
 
     public List<NPCName> Get_Objects()
     {
         return NPCNamesList;
+    }
+
+    public int GetNPCNameListSize()
+    {
+        return NPCNamesList.Count;
     }
 }

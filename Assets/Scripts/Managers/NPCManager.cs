@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class NPCManager : Manager
 {
@@ -229,7 +230,13 @@ public class NPCManager : Manager
     }
     private string GenerateName(NPC npc)
     {
-        string newName = null;// _nPCNames.Get_Objects().[0].Name;
+        if(_nPCNames.GetNPCNameListSize() < 0)
+        {
+            throw new System.Exception("The NPC Name list is empty!");
+        }    
+
+        int NameIndex = Random.Range(0, _nPCNames.GetNPCNameListSize() - 1);
+        string newName =  _nPCNames.Get_Objects()[NameIndex].Name;
 
         return newName;
     }
