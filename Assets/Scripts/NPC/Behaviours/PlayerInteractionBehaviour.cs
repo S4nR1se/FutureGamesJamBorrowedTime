@@ -18,7 +18,7 @@ public class PlayerInteractionBehaviour : Behaviour
             _outlineMaterial = _meshRenderer.materials[1];
         DisableOutline();
     }
-    public void OnSelect()
+    public void OnSelect(PlayerInputManager playerInputManager)
     {
         _isSelected = true;
         EnableOutline();

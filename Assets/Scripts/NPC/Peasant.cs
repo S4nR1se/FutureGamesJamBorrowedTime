@@ -228,9 +228,9 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         pool.Release(this);
     }
 
-    public void OnSelect()
+    public void OnSelect(PlayerInputManager playerInputManager)
     {
-        _playerInteractionBehaviour.OnSelect();
+        _playerInteractionBehaviour.OnSelect(playerInputManager);
     }
 
     public void OnDeselect()

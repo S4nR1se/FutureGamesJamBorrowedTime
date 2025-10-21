@@ -3,7 +3,7 @@ using UnityEngine;
 public interface IInteractable
 {
     GameObject Component { get; }
-    void OnSelect();
+    void OnSelect(PlayerInputManager playerInputManager);
     void OnDeselect();
     void OnHover();
     void OnHoverExit();

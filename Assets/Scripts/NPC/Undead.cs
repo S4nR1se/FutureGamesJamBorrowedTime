@@ -1,14 +1,18 @@
 using UnityEngine;
 
-public abstract class Undead : NPC, IWorker, IPoolable
+public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
 {
     public GameObject PoolableComponent => gameObject;
+    public GameObject Component => gameObject;
+
+    private Renderer _meshRenderer;
 
     public Occupation Occupation => _occupation;
 
     private Occupation _occupation;
     private RoamingBehaviour _roamingBehaviour;
     private GoToZoneBehaviour _goToZoneBehaviour;
+    private PlayerInteractionBehaviour _playerInteractionBehaviour;
 
     private bool _isTraveling = false;
 
@@ -17,6 +21,10 @@ public abstract class Undead : NPC, IWorker, IPoolable
 
     private TravelPurpose _travelPurpose = TravelPurpose.None;
 
+    private void Awake()
+    {
+        _meshRenderer = GetComponent<Renderer>();
+    }
     private void OnEnable()
     {
         PlayingState.OnPlayingStateUpdate += UpdateComponent;
@@ -47,6 +55,8 @@ public abstract class Undead : NPC, IWorker, IPoolable
 
         Zone startZone = GetCurrentZone() ?? GameManager.Instance.GetManager<ZoneManager>().GetClosestZone(transform.position);
         _roamingBehaviour = new RoamingBehaviour(this, MovementSpeed, startZone);
+
+        _playerInteractionBehaviour = new PlayerInteractionBehaviour(_meshRenderer);
 
         if (startZone != null && startZone.TryEnter(this))
         {
@@ -190,5 +200,25 @@ public abstract class Undead : NPC, IWorker, IPoolable
         }
 
         pool.Release(this);
+    }
+
+    public void OnSelect(PlayerInputManager playerInputManager)
+    {
+        _playerInteractionBehaviour.OnSelect(playerInputManager);
+    }
+
+    public void OnDeselect()
+    {
+        _playerInteractionBehaviour.OnDeselect();
+    }
+
+    public void OnHover()
+    {
+        _playerInteractionBehaviour.OnHover();
+    }
+
+    public void OnHoverExit()
+    {
+        _playerInteractionBehaviour?.OnHoverExit();
     }
 }

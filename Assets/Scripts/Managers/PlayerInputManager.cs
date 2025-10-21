@@ -10,7 +10,7 @@ public class KeyMapping
 
 public class PlayerInputManager : Manager
 {
-    [SerializeField] private KeyMapping[] keyMappings;
+    [SerializeField] private KeyMappings_SO keyMappingConfig;
     public GameObject CurrentSelection {  get; private set; }
     public GameObject PreviousSelection { get; private set; }
 
@@ -32,7 +32,7 @@ public class PlayerInputManager : Manager
     }
     private void KeyboardInput()
     {
-        foreach (var mapping in keyMappings)
+        foreach (var mapping in keyMappingConfig.keyMappings)
         {
             if (Input.GetKeyDown(mapping.key))
             {
@@ -82,7 +82,7 @@ public class PlayerInputManager : Manager
                     _currentSelection?.OnDeselect();
                     PreviousSelection = _currentSelection?.Component;
                     _currentSelection = interactable;
-                    _currentSelection.OnSelect();
+                    _currentSelection.OnSelect(this);
                     CurrentSelection = _currentSelection.Component;
                 }
             }
@@ -106,6 +106,14 @@ public class PlayerInputManager : Manager
     {
         switch (action)
         {
+            case "BuildingOption#1":
+                break;
+            case "BuildingOption#2":
+                break;
+            case "BuildingOption#3":
+                break;
+            case "BuildingOption#4":
+                break;
             default:
                 break;
         }
