@@ -6,7 +6,9 @@ using UnityEngine.AI;
 public class GridManager : Manager
 {
     public GameObject TilePrefab => _tilePrefab;
+    public GameObject StartingTilePrefab => _startingTilePrefab;
     [SerializeField] private GameObject _tilePrefab;
+    [SerializeField] private GameObject _startingTilePrefab;
 
     private NavMeshSurface _navMeshSurface;
 
@@ -64,6 +66,7 @@ public class GridManager : Manager
                 _occupancyGrid[gridPos.x, gridPos.y] = (tile.tileType == TileType.BaseTile);
             }
         }
+
         for (int x = 0; x < GridSize; x++)
         {
             for (int y = 0; y < GridSize; y++)
@@ -71,13 +74,20 @@ public class GridManager : Manager
                 if (_tileObjects[x, y] == null)
                 {
                     Vector3 worldPos = GridToWorld(new Vector2Int(x, y));
-                    GameObject tileObj = Instantiate(_tilePrefab, worldPos, Quaternion.identity, transform);
+
+                    GameObject prefabToUse = (x == 0 && y == 0 && _startingTilePrefab != null)
+                        ? _startingTilePrefab
+                        : _tilePrefab;
+
+                    GameObject tileObj = Instantiate(prefabToUse, worldPos, Quaternion.identity, transform);
                     Tile tileComponent = tileObj.GetComponent<Tile>();
                     if (tileComponent == null) tileComponent = tileObj.AddComponent<Tile>();
+
                     tileComponent.tileType = TileType.BaseTile;
+
                     _tileObjects[x, y] = tileComponent;
-                    _tileTypes[x, y] = TileType.BaseTile;
-                    _occupancyGrid[x, y] = false;
+                    _tileTypes[x, y] = tileComponent.tileType;
+                    _occupancyGrid[x, y] = (tileComponent.tileType == TileType.BaseTile);
                 }
             }
         }

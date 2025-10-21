@@ -36,7 +36,6 @@ public class TimeManager : Manager
         if (_cycleTimer >= CYCLEDURATION)
         {
             PassTime();
-            _cycleTimer = 0;
         }
     }
 
@@ -48,6 +47,8 @@ public class TimeManager : Manager
         CurrentDayCycle = (CurrentDayCycle == DayCycle.Day) ? DayCycle.Night : DayCycle.Day;
         if (CurrentDayCycle == DayCycle.Day) DayNumber++;
         OnCyclePassage?.Invoke(CurrentDayCycle);
+
+        _cycleTimer = 0;
     }
 }
 
