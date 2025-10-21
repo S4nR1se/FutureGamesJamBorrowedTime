@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Workshop : Building
 {
+    protected override Occupation AssociatedOccupation => new LaborerOccupation();
     private int _materialGenerated = 0;
     private const int MATERIALPERPEASANT = 3;
     public override void Initialize()

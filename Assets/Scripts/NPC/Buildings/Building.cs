@@ -3,16 +3,21 @@ using UnityEngine;
 
 public abstract class Building : MonoBehaviour, IInteractable
 {
+    [SerializeField] private BuildingData_SO _buildingData;
     public Vector2Int Size { get; private set; } = new Vector2Int(1, 1);
     public int BuildTime { get; protected set; }
     public int MaterialCost { get; protected set; }
     protected Zone AssociatedZone { get; private set; }
     protected ResourceManager ResourceManager { get; private set; }
+    protected abstract Occupation AssociatedOccupation { get;}
 
-    public GameObject Component => throw new System.NotImplementedException();
+    public GameObject Component => gameObject;
 
     public virtual void Initialize()
     {
+        BuildTime = _buildingData.BuildTime;
+        MaterialCost = _buildingData.MaterialCost;
+
         ResourceManager = GameManager.Instance?.GetManager<ResourceManager>();
 
         ZoneMarker marker = GetComponent<ZoneMarker>();
@@ -47,7 +52,12 @@ public abstract class Building : MonoBehaviour, IInteractable
 
     public virtual void OnSelect(PlayerInputManager playerInputManager)
     {
+        IWorker prevWorker = playerInputManager.PreviousWorkerSelection;
 
+        if (prevWorker != null)
+        {
+            prevWorker.AssignOccupation(AssociatedOccupation);
+        }
     }
 
     public virtual void OnDeselect()

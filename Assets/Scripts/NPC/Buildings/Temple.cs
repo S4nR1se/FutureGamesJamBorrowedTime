@@ -1,16 +1,14 @@
 using UnityEngine;
 
-public class Temple : MonoBehaviour
+public class Temple : Building
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected override Occupation AssociatedOccupation => new ChurchOccupation();
+
+    protected override void OnNPCEnter(NPC npc)
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void OnNPCExit(NPC npc)
     {
-        
     }
 }

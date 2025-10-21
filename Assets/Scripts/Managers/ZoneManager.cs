@@ -79,7 +79,6 @@ public class ZoneManager : Manager
         }
         return availableZones[Random.Range(0, availableZones.Count)];
     }
-
     public Zone FindZoneAtPosition(Vector3 position)
     {
         foreach (Zone zone in _allZones)

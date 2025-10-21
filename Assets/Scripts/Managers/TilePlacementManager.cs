@@ -19,28 +19,42 @@ public class TilePlacementManager : Manager
         Debug.Log($"Selected building: {_selectedTileType}");
     }
 
-    public void TryPlaceBuilding(Vector3 worldPosition)
+    public void TryPlaceBuilding(Tile targetTile)
     {
-        if (_selectedTileType == TileType.BaseTile)
+        if (_selectedTileType == TileType.BaseTile || targetTile == null)
+            return;
+
+        Vector2Int gridPos = _gridManager.WorldToGrid(targetTile.transform.position);
+        Tile existingTile = _gridManager.GetTileAt(gridPos);
+
+        if (existingTile?.tileType != TileType.BaseTile)
         {
+            Debug.Log("Cannot place building: Tile is already occupied.");
             return;
         }
 
-        Vector2Int gridPos = _gridManager.WorldToGrid(worldPosition);
-
-        if (gridPos.x < 0 || gridPos.x >= _gridManager.GridSize ||
-            gridPos.y < 0 || gridPos.y >= _gridManager.GridSize)
-        {
+        GameObject constructionPrefab = tileDatabase.GetPrefab(TileType.ConstructionSite);
+        if (constructionPrefab == null)
             return;
-        }
-        GameObject prefab = tileDatabase.GetPrefab(_selectedTileType);
 
-        if (prefab == null)
+        GameObject constructionGO = Instantiate(
+            constructionPrefab,
+            targetTile.transform.position,
+            Quaternion.identity,
+            _gridManager.transform
+        );
+
+        ConstructionSite constructionSite = constructionGO.GetComponent<ConstructionSite>();
+        if (constructionSite != null)
         {
-            return;
+            BuildingData_SO data = tileDatabase.tiles.Find(x => x.tileType == _selectedTileType)?.buildingData;
+            if (data != null)
+            {
+                constructionSite.SetUpConstructionZone(targetTile, data.BuildTime, _selectedTileType, tileDatabase);
+            }
         }
 
-        _gridManager.ReplaceTile(gridPos, _selectedTileType, prefab);
+        Destroy(targetTile.gameObject);
     }
 
     public void ClearSelection()

@@ -7,11 +7,13 @@ public class TimeManager : Manager
     public event Action<DayCycle> OnCyclePassage;
     public DayCycle CurrentDayCycle { get; private set; } = DayCycle.Night;
 
-    public int DayNumber {  get; private set; }
+    public int DayNumber { get; private set; }
     public float LevelTime { get; private set; }
 
     private const float CYCLEDURATION = 60f;
+
     private float _cycleTimer = 0;
+    private bool _isCalculatingCycle = false;
 
     public override void Initialize()
     {
@@ -20,14 +22,17 @@ public class TimeManager : Manager
         DayNumber = 0;
         CurrentDayCycle = DayCycle.Night;
     }
+
     private void OnEnable()
     {
         PlayingState.OnPlayingStateUpdate += UpdateComponent;
     }
+
     private void OnDisable()
     {
         PlayingState.OnPlayingStateUpdate -= UpdateComponent;
     }
+
     private void UpdateComponent()
     {
         LevelTime += Time.deltaTime;
@@ -42,13 +47,29 @@ public class TimeManager : Manager
     [ContextMenu("PassTime")]
     public void PassTime()
     {
+        _isCalculatingCycle = true;
+        Debug.Log($"[TimeManager] Starting cycle calculation (CurrentCycle: {CurrentDayCycle}, Day: {DayNumber})");
+
         OnCycleCalculation?.Invoke();
 
         CurrentDayCycle = (CurrentDayCycle == DayCycle.Day) ? DayCycle.Night : DayCycle.Day;
         if (CurrentDayCycle == DayCycle.Day) DayNumber++;
+
+        Debug.Log($"[TimeManager] Cycle changed to {CurrentDayCycle}, Day: {DayNumber}");
         OnCyclePassage?.Invoke(CurrentDayCycle);
 
         _cycleTimer = 0;
+        _isCalculatingCycle = false;
+    }
+
+    public DayCycle GetCurrentCycle()
+    {
+        return CurrentDayCycle;
+    }
+
+    public bool IsCalculatingCycle()
+    {
+        return _isCalculatingCycle;
     }
 }
 

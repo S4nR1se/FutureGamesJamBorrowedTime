@@ -15,11 +15,19 @@ MonoBehaviour:
   tiles:
   - tileType: 0
     prefab: {fileID: 8295179934970264446, guid: bbb58a9a1996bf041bc34b0bf1d03315, type: 3}
+    buildingData: {fileID: 0}
   - tileType: 2
     prefab: {fileID: 8295179934970264446, guid: 344b5500a5a3e2d4c9f48515409fcbdf, type: 3}
+    buildingData: {fileID: 11400000, guid: 6a98d819c54a8ef4b9967337e435ef7e, type: 2}
   - tileType: 1
     prefab: {fileID: 8295179934970264446, guid: 78ed3d81920f90947897abcc4ef87769, type: 3}
+    buildingData: {fileID: 11400000, guid: 9e818423fc141c44ba50bcd882ace8f9, type: 2}
   - tileType: 3
     prefab: {fileID: 8295179934970264446, guid: 281393fe9fd572d48ba5dc9c66c9003c, type: 3}
+    buildingData: {fileID: 11400000, guid: f0dce792d15948d418570f31a0c3a962, type: 2}
   - tileType: 4
     prefab: {fileID: 8295179934970264446, guid: 2912491c03764e045a054eec2f71fb29, type: 3}
+    buildingData: {fileID: 11400000, guid: 39403a0542c456a4784e6c2d75d68757, type: 2}
+  - tileType: 6
+    prefab: {fileID: 8295179934970264446, guid: 5ef0c0c4cd687084880bc2154a398689, type: 3}
+    buildingData: {fileID: 11400000, guid: 9117004abb21aed4e9e3f15ae6e32890, type: 2}
