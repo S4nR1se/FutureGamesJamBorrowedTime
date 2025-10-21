@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using static Unity.Collections.AllocatorManager;
 
 public class UIManager : Manager
 {
@@ -20,12 +22,14 @@ public class UIManager : Manager
 
     private ResourceManager _resourceManager;
     private NPCManager _npcManager;
+    private TilePlacementManager _buildingsManager;
     public override void Initialize()
     {
         _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
         _npcManager = GameManager.Instance.GetManager<NPCManager>();
+        _buildingsManager = GameManager.Instance.GetManager<TilePlacementManager>();
 
-        if( _resourceManager != null)
+        if ( _resourceManager != null)
         {
             _resourceManager.OnResourceChange += OnResourceChange;
         }
@@ -47,7 +51,7 @@ public class UIManager : Manager
            _hudComponentsDic.Add(_hudComponents[i].Title, _hudComponents[i]);
             for (int j = 0; j < _hudComponents[i].Counter.Length; j++)
             {
-                _hudComponents[i].Counter[j].text = "0";
+                _hudComponents[i].Counter[j].text = "50";
             }
         }
     }
@@ -111,5 +115,11 @@ public class UIManager : Manager
         }
 
         _hudComponentsDic["Peasants"].Counter[0].text = NPCS.ToString();
+    }
+
+    public void PlaceHouse()
+    {
+        //_buildingsManager.SelectBuilding(TileType.House);
+        Debug.Log("house");
     }
 }
