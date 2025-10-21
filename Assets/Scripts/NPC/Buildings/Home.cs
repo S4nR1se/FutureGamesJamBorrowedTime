@@ -1,16 +1,51 @@
 using UnityEngine;
 
-public class Home : MonoBehaviour
+public class Home : Building
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected override Occupation AssociatedOccupation => new BuilderOccupation();
+
+    private NPCManager _npcManager;
+    private TimeManager _timeManager;
+
+    public override void Initialize()
+    {
+        _npcManager = GameManager.Instance.GetManager<NPCManager>();
+        _timeManager = GameManager.Instance.GetManager<TimeManager>();
+        if (_timeManager != null)
+        {
+            _timeManager.OnCycleCalculation += UpdateProduction;
+        }
+
+        base.Initialize();
+    }
+    private void OnDisable()
+    {
+        if (_timeManager != null)
+        {
+            _timeManager.OnCycleCalculation -= UpdateProduction;
+        }
+    }
+    protected override void OnNPCEnter(NPC npc)
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void OnNPCExit(NPC npc)
     {
         
+    }
+    public override void OnSelect(PlayerInputManager playerInputManager)
+    {
+        //Skip
+    }
+    private void UpdateProduction()
+    {
+        if (_timeManager.GetCurrentCycle() != DayCycle.Night) return;
+
+        int npcProcreated = AssociatedZone.CurrentOccupancy;
+        for(int i = 0; i < npcProcreated; i++)
+        {
+            _npcManager.SpawnPeasant(AssociatedZone);
+        }
     }
 }

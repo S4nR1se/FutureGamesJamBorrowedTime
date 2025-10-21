@@ -4,6 +4,9 @@ public class Farm : Building
 {
     private int _foodStockGenerated = 0;
     private const int FOODSTOCKPERPEASANT = 5;
+
+    protected override Occupation AssociatedOccupation => new FarmerOccupation();
+
     public override void Initialize()
     {
         _foodStockGenerated = 0;
@@ -44,5 +47,9 @@ public class Farm : Building
         ResourceManager.UpdateValue(Resources.FoodStock, foodStockGenerated);
 
         _foodStockGenerated = 0;
+    }
+    public override void OnSelect(PlayerInputManager playerInputManager)
+    {
+        base.OnSelect(playerInputManager);
     }
 }

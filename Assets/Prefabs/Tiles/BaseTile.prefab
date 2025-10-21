@@ -116,7 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ab16ae254c72bd43b56ed2f61e6128c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  tileType: 2
+  tileType: 0
 --- !u!65 &-549595026689875747
 BoxCollider:
   m_ObjectHideFlags: 0

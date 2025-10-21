@@ -66,53 +66,15 @@ public class ZoneMarker : MonoBehaviour
     private float CalculateRadius()
     {
         if (!_autoCalculateRadius)
-        {
             return MANUALRADIUS;
-        }
 
         if (_collider == null)
-        {
             _collider = GetComponent<Collider>();
-        }
 
-        if (_collider is SphereCollider sphere)
-        {
-            return sphere.radius * Mathf.Max(transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        }
-        else if (_collider is BoxCollider box)
-        {
-            Vector3 size = box.size;
-            Vector3 scale = transform.localScale;
-            float maxExtent = Mathf.Max(size.x * scale.x, size.z * scale.z) / 2f;
-            return maxExtent;
-        }
-        else if (_collider is CapsuleCollider capsule)
-        {
-            return capsule.radius * Mathf.Max(transform.localScale.x, transform.localScale.z);
-        }
-        return MANUALRADIUS;
-    }
+        Bounds bounds = _collider.bounds;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        NPC npc = other.GetComponent<NPC>();
-        if (npc != null && _zone != null)
-        {
-            if (_zone.TryEnter(npc))
-            {
-                npc.SetCurrentZone(_zone);
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        NPC npc = other.GetComponent<NPC>();
-        if (npc != null && _zone != null)
-        {
-            _zone.Exit(npc);
-            npc.ClearCurrentZone();
-        }
+        Vector2 extents = new Vector2(bounds.extents.x, bounds.extents.z);
+        return extents.magnitude;
     }
 
     public Zone GetZone() => _zone;
