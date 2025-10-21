@@ -13,6 +13,14 @@ public abstract class NPC : MonoBehaviour
     protected DayCycle _activeCycle;
 
     public abstract void Initialize(Zone startingZone,string name, int lifeSpan, float movementSpeed, Occupation occupation = null, ZoneType restZoneType = ZoneType.House, DayCycle activeCycle = DayCycle.Day);
+    [ContextMenu("Gather Purr")]
+    public void GatherPurr()
+    {
+        ResourceManager resourceManager = GameManager.Instance.GetManager<ResourceManager>();
+        if (resourceManager == null) return;
+        resourceManager.UpdateValue(Resources.Purr, 1);
+        DecreaseLifeSpan(1);
+    }
     public void DecreaseLifeSpan(int amount)
     {
         LifeSpan -= amount;

@@ -126,7 +126,6 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
         _goToZoneBehaviour.OnArrived += OnArrivedAtDestination;
     }
 
-    [ContextMenu("Work")]
     public void GoToWork(DayCycle currentCycle)
     {
         //Ignores Daycycle Simply works

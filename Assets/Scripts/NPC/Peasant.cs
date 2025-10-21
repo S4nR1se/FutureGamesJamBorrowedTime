@@ -181,8 +181,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         _goToZoneBehaviour = new GoToZoneBehaviour(this, MovementSpeed, targetZone);
         _goToZoneBehaviour.OnArrived += OnArrivedAtDestination;
     }
-
-    [ContextMenu("Work")]
     public void GoToWork(DayCycle currentCycle)
     {
         if (currentCycle != _activeCycle) return;
