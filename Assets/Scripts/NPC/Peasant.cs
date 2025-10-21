@@ -60,7 +60,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         if (_occupiedZone != null)
         {
             _occupiedZone.Exit(this);
-            Debug.Log($"[Peasant] {Name} exited {_occupiedZone.Name} on disable");
             _occupiedZone = null;
         }
     }
@@ -84,11 +83,9 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         if (startZone != null && startZone.TryEnter(this))
         {
             _occupiedZone = startZone;
-            Debug.Log($"[Peasant] {Name} initialized and registered in {startZone.Name}");
         }
         else if (startZone != null)
         {
-            Debug.LogWarning($"[Peasant] {Name} failed to register in initial zone {startZone.Name}");
         }
     }
 
@@ -108,7 +105,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     {
         if (_timeManager.IsCalculatingCycle())
         {
-            Debug.Log($"[Peasant] {Name} delaying cycle passage handling due to ongoing cycle calculation");
             return;
         }
 
@@ -151,22 +147,18 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     {
         if (_isTraveling)
         {
-            Debug.LogWarning($"[Peasant] {Name} cannot go to {zoneType} zone: already traveling");
             return;
         }
 
-        // Ensure NPC is removed from current zone before reserving a new one
         if (_occupiedZone != null)
         {
             _occupiedZone.Exit(this);
-            Debug.Log($"[Peasant] {Name} exited {_occupiedZone.Name} before going to new zone");
             _occupiedZone = null;
         }
 
         Zone travelZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(zoneType);
         if (travelZone == null)
         {
-            Debug.LogWarning($"[Peasant] {Name} found no available {zoneType} zone");
             return;
         }
 
@@ -176,11 +168,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
             SetGoToZoneBehaviour(travelZone);
             _isTraveling = true;
             _travelPurpose = TravelPurpose.None;
-            Debug.Log($"[Peasant] {Name} reserved and traveling to {travelZone.Name}");
-        }
-        else
-        {
-            Debug.LogWarning($"[Peasant] {Name} failed to reserve {travelZone.Name}: zone full or already contains NPC");
         }
     }
 
@@ -214,22 +201,18 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     {
         if (zone == null)
         {
-            Debug.LogWarning($"[Peasant] {Name} arrived at null zone");
             CancelTravel();
             return;
         }
 
-        // Ensure NPC is removed from previous zone
         if (_occupiedZone != null && _occupiedZone != zone)
         {
             _occupiedZone.Exit(this);
-            Debug.Log($"[Peasant] {Name} exited {_occupiedZone.Name} to enter {zone.Name}");
             _occupiedZone = null;
         }
 
         if (_reservedZone != zone)
         {
-            Debug.LogWarning($"[Peasant] {Name} arrived at {zone.Name}, but reserved zone was {_reservedZone?.Name ?? "null"}");
             CancelTravel();
             return;
         }
@@ -241,7 +224,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         _goToZoneBehaviour.OnArrived -= OnArrivedAtDestination;
         _travelPurpose = TravelPurpose.None;
 
-        Debug.Log($"[Peasant] {Name} successfully registered in {zone.Name}");
     }
 
     private void ReleaseReservation()
@@ -249,7 +231,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         if (_reservedZone != null)
         {
             _reservedZone.Exit(this);
-            Debug.Log($"[Peasant] {Name} released reservation for {_reservedZone.Name}");
             _reservedZone = null;
         }
     }
@@ -265,7 +246,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
                 _goToZoneBehaviour = null;
             }
             ReleaseReservation();
-            Debug.Log($"[Peasant] {Name} canceled travel");
         }
     }
 
@@ -276,7 +256,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         if (_occupiedZone != null)
         {
             _occupiedZone.Exit(this);
-            Debug.Log($"[Peasant] {Name} exited {_occupiedZone.Name} on destroy");
             _occupiedZone = null;
         }
 
@@ -304,7 +283,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         if (_occupiedZone != null)
         {
             _occupiedZone.Exit(this);
-            Debug.Log($"[Peasant] {Name} exited {_occupiedZone.Name} on return to pool");
             _occupiedZone = null;
         }
 
