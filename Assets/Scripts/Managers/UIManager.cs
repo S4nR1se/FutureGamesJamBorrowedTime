@@ -13,6 +13,8 @@ public class UIManager : Manager
         public TextMeshProUGUI Counter;
     }
 
+    [SerializeField] private HudComponent[] _hudComponents;
+
     private ResourceManager _resourceManager;
     private NPCManager _npcManager;
     public override void Initialize()
