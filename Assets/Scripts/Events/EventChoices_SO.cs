@@ -22,23 +22,23 @@ public class EventChoices_SO : ScriptableObject
         switch (Outcome)
         {
             case OutcomeElement.Peasant:
-                //NPCManager.DespawnPeasantAtRandom(OutcomeValue);
+                //GameManager.Instance?.GetManager<NPCManager>().DespawnPeasantAtRandom(OutcomeValue);
                 break;
             case OutcomeElement.Building:
                 //Except Castle and Graveyard
-                //BuildingsManagers.DestroyBuildsAtRandom(OutcomeValue);
+                //GameManager.Instance?.GetManager<BuildingsManagers>().DestroyBuildsAtRandom(OutcomeValue);
                 break;
             case OutcomeElement.Materials:
-                GameManager.Instance?.GetManager<ResourceManager>().UpdateValue(Resources.Materials ,OutcomeValue);
+                GameManager.Instance?.GetManager<ResourceManager>().UpdateValue(Resources.Materials , -OutcomeValue);
                 break;
             case OutcomeElement.FoodStock:
-                GameManager.Instance?.GetManager<ResourceManager>().UpdateValue(Resources.FoodStock, OutcomeValue);
+                GameManager.Instance?.GetManager<ResourceManager>().UpdateValue(Resources.FoodStock, -OutcomeValue);
                 break;
             case OutcomeElement.Purr:
-                GameManager.Instance?.GetManager<ResourceManager>().UpdateValue(Resources.Purr, OutcomeValue);
+                GameManager.Instance?.GetManager<ResourceManager>().UpdateValue(Resources.Purr, -OutcomeValue);
                 break;
             case OutcomeElement.Dread:
-                //NPCManager.IncreaseGlobalDread(OutcomeValue);
+                //GameManager.Instance?.GetManager<NPCManager>().IncreaseGlobalDread(OutcomeValue);
                 break;
             default:
                 break;
