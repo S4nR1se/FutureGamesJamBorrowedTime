@@ -50,6 +50,10 @@ public class TimeManager : Manager
 
         _cycleTimer = 0;
     }
+    public DayCycle GetCurrentCycle()
+    {
+        return CurrentDayCycle;
+    }
 }
 
 public enum DayCycle

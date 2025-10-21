@@ -81,11 +81,10 @@ public class NPCManager : Manager
             if (_npcsByType.ContainsKey(npcType))
             {
                 _npcsByType[npcType].Remove(npc);
+                OnNPCAmountChange?.Invoke(_npcsByType);
                 if (_npcsByType[npcType].Count == 0)
                 {
                     _npcsByType.Remove(npcType);
-
-                    OnNPCAmountChange?.Invoke(_npcsByType);
                 }
             }
 
@@ -112,13 +111,13 @@ public class NPCManager : Manager
         Peasant peasant = poolable.PoolableComponent.GetComponent<Peasant>();
         if (peasant != null)
         {
-            Zone availableSpawnZone = _zoneManager.GetRandomAvailableZone(ZoneType.House);
-            if (availableSpawnZone == null)
+            Zone correctZone = _zoneManager.GetRandomAvailableZone(ZoneType.House);
+            if (correctZone == null)
             {
                 return null;
             }
 
-            Vector3 position = availableSpawnZone.GetRandomPointInZone();
+            Vector3 position = correctZone.GetRandomPointInZone();
             peasant.transform.position = position;
 
             UnityEngine.AI.NavMeshAgent agent = peasant.GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -128,7 +127,39 @@ public class NPCManager : Manager
             }
 
             string generatedName = GenerateName(peasant);
-            peasant.Initialize(generatedName);
+            peasant.Initialize(correctZone, generatedName);
+
+            RegisterNPC(peasant);
+            return peasant;
+        }
+        return null;
+    }
+    public Peasant SpawnPeasant(Zone spawnZone)
+    {
+        IPoolable poolable = _peasantPool.Get();
+
+        Peasant peasant = poolable.PoolableComponent.GetComponent<Peasant>();
+        if (peasant != null)
+        {
+            Zone availableSpawnZone = _zoneManager.GetRandomAvailableZone(ZoneType.House);
+            if (availableSpawnZone == null)
+            {
+                return null;
+            }
+
+            Zone correctZone = spawnZone.IsFull() ? availableSpawnZone : spawnZone;
+
+            Vector3 position = correctZone.GetRandomPointInZone();
+            peasant.transform.position = position;
+
+            UnityEngine.AI.NavMeshAgent agent = peasant.GetComponent<UnityEngine.AI.NavMeshAgent>();
+            if (agent != null)
+            {
+                agent.enabled = true;
+            }
+
+            string generatedName = GenerateName(peasant);
+            peasant.Initialize(correctZone, generatedName);
 
             RegisterNPC(peasant);
             return peasant;
@@ -143,12 +174,12 @@ public class NPCManager : Manager
         Undead undead = poolable.PoolableComponent.GetComponent<Undead>();
         if (undead != null)
         {
-            Zone availableSpawnZone = _zoneManager.GetRandomAvailableZone(ZoneType.House);
-            if (availableSpawnZone == null)
+            Zone correctZone = _zoneManager.GetRandomAvailableZone(ZoneType.House);
+            if (correctZone == null)
             {
                 return null;
             }
-            Vector3 position = availableSpawnZone.GetRandomPointInZone();
+            Vector3 position = correctZone.GetRandomPointInZone();
             undead.transform.position = position;
 
             UnityEngine.AI.NavMeshAgent agent = undead.GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -158,7 +189,7 @@ public class NPCManager : Manager
             }
 
             string generatedName = GenerateName(undead);
-            undead.Initialize(generatedName);
+            undead.Initialize(correctZone, generatedName);
 
             RegisterNPC(undead);
             return undead;

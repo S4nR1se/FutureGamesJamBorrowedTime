@@ -12,7 +12,7 @@ public abstract class NPC : MonoBehaviour
 
     protected DayCycle _activeCycle;
 
-    public abstract void Initialize(string name, int lifeSpan, float movementSpeed, Occupation occupation = null, ZoneType restZoneType = ZoneType.House, DayCycle activeCycle = DayCycle.Day);
+    public abstract void Initialize(Zone startingZone,string name, int lifeSpan, float movementSpeed, Occupation occupation = null, ZoneType restZoneType = ZoneType.House, DayCycle activeCycle = DayCycle.Day);
     public void DecreaseLifeSpan(int amount)
     {
         LifeSpan -= amount;

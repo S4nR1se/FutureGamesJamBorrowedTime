@@ -43,7 +43,7 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
         }
     }
     public abstract int GetPurrCost();
-    public override void Initialize(string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.Graveyard, DayCycle activeCycle = DayCycle.Night)
+    public override void Initialize(Zone startZone, string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.Graveyard, DayCycle activeCycle = DayCycle.Night)
     {
         Name = name;
         LifeSpan = lifeSpan;
@@ -54,7 +54,6 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
         _occupation = occupation ?? CreateDefaultOccupation();
         SetRestZoneType(restZoneType);
 
-        Zone startZone = GetCurrentZone() ?? GameManager.Instance.GetManager<ZoneManager>().GetClosestZone(transform.position);
         _roamingBehaviour = new RoamingBehaviour(this, MovementSpeed, startZone);
 
         _playerInteractionBehaviour = new PlayerInteractionBehaviour(_meshRenderer);

@@ -4,6 +4,27 @@ public class Home : Building
 {
     protected override Occupation AssociatedOccupation => new BuilderOccupation();
 
+    private NPCManager _npcManager;
+    private TimeManager _timeManager;
+
+    public override void Initialize()
+    {
+        _npcManager = GameManager.Instance.GetManager<NPCManager>();
+        _timeManager = GameManager.Instance.GetManager<TimeManager>();
+        if (_timeManager != null)
+        {
+            _timeManager.OnCycleCalculation += UpdateProduction;
+        }
+
+        base.Initialize();
+    }
+    private void OnDisable()
+    {
+        if (_timeManager != null)
+        {
+            _timeManager.OnCycleCalculation -= UpdateProduction;
+        }
+    }
     protected override void OnNPCEnter(NPC npc)
     {
         
@@ -16,5 +37,15 @@ public class Home : Building
     public override void OnSelect(PlayerInputManager playerInputManager)
     {
         //Skip
+    }
+    private void UpdateProduction()
+    {
+        if (_timeManager.GetCurrentCycle() != DayCycle.Night) return;
+
+        int npcProcreated = AssociatedZone.CurrentOccupancy;
+        for(int i = 0; i < npcProcreated; i++)
+        {
+            _npcManager.SpawnPeasant(AssociatedZone);
+        }
     }
 }
