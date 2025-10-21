@@ -31,10 +31,15 @@ public class NPCManager : Manager
 
         _peasantPool = GetComponent<PeasantPool>();
         _undeadPool = GetComponent<UndeadPool>();
+        if(_peasantPool != null)
+        {
+            _peasantPool.Initialize();
+        }
+        if(_undeadPool != null)
+        {
 
-        _peasantPool.Initialize();
-        _undeadPool.Initialize();
-
+            _undeadPool.Initialize();
+        }
         NPC[] existingNPCs = FindObjectsByType<NPC>(FindObjectsSortMode.None);
         foreach (NPC npc in existingNPCs)
         {
