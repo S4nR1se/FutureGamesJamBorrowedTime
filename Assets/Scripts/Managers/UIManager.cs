@@ -86,17 +86,34 @@ public class UIManager : Manager
             return;
         }
 
-        int ResourcesCounter = 0;
         foreach (var resource in resources)
         {
-            if(ResourcesCounter < _hudComponentsDic["Resources"].Counter.Length)
+            if(resource.Key == Resources.Purr)
             {
-                _hudComponentsDic["Resources"].Counter[ResourcesCounter].text = resource.Value.ToString();
+                _hudComponentsDic["Purr"].Counter[0].text = resource.Value.ToString();
+            }
+            else if (resource.Key == Resources.Graves)
+            {
+                _hudComponentsDic["Graves"].Counter[0].text = resource.Value.ToString();
+            }
+            else if (resource.Key == Resources.FoodStock)
+            {
+                _hudComponentsDic["Resources"].Counter[0].text = resource.Value.ToString();
+            }
+            else if (resource.Key == Resources.Materials)
+            {
+                _hudComponentsDic["Resources"].Counter[1].text = resource.Value.ToString();
             }
         }
     }
+
     private void OnNPCAmountChange(Dictionary<System.Type, List<NPC>> npcsByType)
     {
+        if (npcsByType == null || _hudComponentsDic == null)
+        {
+            return;
+        }
+
         int NPCS = 0;
         foreach (var npc in npcsByType)
         {
