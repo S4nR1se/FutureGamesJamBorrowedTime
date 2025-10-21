@@ -16,4 +16,32 @@ public class EventChoices_SO : ScriptableObject
     public string Description;
     public OutcomeElement Outcome;
     public int OutcomeValue;
+
+    public void SolveEncounter()
+    {
+        switch (Outcome)
+        {
+            case OutcomeElement.Peasant:
+                //NPCManager.DespawnPeasantAtRandom(OutcomeValue);
+                break;
+            case OutcomeElement.Building:
+                //Except Castle and Graveyard
+                //BuildingsManagers.DestroyBuildsAtRandom(OutcomeValue);
+                break;
+            case OutcomeElement.Materials:
+                GameManager.Instance?.GetManager<ResourceManager>().UpdateValue(Resources.Materials ,OutcomeValue);
+                break;
+            case OutcomeElement.FoodStock:
+                GameManager.Instance?.GetManager<ResourceManager>().UpdateValue(Resources.FoodStock, OutcomeValue);
+                break;
+            case OutcomeElement.Purr:
+                GameManager.Instance?.GetManager<ResourceManager>().UpdateValue(Resources.Purr, OutcomeValue);
+                break;
+            case OutcomeElement.Dread:
+                //NPCManager.IncreaseGlobalDread(OutcomeValue);
+                break;
+            default:
+                break;
+        }
+    }
 }
