@@ -5043,7 +5043,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2084592204}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: PlaceWorkshop
+        m_MethodName: PickWorkshop
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5351,7 +5351,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2084592204}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: PlaceHouse
+        m_MethodName: PickHouse
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10364,7 +10364,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2084592204}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: PlaceTemple
+        m_MethodName: PickTemple
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11966,7 +11966,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2084592204}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: PlaceFarm
+        m_MethodName: PickFarm
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

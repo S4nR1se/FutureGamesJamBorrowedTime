@@ -19,7 +19,7 @@ public class UIManager : Manager
     [SerializeField] private HudComponent[] _hudComponents;
     [SerializeField] private Dictionary<string, GameObject> _buildingPrefab;
 
-    private GameObject _selectedBuilding;
+    private GameObject _selectedBuilding = null;
 
     private Dictionary<string, HudComponent> _hudComponentsDic;
 
@@ -125,35 +125,36 @@ public class UIManager : Manager
         if(_selectedBuilding == null)
         {
             //Instatiate building prefab at mouse position
-            //Instatiate(Building, mousePosition);
+            //_selectedBuilding = Instatiate(Building, mousePosition);
         }
         else
         {
-
+            Destroy(_selectedBuilding);
+            //_selectedBuilding = Instatiate(Building, mousePosition);
         }
     }
 
     public void PickHouse()
     {
         _buildingsManager.SelectBuilding(TileType.House);
-        //Instatiate building icon at mouse position
+        // SelectedBuildingCreation(_buildingPrefab["House"]);
     }
 
     public void PickTemple()
     {
         _buildingsManager.SelectBuilding(TileType.Temple);
-        //Instatiate building icon at mouse position
+        //SelectedBuildingCreation(_buildingPrefab["Temple"]);
     }
 
     public void PickFarm()
     {
         _buildingsManager.SelectBuilding(TileType.Farm);
-        //Instatiate building icon at mouse position
+        //SelectedBuildingCreation(_buildingPrefab["Farm"]);
     }
 
     public void PickWorkshop()
     {
         _buildingsManager.SelectBuilding(TileType.Workshop);
-        //Instatiate building icon at mouse position
+        //SelectedBuildingCreation(_buildingPrefab["Workshp"]);
     }
 }
