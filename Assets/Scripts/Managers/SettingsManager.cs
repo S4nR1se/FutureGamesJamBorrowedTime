@@ -16,9 +16,6 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private GameObject _controlsCanvas = null;
     [SerializeField] private GameObject _resolutionsCanvas = null;
 
-    [SerializeField] private GameObject _uiCanvas = null;
-    [SerializeField] private GameObject _cameraCanvas = null;
-
     [SerializeField] private List<Vector2> _resolutions = new List<Vector2>();
     [SerializeField] private TMP_Text _resolutionsText = null;
 
@@ -54,7 +51,6 @@ public class SettingsManager : MonoBehaviour
         this.gameObject.SetActive(false);
         _resolutionsCanvas.SetActive(false);
         _audioCanvas.SetActive(false);
-        _cameraCanvas.SetActive(false);
         _controlsCanvas.SetActive(false);
     }
 

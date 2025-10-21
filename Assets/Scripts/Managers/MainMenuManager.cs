@@ -8,12 +8,12 @@ public class MainMenuManager : MonoBehaviour
     AudioSource _mainMenuAudioSource = null;
     private void Awake()
     {
+        SaveManager.SaveInstance.Load_Data();
         SetAudio();
     }
 
     private void SetAudio()
     {
-        SaveManager.SaveInstance.Load_Data();
         SoundManager.Instance.Initialize();
 
         _mainMenuAudioSource = GetComponent<AudioSource>();
