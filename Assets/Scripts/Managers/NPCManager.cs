@@ -230,6 +230,11 @@ public class NPCManager : Manager
     }
     private string GenerateName(NPC npc)
     {
+        if(_nPCNames == null)
+        {
+            return "NPC";
+        }
+
         if(_nPCNames.GetNPCNameListSize() == 0)
         {
             throw new System.Exception("The NPC Name list is empty!");
