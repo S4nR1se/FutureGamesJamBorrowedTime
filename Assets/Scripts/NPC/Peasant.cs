@@ -33,7 +33,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
 
     private void Awake()
     {
-        _meshRenderer = GetComponent<Renderer>();
+        _meshRenderer = GetComponentInChildren<Renderer>();
     }
     private void OnEnable()
     {

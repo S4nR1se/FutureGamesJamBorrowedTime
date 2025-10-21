@@ -3,6 +3,7 @@ using UnityEngine;
 
 public abstract class Building : MonoBehaviour, IInteractable
 {
+    [SerializeField] private BuildingData_SO _buildingData;
     public Vector2Int Size { get; private set; } = new Vector2Int(1, 1);
     public int BuildTime { get; protected set; }
     public int MaterialCost { get; protected set; }
@@ -14,6 +15,9 @@ public abstract class Building : MonoBehaviour, IInteractable
 
     public virtual void Initialize()
     {
+        BuildTime = _buildingData.BuildTime;
+        MaterialCost = _buildingData.MaterialCost;
+
         ResourceManager = GameManager.Instance?.GetManager<ResourceManager>();
 
         ZoneMarker marker = GetComponent<ZoneMarker>();

@@ -25,17 +25,36 @@ public class TilePlacementManager : Manager
             return;
 
         Vector2Int gridPos = _gridManager.WorldToGrid(targetTile.transform.position);
+        Tile existingTile = _gridManager.GetTileAt(gridPos);
 
-        if (_gridManager.GetTileAt(gridPos)?.tileType != TileType.BaseTile)
+        if (existingTile?.tileType != TileType.BaseTile)
         {
             Debug.Log("Cannot place building: Tile is already occupied.");
             return;
         }
-        GameObject prefab = tileDatabase.GetPrefab(_selectedTileType);
-        if (prefab == null)
+
+        GameObject constructionPrefab = tileDatabase.GetPrefab(TileType.ConstructionSite);
+        if (constructionPrefab == null)
             return;
 
-        _gridManager.ReplaceTile(gridPos, _selectedTileType, prefab);
+        GameObject constructionGO = Instantiate(
+            constructionPrefab,
+            targetTile.transform.position,
+            Quaternion.identity,
+            _gridManager.transform
+        );
+
+        ConstructionSite constructionSite = constructionGO.GetComponent<ConstructionSite>();
+        if (constructionSite != null)
+        {
+            BuildingData_SO data = tileDatabase.tiles.Find(x => x.tileType == _selectedTileType)?.buildingData;
+            if (data != null)
+            {
+                constructionSite.SetUpConstructionZone(targetTile, data.BuildTime, _selectedTileType, tileDatabase);
+            }
+        }
+
+        Destroy(targetTile.gameObject);
     }
 
     public void ClearSelection()

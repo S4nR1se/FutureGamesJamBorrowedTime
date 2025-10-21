@@ -1,16 +1,20 @@
 using UnityEngine;
 
-public class Home : MonoBehaviour
+public class Home : Building
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected override Occupation AssociatedOccupation => new BuilderOccupation();
+
+    protected override void OnNPCEnter(NPC npc)
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void OnNPCExit(NPC npc)
     {
         
+    }
+    public override void OnSelect(PlayerInputManager playerInputManager)
+    {
+        //Skip
     }
 }
