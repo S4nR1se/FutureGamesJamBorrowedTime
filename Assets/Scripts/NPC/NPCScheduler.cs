@@ -31,6 +31,7 @@ public class NPCScheduler : MonoBehaviour
         if(currentCycle == DayCycle.Day)
         {
             ScheduleWorkers(currentCycle);
+            DecreaseLifespan();
         }
         else
         {
@@ -54,6 +55,14 @@ public class NPCScheduler : MonoBehaviour
         foreach (Peasant p in peasants)
         {
             p.GoToRest();
+        }
+    }
+    private void DecreaseLifespan()
+    {
+        List<NPC> activeNPCS = _npcManager.GetAllActiveNPC();
+        foreach (NPC npc in activeNPCS)
+        {
+            npc.DecreaseLifeSpan(1);
         }
     }
 }

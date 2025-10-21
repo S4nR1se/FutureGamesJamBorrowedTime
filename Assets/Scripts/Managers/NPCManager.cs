@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,12 +7,13 @@ using UnityEngine.Rendering;
 public class NPCManager : Manager
 {
     [SerializeField] private NPCNames _nPCNames;
+    public event Action<Dictionary<Type, List<NPC>>> OnNPCAmountChange;
 
     private ZoneManager _zoneManager;
 
     private List<NPC> _activeNPCs = new();
     private List<IWorker> _workers = new();
-    private Dictionary<System.Type, List<NPC>> _npcsByType = new();
+    private Dictionary<Type, List<NPC>> _npcsByType = new();
 
     private PeasantPool _peasantPool;
     private UndeadPool _undeadPool;
@@ -61,6 +63,8 @@ public class NPCManager : Manager
         }
         _npcsByType[npcType].Add(npc);
 
+        OnNPCAmountChange?.Invoke(_npcsByType);
+
         if(npc is IWorker worker)
         {
             _workers.Add(worker);
@@ -80,6 +84,8 @@ public class NPCManager : Manager
                 if (_npcsByType[npcType].Count == 0)
                 {
                     _npcsByType.Remove(npcType);
+
+                    OnNPCAmountChange?.Invoke(_npcsByType);
                 }
             }
 
@@ -201,7 +207,10 @@ public class NPCManager : Manager
     {
         return new List<IWorker>(_workers);
     }
-
+    public List<NPC> GetAllActiveNPC()
+    {
+        return _activeNPCs;
+    }
     public int GetActivePeasantCount()
     {
         return _peasantPool != null ? _peasantPool.ActiveCount : 0;
@@ -224,7 +233,7 @@ public class NPCManager : Manager
 
         if (peasants.Count > 0)
         {
-            Peasant randomPeasant = peasants[Random.Range(0, peasants.Count)];
+            Peasant randomPeasant = peasants[UnityEngine.Random.Range(0, peasants.Count)];
             DespawnPeasant(randomPeasant);
         }
     }

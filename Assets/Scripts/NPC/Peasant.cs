@@ -51,7 +51,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
             _occupiedZone = null;
         }
     }
-    public override void Initialize(string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.House, DayCycle activeCycle = DayCycle.Day)
+    public override void Initialize(string name = "NPC", int lifeSpan = 11, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.House, DayCycle activeCycle = DayCycle.Day)
     {
         Name = name;
         LifeSpan = lifeSpan;
