@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bda2fc378349e64794446f94bc1598d, type: 3}
   m_Name: EasyEvent4
   m_EditorClassIdentifier: Assembly-CSharp::Event_SO
-  Title: Someone robbed the workshop
-  Description: Cute hats, sharp, quality equipment and inventions that make your
-    life easier. Everything you can imagine is there. You know that, but others do
-    too!
+  Title: Crows are gathering in the city
+  Description: Unnatural phenomen is happening in your town your Meow-ness Crows
+    are gathering in the main market. The problem is, THERE ARE A LOT OF THEM.. your
+    citizens are starting to feel anxious and are asking what's going on
   Choices:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: d4000bd7c86fdc94a994b73255f5bea5, type: 2}
+  - {fileID: 11400000, guid: b99dfd0ce3d7e474e89ee601a5b7d688, type: 2}
+  - {fileID: 11400000, guid: 19fdedd05f14a444f858884942fad5ed, type: 2}

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51ee9f1bdf6144c4fa343147a85535e9, type: 3}
   m_Name: Easy4Choice2
   m_EditorClassIdentifier: Assembly-CSharp::EventChoices_SO
-  Description: Command your skeletons to find the one that is responsible
-  Outcome: 0
-  OutcomeValue: 4
+  Description: Crows? They will just go away...
+  Outcome: 3
+  OutcomeValue: 20

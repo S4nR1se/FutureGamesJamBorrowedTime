@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bda2fc378349e64794446f94bc1598d, type: 3}
+  m_Name: MediumEvent5
+  m_EditorClassIdentifier: Assembly-CSharp::Event_SO
+  Title: The peasants are revolting
+  Description: Some of your villagers found out about your connection to the shadow
+    figures that are appearing from time to time.  Necromeowcy will only bring destruction,
+    they said. And so they took to the streets with torches in hand...
+  Choices:
+  - {fileID: 11400000, guid: a848c19a2a31c9748ab3e77211a30d91, type: 2}
+  - {fileID: 11400000, guid: 2e9538bc81c65bb40ac90620a532b80d, type: 2}
+  - {fileID: 11400000, guid: c6fc4484dcb6c724389b192ab2c37d0f, type: 2}

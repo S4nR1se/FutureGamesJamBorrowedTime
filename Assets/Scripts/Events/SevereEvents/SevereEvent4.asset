@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bda2fc378349e64794446f94bc1598d, type: 3}
+  m_Name: SevereEvent4
+  m_EditorClassIdentifier: Assembly-CSharp::Event_SO
+  Title: Unexpected revolutionary achievement in magic theory
+  Description: Purr = mc^2  Eureka! This satisfying achievement in a neighboring
+    town provides a big boost to prosperity. Everyone wants to be a part of it! Your
+    citizens are leaving for your neighbor
+  Choices:
+  - {fileID: 11400000, guid: 610f9e940fb331a43b4cd1e0e6a14aec, type: 2}
+  - {fileID: 11400000, guid: 541fd1f629c86324bb8b2dbc69f34f27, type: 2}
+  - {fileID: 11400000, guid: fb9e1b62b6b7f4a4da569c1ba10c0102, type: 2}

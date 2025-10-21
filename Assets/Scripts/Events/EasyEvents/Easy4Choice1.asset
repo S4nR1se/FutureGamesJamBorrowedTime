@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51ee9f1bdf6144c4fa343147a85535e9, type: 3}
   m_Name: Easy4Choice1
   m_EditorClassIdentifier: Assembly-CSharp::EventChoices_SO
-  Description: Give everyone weapons to defend themselves
+  Description: Give your citizens new crossbows and make a shooting competition
   Outcome: 2
   OutcomeValue: 20

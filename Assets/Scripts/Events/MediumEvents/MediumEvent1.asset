@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bda2fc378349e64794446f94bc1598d, type: 3}
+  m_Name: MediumEvent1
+  m_EditorClassIdentifier: Assembly-CSharp::Event_SO
+  Title: Vampires need more mew-blood
+  Description: Representative of local vampire faction came to seek audience asking
+    to feed them with Purr energy. Vampires are strong undead, maybe we can use them
+    to strengthen our town...
+  Choices:
+  - {fileID: 11400000, guid: 56353a400e40a304683feaab4badba8f, type: 2}
+  - {fileID: 11400000, guid: 7f82f199754322b48954ed190080b445, type: 2}
+  - {fileID: 11400000, guid: da85c6d7b5eadac4c86e6fc3134d49d5, type: 2}

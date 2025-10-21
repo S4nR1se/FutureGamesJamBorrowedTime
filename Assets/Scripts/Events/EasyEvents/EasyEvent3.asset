@@ -17,6 +17,6 @@ MonoBehaviour:
     life easier. Everything you can imagine is there. You know that, but others do
     too!
   Choices:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 0d32a7cb10d4780478758929e3141dfc, type: 2}
+  - {fileID: 11400000, guid: 0d02487a35911a947a73ca81b0bdb9ea, type: 2}
+  - {fileID: 11400000, guid: 9724b3140a8f9ff4c96445ff72a709ac, type: 2}

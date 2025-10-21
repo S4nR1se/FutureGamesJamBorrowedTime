@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51ee9f1bdf6144c4fa343147a85535e9, type: 3}
   m_Name: Easy4Choice0
   m_EditorClassIdentifier: Assembly-CSharp::EventChoices_SO
-  Description: Summon ghost of local workshop guard that died during the robbery,
-    to show you the culprit
+  Description: Make the crows your familiars
   Outcome: 5
   OutcomeValue: 70

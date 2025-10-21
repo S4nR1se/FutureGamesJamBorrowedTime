@@ -9,7 +9,6 @@ public class EventChoices_SO : ScriptableObject
         Building,
         Materials,
         FoodStock,
-        Graves,
         Purr,
         Dread
     }
