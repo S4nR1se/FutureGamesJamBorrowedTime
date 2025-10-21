@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NPCManager : Manager
 {
-    [SerializeField] private NPCName _nPCNames;
+    [SerializeField] private NPCNames _nPCNames;
 
     private ZoneManager _zoneManager;
 
@@ -229,7 +229,8 @@ public class NPCManager : Manager
     }
     private string GenerateName(NPC npc)
     {
-        string newName = null;
+        string newName = null;// _nPCNames.Get_Objects().[0].Name;
+
         return newName;
     }
 }
