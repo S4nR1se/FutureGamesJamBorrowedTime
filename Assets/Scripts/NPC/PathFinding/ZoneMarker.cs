@@ -17,30 +17,26 @@ public class ZoneMarker : MonoBehaviour
 
     private NavMeshSurface _parentSurface;
 
-    private void Awake()
-    {
-        _collider = GetComponent<Collider>();
-    }
-
     private void Start()
     {
         if (_zone == null)
         {
-            ZoneManager zoneManager = GameManager.Instance.GetManager<ZoneManager>();
-            _parentSurface = zoneManager.ParentSurface;
+            InitializeZone();
+        }
+    }
 
-            _zone = CreateZone();
+    public void InitializeZone()
+    {
+        ZoneManager zoneManager = GameManager.Instance.GetManager<ZoneManager>();
+        _parentSurface = zoneManager.ParentSurface;
 
-            if (zoneManager != null)
-            {
-                zoneManager.RegisterZone(_zone);
-            }
+        _zone = CreateZone();
+        zoneManager.RegisterZone(_zone);
 
-            Building associatedBuilding = GetComponent<Building>();
-            if(associatedBuilding != null)
-            {
-                associatedBuilding.Initialize();
-            }
+        Building associatedBuilding = GetComponent<Building>();
+        if (associatedBuilding != null)
+        {
+            associatedBuilding.Initialize();
         }
     }
 

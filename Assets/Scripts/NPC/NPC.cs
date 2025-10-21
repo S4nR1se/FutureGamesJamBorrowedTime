@@ -42,7 +42,7 @@ public interface IWorker
 {
     Occupation Occupation { get;}
     void AssignOccupation(Occupation occupation);
-    void GoToWork();
+    void GoToWork(DayCycle currentCycle);
 }
 public interface IPeasant
 {
