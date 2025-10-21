@@ -18,16 +18,6 @@ public class UIManager : Manager
 
     private Dictionary<string, HudComponent> _hudComponentsDic;
 
-    //[SerializeField] private int _day = 0;
-    //[SerializeField] private int _borrowTime = 0;
-    //[SerializeField] private int _summoning = 0;
-    //[SerializeField] private int _graves = 0;
-    //private int _peasants = 0;
-    //[SerializeField] private int _resources = 0;
-    //[SerializeField] private int _buildings = 0;
-    //[SerializeField] private int _purr = 0;
-
-
     private ResourceManager _resourceManager;
     private NPCManager _npcManager;
     public override void Initialize()
