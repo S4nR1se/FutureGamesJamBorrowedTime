@@ -11,6 +11,8 @@ public class KeyMapping
 public class PlayerInputManager : Manager
 {
     [SerializeField] private KeyMapping[] keyMappings;
+    public GameObject CurrentSelection {  get; private set; }
+    public GameObject PreviousSelection { get; private set; }
 
     private Camera _mainCam;
     private LayerMask _interactableLayer;
@@ -75,19 +77,29 @@ public class PlayerInputManager : Manager
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _interactableLayer))
             {
                 IInteractable interactable = hit.collider.GetComponent<IInteractable>();
-
                 if (interactable != null)
                 {
                     _currentSelection?.OnDeselect();
+                    PreviousSelection = _currentSelection?.Component;
                     _currentSelection = interactable;
                     _currentSelection.OnSelect();
+                    CurrentSelection = _currentSelection.Component;
                 }
             }
             else
             {
                 _currentSelection?.OnDeselect();
+                PreviousSelection = _currentSelection?.Component;
                 _currentSelection = null;
+                CurrentSelection = null;
             }
+        }
+        if(Input.GetMouseButtonDown(1))
+        {
+            _currentSelection?.OnDeselect();
+            PreviousSelection = _currentSelection?.Component;
+            _currentSelection = null;
+            CurrentSelection = null;
         }
     }
     private void HandleAction(string action)

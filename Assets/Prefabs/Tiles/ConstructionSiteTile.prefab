@@ -71,7 +71,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 1833810152192036645, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
+      objectReference: {fileID: 2100000, guid: 3a824961cb245734e850af8f185fb1f2, type: 2}
     - target: {fileID: -7511558181221131132, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
@@ -82,7 +82,7 @@ PrefabInstance:
       objectReference: {fileID: 5302568919011541938, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
     - target: {fileID: 919132149155446097, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
       propertyPath: m_Name
-      value: BaseTile
+      value: ConstructionSiteTile
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
       propertyPath: m_Layer
@@ -95,6 +95,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4086212038163300092}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4761672134288230400}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3828731887611888627}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5485010315145276769}
   m_SourcePrefab: {fileID: 100100000, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
 --- !u!1 &8295179934970264446 stripped
 GameObject:
@@ -113,4 +122,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ab16ae254c72bd43b56ed2f61e6128c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  tileType: 2
+  tileType: 1
+--- !u!114 &-4761672134288230400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8295179934970264446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98767d1ca9d043d4b995ad0ffeb2b94c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZoneMarker
+  zoneName: ConstructionSite
+  zoneType: 4
+--- !u!65 &3828731887611888627
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8295179934970264446}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.2, z: 1}
+  m_Center: {x: 0, y: 0.2, z: 0}
+--- !u!114 &5485010315145276769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8295179934970264446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3698b31465f719f4493d984afe09a1e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConstructionSite

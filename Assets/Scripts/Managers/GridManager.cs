@@ -10,7 +10,7 @@ public class GridManager : Manager
     public Vector3 gridOrigin { get; private set; } = Vector3.zero;
 
     public int GridSize { get; private set; } = 16;
-    public float CellSize { get; private set; } = 1;
+    public float CellSize { get; private set; } = 5;
 
     private bool[,] _occupancyGrid;
 

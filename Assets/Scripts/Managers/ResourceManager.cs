@@ -32,7 +32,8 @@ public class ResourceManager : Manager
     {
         if (_resources.ContainsKey(resource))
         {
-            _resources[resource] += amount;
+            int updatedValue = _resources[resource] + amount;
+            _resources[resource] = Mathf.Max(0, updatedValue);
 
             ResourceEntry entry = _resourceList.Find(r => r.ResourceType == resource);
             if (entry != null)

@@ -2,9 +2,12 @@ using System.Linq;
 using UnityEditor.Overlays;
 using UnityEngine;
 
-public class Peasant : NPC, IWorker, IPeasant, IPoolable
+public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
 {
     public GameObject PoolableComponent => gameObject;
+    public GameObject Component => gameObject;
+
+    private Renderer _meshRenderer;
 
     public Occupation Occupation => _occupation;
     public int Age => _age;
@@ -12,8 +15,10 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
     public int DreadFactor => _dreadFactor;
 
     private Occupation _occupation;
+
     private RoamingBehaviour _roamingBehaviour;
     private GoToZoneBehaviour _goToZoneBehaviour;
+    private PlayerInteractionBehaviour _playerInteractionBehaviour;
 
     private bool _isTraveling = false;
 
@@ -26,6 +31,10 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
 
     private TravelPurpose _travelPurpose = TravelPurpose.None;
 
+    private void Awake()
+    {
+        _meshRenderer = GetComponent<Renderer>();
+    }
     private void OnEnable()
     {
         PlayingState.OnPlayingStateUpdate += UpdateComponent;
@@ -56,6 +65,8 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
 
         Zone startZone = GetCurrentZone() ?? GameManager.Instance.GetManager<ZoneManager>().GetClosestZone(transform.position);
         _roamingBehaviour = new RoamingBehaviour(this, MovementSpeed, startZone);
+
+        _playerInteractionBehaviour = new PlayerInteractionBehaviour(_meshRenderer);
 
         if (startZone != null && startZone.TryEnter(this))
         {
@@ -215,5 +226,25 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
         }
 
         pool.Release(this);
+    }
+
+    public void OnSelect()
+    {
+        _playerInteractionBehaviour.OnSelect();
+    }
+
+    public void OnDeselect()
+    {
+        _playerInteractionBehaviour.OnDeselect();
+    }
+
+    public void OnHover()
+    {
+        _playerInteractionBehaviour.OnHover();
+    }
+
+    public void OnHoverExit()
+    {
+        _playerInteractionBehaviour?.OnHoverExit();
     }
 }
