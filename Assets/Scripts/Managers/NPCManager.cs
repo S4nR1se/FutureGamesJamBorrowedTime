@@ -249,7 +249,7 @@ public class NPCManager : Manager
             throw new System.Exception("The NPC Name list is empty!");
         }    
 
-        int NameIndex = Random.Range(0, _nPCNames.GetNPCNameListSize() - 1);
+        int NameIndex = UnityEngine.Random.Range(0, _nPCNames.GetNPCNameListSize() - 1);
         string newName =  _nPCNames.Get_Objects()[NameIndex].Name;
 
         return newName;
