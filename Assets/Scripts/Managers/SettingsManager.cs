@@ -53,7 +53,7 @@ public class SettingsManager : MonoBehaviour
         Screen.fullScreen = true;
         this.gameObject.SetActive(false);
         _resolutionsCanvas.SetActive(false);
-        _audioCanvas.SetActive(true);
+        _audioCanvas.SetActive(false);
         _cameraCanvas.SetActive(false);
         _controlsCanvas.SetActive(false);
     }
