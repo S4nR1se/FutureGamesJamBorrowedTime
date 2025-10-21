@@ -9831,6 +9831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a710ecd1e5ddc604d9bb1780ba364851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCManager
+  _nPCNames: {fileID: 11400000, guid: c25562e9f881c374bacae64d1edffebc, type: 2}
 --- !u!114 &904801467
 MonoBehaviour:
   m_ObjectHideFlags: 0
