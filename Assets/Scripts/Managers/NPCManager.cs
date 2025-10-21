@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class NPCManager : Manager
 {
+    [SerializeField] private NPCNames _nPCNames;
     public event Action<Dictionary<Type, List<NPC>>> OnNPCAmountChange;
 
     private ZoneManager _zoneManager;
@@ -244,7 +246,19 @@ public class NPCManager : Manager
     }
     private string GenerateName(NPC npc)
     {
-        string newName = null;
+        if(_nPCNames == null)
+        {
+            return "NPC";
+        }
+
+        if(_nPCNames.GetNPCNameListSize() == 0)
+        {
+            throw new System.Exception("The NPC Name list is empty!");
+        }    
+
+        int NameIndex = UnityEngine.Random.Range(0, _nPCNames.GetNPCNameListSize() - 1);
+        string newName =  _nPCNames.Get_Objects()[NameIndex].Name;
+
         return newName;
     }
 }
