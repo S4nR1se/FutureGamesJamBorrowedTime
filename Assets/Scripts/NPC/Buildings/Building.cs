@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Building : MonoBehaviour
+public abstract class Building : MonoBehaviour, IInteractable
 {
     public Vector2Int Size { get; private set; } = new Vector2Int(1, 1);
     public int BuildTime { get; protected set; }
     public int MaterialCost { get; protected set; }
     protected Zone AssociatedZone { get; private set; }
     protected ResourceManager ResourceManager { get; private set; }
+
+    public GameObject Component => throw new System.NotImplementedException();
 
     public virtual void Initialize()
     {
@@ -41,5 +43,25 @@ public abstract class Building : MonoBehaviour
     protected IEnumerable<NPC> GetNPCsInBuilding()
     {
         return AssociatedZone?.GetNPCsInZone() ?? new List<NPC>();
+    }
+
+    public virtual void OnSelect(PlayerInputManager playerInputManager)
+    {
+
+    }
+
+    public virtual void OnDeselect()
+    {
+
+    }
+
+    public virtual void OnHover()
+    {
+
+    }
+
+    public virtual void OnHoverExit()
+    {
+
     }
 }

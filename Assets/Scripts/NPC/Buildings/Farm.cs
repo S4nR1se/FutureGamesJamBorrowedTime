@@ -40,7 +40,8 @@ public class Farm : Building
 
     private void UpdateProduction()
     {
-        ResourceManager.UpdateValue(Resources.FoodStock, _foodStockGenerated);
+        int foodStockGenerated = AssociatedZone.CurrentOccupancy * FOODSTOCKPERPEASANT;
+        ResourceManager.UpdateValue(Resources.FoodStock, foodStockGenerated);
 
         _foodStockGenerated = 0;
     }

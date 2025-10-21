@@ -27,8 +27,6 @@ public class ZoneManager : Manager
             Zone zone = marker.CreateZone();
             RegisterZone(zone);
         }
-
-        RebuildNavMesh();
     }
     public void RegisterZone(Zone zone)
     {
@@ -41,8 +39,6 @@ public class ZoneManager : Manager
         {
             _allZones.Add(zone);
             _zonesByType[zone.Type].Add(zone);
-
-            RebuildNavMesh();
         }
     }
     public void UnregisterZone(Zone zone)
@@ -52,16 +48,6 @@ public class ZoneManager : Manager
         if (_allZones.Remove(zone))
         {
             _zonesByType[zone.Type].Remove(zone);
-
-            RebuildNavMesh();
-        }
-    }
-    public void RebuildNavMesh()
-    {
-        if (ParentSurface != null)
-        {
-            ParentSurface.BuildNavMesh();
-            Debug.Log("NavMesh rebuild complete.");
         }
     }
     public List<Zone> GetZonesOfType(ZoneType zoneType)

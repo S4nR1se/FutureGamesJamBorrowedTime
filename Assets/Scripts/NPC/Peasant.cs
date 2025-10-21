@@ -2,9 +2,12 @@ using System.Linq;
 using UnityEditor.Overlays;
 using UnityEngine;
 
-public class Peasant : NPC, IWorker, IPeasant, IPoolable
+public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
 {
     public GameObject PoolableComponent => gameObject;
+    public GameObject Component => gameObject;
+
+    private Renderer _meshRenderer;
 
     public Occupation Occupation => _occupation;
     public int Age => _age;
@@ -12,8 +15,10 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
     public int DreadFactor => _dreadFactor;
 
     private Occupation _occupation;
+
     private RoamingBehaviour _roamingBehaviour;
     private GoToZoneBehaviour _goToZoneBehaviour;
+    private PlayerInteractionBehaviour _playerInteractionBehaviour;
 
     private bool _isTraveling = false;
 
@@ -26,6 +31,10 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
 
     private TravelPurpose _travelPurpose = TravelPurpose.None;
 
+    private void Awake()
+    {
+        _meshRenderer = GetComponent<Renderer>();
+    }
     private void OnEnable()
     {
         PlayingState.OnPlayingStateUpdate += UpdateComponent;
@@ -39,7 +48,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
         if (_occupiedZone != null)
         {
             _occupiedZone.Exit(this);
-            Debug.Log($"{Name} disabled, exited {_occupiedZone.Name}");
             _occupiedZone = null;
         }
     }
@@ -56,6 +64,8 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
 
         Zone startZone = GetCurrentZone() ?? GameManager.Instance.GetManager<ZoneManager>().GetClosestZone(transform.position);
         _roamingBehaviour = new RoamingBehaviour(this, MovementSpeed, startZone);
+
+        _playerInteractionBehaviour = new PlayerInteractionBehaviour(_meshRenderer);
 
         if (startZone != null && startZone.TryEnter(this))
         {
@@ -81,7 +91,11 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
         if (_isTraveling && _travelPurpose == TravelPurpose.Work)
         {
             CancelTravel();
-            GoToWork();
+            GoToWork(_activeCycle);
+        } 
+        else if (!_isTraveling && _occupiedZone.Type == Occupation.WorkZoneType)
+        {
+            GoToWork(_activeCycle);
         }
     }
 
@@ -96,25 +110,39 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
     }
     private void GoToZone(ZoneType zoneType)
     {
-        ReleaseReservation();
-
+        CancelTravel();
         Zone travelZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(zoneType);
 
-        if (travelZone != null)
+        if (travelZone == null)
         {
-            if (travelZone.TryEnter(this))
-            {
-                _reservedZone = travelZone;
-                _goToZoneBehaviour = new GoToZoneBehaviour(this, MovementSpeed, travelZone);
-                _goToZoneBehaviour.OnArrived += OnArrivedAtDestination;
-                _isTraveling = true;
-            }
+            return;
         }
+
+        if (travelZone.TryEnter(this))
+        {
+            _reservedZone = travelZone;
+
+            SetGoToZoneBehaviour(travelZone);
+
+            _isTraveling = true;
+            _travelPurpose = TravelPurpose.None;
+        }
+    }
+    private void SetGoToZoneBehaviour(Zone targetZone)
+    {
+        if (_goToZoneBehaviour != null)
+        {
+            _goToZoneBehaviour.OnArrived -= OnArrivedAtDestination;
+        }
+
+        _goToZoneBehaviour = new GoToZoneBehaviour(this, MovementSpeed, targetZone);
+        _goToZoneBehaviour.OnArrived += OnArrivedAtDestination;
     }
 
     [ContextMenu("Work")]
-    public void GoToWork()
+    public void GoToWork(DayCycle currentCycle)
     {
+        if (currentCycle != _activeCycle) return;
         GoToZone(Occupation.WorkZoneType);
         _travelPurpose = TravelPurpose.Work;
     }
@@ -160,7 +188,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
         if (_isTraveling)
         {
             _isTraveling = false;
-            ReleaseReservation();
 
             if (_goToZoneBehaviour != null)
             {
@@ -168,6 +195,8 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
                 _goToZoneBehaviour = null;
             }
         }
+
+        ReleaseReservation();
     }
 
     private void OnDestroy()
@@ -210,5 +239,25 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable
         }
 
         pool.Release(this);
+    }
+
+    public void OnSelect(PlayerInputManager playerInputManager)
+    {
+        _playerInteractionBehaviour.OnSelect(playerInputManager);
+    }
+
+    public void OnDeselect()
+    {
+        _playerInteractionBehaviour.OnDeselect();
+    }
+
+    public void OnHover()
+    {
+        _playerInteractionBehaviour.OnHover();
+    }
+
+    public void OnHoverExit()
+    {
+        _playerInteractionBehaviour?.OnHoverExit();
     }
 }

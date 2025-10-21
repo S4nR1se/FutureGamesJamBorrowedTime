@@ -18,13 +18,26 @@ public class ResourceManager : Manager
 
     public override void Initialize()
     {
+        if (_resources == null)
+            _resources = new Dictionary<Resources, int>();
+
         _resources.Clear();
-        _resourceList.Clear();
 
         foreach (Resources resource in Enum.GetValues(typeof(Resources)))
         {
-            _resources[resource] = 0;
-            _resourceList.Add(new ResourceEntry { ResourceType = resource, Amount = 0 });
+            int existingAmount = 0;
+            var entry = _resourceList.Find(r => r.ResourceType == resource);
+            if (entry == null)
+            {
+                entry = new ResourceEntry { ResourceType = resource, Amount = 0 };
+                _resourceList.Add(entry);
+            }
+            else
+            {
+                existingAmount = entry.Amount;
+            }
+
+            _resources[resource] = existingAmount;
         }
     }
 
@@ -32,7 +45,8 @@ public class ResourceManager : Manager
     {
         if (_resources.ContainsKey(resource))
         {
-            _resources[resource] += amount;
+            int updatedValue = _resources[resource] + amount;
+            _resources[resource] = Mathf.Max(0, updatedValue);
 
             ResourceEntry entry = _resourceList.Find(r => r.ResourceType == resource);
             if (entry != null)

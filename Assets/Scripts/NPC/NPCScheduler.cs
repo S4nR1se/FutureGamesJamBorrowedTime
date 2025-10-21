@@ -30,21 +30,21 @@ public class NPCScheduler : MonoBehaviour
     {
         if(currentCycle == DayCycle.Day)
         {
-            ScheduleWorkers();
+            ScheduleWorkers(currentCycle);
         }
         else
         {
             ScheduleRest();
         }
     }
-    private void ScheduleWorkers()
+    private void ScheduleWorkers(DayCycle currentCycle)
     {
         List<Peasant> peasants = _npcManager.GetNPCsOfType<Peasant>();
         foreach(Peasant p in peasants)
         {
             if (p is IWorker worker)
             {
-                worker.GoToWork();
+                worker.GoToWork(currentCycle);
             }
         }
     }

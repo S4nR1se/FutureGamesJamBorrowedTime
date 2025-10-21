@@ -11,9 +11,11 @@ public class TimeManager : Manager
     public float LevelTime { get; private set; }
 
     private const float CYCLEDURATION = 60f;
+    private float _cycleTimer = 0;
 
     public override void Initialize()
     {
+        _cycleTimer = 0;
         LevelTime = 0;
         DayNumber = 0;
         CurrentDayCycle = DayCycle.Night;
@@ -29,10 +31,12 @@ public class TimeManager : Manager
     private void UpdateComponent()
     {
         LevelTime += Time.deltaTime;
+        _cycleTimer += Time.deltaTime;
 
-        if (Mathf.FloorToInt(LevelTime / CYCLEDURATION) > Mathf.FloorToInt((LevelTime - Time.deltaTime) / CYCLEDURATION))
+        if (_cycleTimer >= CYCLEDURATION)
         {
             PassTime();
+            _cycleTimer = 0;
         }
     }
 

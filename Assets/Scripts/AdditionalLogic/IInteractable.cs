@@ -1,6 +1,9 @@
+using UnityEngine;
+
 public interface IInteractable
 {
-    void OnSelect();
+    GameObject Component { get; }
+    void OnSelect(PlayerInputManager playerInputManager);
     void OnDeselect();
     void OnHover();
     void OnHoverExit();
