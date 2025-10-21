@@ -118,7 +118,8 @@ public class NPCManager : Manager
                 agent.enabled = true;
             }
 
-            peasant.Initialize();
+            string generatedName = GenerateName(peasant);
+            peasant.Initialize(generatedName);
 
             RegisterNPC(peasant);
             return peasant;
@@ -147,7 +148,8 @@ public class NPCManager : Manager
                 agent.enabled = true;
             }
 
-            undead.Initialize();
+            string generatedName = GenerateName(undead);
+            undead.Initialize(generatedName);
 
             RegisterNPC(undead);
             return undead;
@@ -222,5 +224,10 @@ public class NPCManager : Manager
             Peasant randomPeasant = peasants[Random.Range(0, peasants.Count)];
             DespawnPeasant(randomPeasant);
         }
+    }
+    private string GenerateName(NPC npc)
+    {
+        string newName = null;
+        return newName;
     }
 }
