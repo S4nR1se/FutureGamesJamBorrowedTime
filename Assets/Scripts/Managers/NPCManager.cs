@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class NPCManager : Manager
 {
+    [SerializeField] private NPCName _nPCNames;
+
     private ZoneManager _zoneManager;
 
     private List<NPC> _activeNPCs = new();
