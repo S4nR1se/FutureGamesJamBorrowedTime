@@ -137,7 +137,11 @@ public class UIManager : Manager
         {
             _npcOccupationText.text = worker.Occupation.ToString();
         }
-        _npcLifeSpanText.text = "LifeSpan: " + npc.LifeSpan.ToString();
+        else
+        {
+            _npcOccupationText.text = "None";
+        }
+            _npcLifeSpanText.text = "LifeSpan: " + npc.LifeSpan.ToString();
     }
 
     public void HideNPCInfo()
