@@ -17358,6 +17358,11 @@ MonoBehaviour:
     - {fileID: 5759903096279795695}
     Counter:
     - {fileID: 9167797032489323071}
+  _npcInfo: {fileID: 7449310600050082142}
+  _npcNameText: {fileID: 24743382061806220}
+  _npcOccupationText: {fileID: 7249028026609072648}
+  _npcLifeSpanText: {fileID: 3723869750384079848}
+  _npcMoodText: {fileID: 1240129417635091947}
 --- !u!1001 &2089034291
 PrefabInstance:
   m_ObjectHideFlags: 0

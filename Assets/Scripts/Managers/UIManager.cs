@@ -19,15 +19,18 @@ public class UIManager : Manager
 
     [SerializeField] private HudComponent[] _hudComponents;
     [SerializeField] private Dictionary<string, GameObject> _buildingPrefab;
-    [SerializeField] private Dictionary<string, TextMeshProUGUI> _npcInfo;
-
-    private GameObject _selectedBuilding = null;
+    [SerializeField] private GameObject _npcInfo;
+    [SerializeField] private TextMeshProUGUI _npcNameText;
+    [SerializeField] private TextMeshProUGUI _npcOccupationText;
+    [SerializeField] private TextMeshProUGUI _npcLifeSpanText;
+    [SerializeField] private TextMeshProUGUI _npcMoodText;
 
     private Dictionary<string, HudComponent> _hudComponentsDic;
 
     private ResourceManager _resourceManager;
     private NPCManager _npcManager;
     private TilePlacementManager _buildingsManager;
+    private IWorker _workerInterface;
     public override void Initialize()
     {
         _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
@@ -49,6 +52,8 @@ public class UIManager : Manager
 
     }
 
+  
+
     private void InitializeHudComponentsCounter()
     {
         for(int i = 0; i < _hudComponents.Length; i++)
@@ -65,6 +70,7 @@ public class UIManager : Manager
     {
         _hudComponentsDic = new();
         InitializeHudComponentsCounter();
+        _npcInfo.SetActive(false);
     }
 
     private void OnDisable()
@@ -124,12 +130,16 @@ public class UIManager : Manager
 
     public void DisplayNPCInfo(NPC npc)
     {
-
+        _npcInfo.SetActive(true);
+        _npcNameText.text = "Name: " + npc.Name;
+       // npcOccupationText.text 
+        _npcLifeSpanText.text = "LifeSpan: " + npc.LifeSpan.ToString();
+        //_npcMoodText.text
     }
 
     public void HideNPCInfo()
     {
-
+        _npcInfo.SetActive(false);
     }
 
     public void PickHouse()
