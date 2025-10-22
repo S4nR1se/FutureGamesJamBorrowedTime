@@ -24,7 +24,10 @@ public class PlayerInputManager : Manager
     private GridManager _gridManager;
 
     public GameObject CurrentSelection => _currentSelection.Component;
-    public IWorker PreviousWorkerSelection => _previousWorkerSelection;
+    public IWorker PreviousWorkerSelection
+    {
+        get { return _previousWorkerSelection; }
+    }
 
     public override void Initialize()
     {
@@ -178,6 +181,12 @@ public class PlayerInputManager : Manager
     {
         _previousSelection = null;
     }
+    public bool TryGetPreviousWorkerSelection(out IWorker previousWorker)
+    {
+        previousWorker = _previousWorkerSelection;
+        return previousWorker != null;
+    }
+
     private void HandleAction(string action)
     {
         switch (action)

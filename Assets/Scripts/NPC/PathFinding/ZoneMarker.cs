@@ -53,7 +53,7 @@ public class ZoneMarker : MonoBehaviour
     {
         return type switch
         {
-            ZoneType.House => 10,
+            ZoneType.House => 1,
             ZoneType.Farm => 5,
             ZoneType.Church => 10,
             ZoneType.Workshop => 5,

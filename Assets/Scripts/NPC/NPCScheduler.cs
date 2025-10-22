@@ -12,13 +12,6 @@ public class NPCScheduler : MonoBehaviour
 
         _timeManager.OnCyclePassage += OnTimePassage;
     }
-    private void OnEnable()
-    {
-        if(_timeManager != null)
-        {
-            _timeManager.OnCyclePassage += OnTimePassage;   
-        }
-    }
     private void OnDisable()
     {
         if(_timeManager != null)
@@ -30,12 +23,39 @@ public class NPCScheduler : MonoBehaviour
     {
         if(currentCycle == DayCycle.Day)
         {
+            ScheduleNightTimeCalculations();
             ScheduleWorkers(currentCycle);
-            DecreaseLifespan();
         }
         else
         {
             ScheduleRest();
+        }
+    }
+    private void ScheduleNightTimeCalculations()
+    {
+        List<NPC> activeNPCS = new List<NPC>(_npcManager.GetAllActiveNPC());
+        foreach (NPC npc in activeNPCS)
+        {
+            npc.DecreaseLifeSpan(1);
+            if(npc is Peasant peasant)
+            {
+                peasant.RunNightChecklist();
+            }
+            ScheduleDeath(npc);
+        }
+    }
+    private void ScheduleDeath(NPC npc)
+    {
+        if (npc.MarkedForDeath)
+        {
+            if(npc is Peasant peasant)
+            {
+                _npcManager.DespawnPeasant(peasant);
+            }
+            else if(npc is Undead undead)
+            {
+                _npcManager.DespawnUndead(undead);
+            }
         }
     }
     private void ScheduleWorkers(DayCycle currentCycle)
@@ -55,14 +75,6 @@ public class NPCScheduler : MonoBehaviour
         foreach (Peasant p in peasants)
         {
             p.GoToRest();
-        }
-    }
-    private void DecreaseLifespan()
-    {
-        List<NPC> activeNPCS = _npcManager.GetAllActiveNPC();
-        foreach (NPC npc in activeNPCS)
-        {
-            npc.DecreaseLifeSpan(1);
         }
     }
 }

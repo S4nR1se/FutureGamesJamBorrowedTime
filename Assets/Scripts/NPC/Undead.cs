@@ -121,6 +121,43 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
             _travelPurpose = TravelPurpose.None;
         }
     }
+    private void GoToZone(Zone travelZone)
+    {
+        if (_isTraveling)
+        {
+            return;
+        }
+
+        if (_occupiedZone != null)
+        {
+            _occupiedZone.Exit(this);
+            _occupiedZone = null;
+        }
+
+        if (travelZone.TryEnter(this))
+        {
+            _reservedZone = travelZone;
+            SetGoToZoneBehaviour(travelZone);
+            _isTraveling = true;
+        }
+        else
+        {
+            ZoneType zoneType = travelZone.Type;
+            travelZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(zoneType);
+
+            if (travelZone == null)
+            {
+                return;
+            }
+
+            if (travelZone.TryEnter(this))
+            {
+                _reservedZone = travelZone;
+                SetGoToZoneBehaviour(travelZone);
+                _isTraveling = true;
+            }
+        }
+    }
     private void SetGoToZoneBehaviour(Zone targetZone)
     {
         if (_goToZoneBehaviour != null)
@@ -132,14 +169,17 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
         _goToZoneBehaviour.OnArrived += OnArrivedAtDestination;
     }
 
-    [ContextMenu("Work")]
     public void GoToWork(DayCycle currentCycle)
     {
         //Ignores Daycycle Simply works
         GoToZone(Occupation.WorkZoneType);
         _travelPurpose = TravelPurpose.Work;
     }
-
+    public void TravelToZone(Zone travelZone)
+    {
+        if (_isTraveling) CancelTravel();
+        GoToZone(travelZone);
+    }
     private void OnArrivedAtDestination(Zone zone)
     {
         if (_occupiedZone != null && _occupiedZone != zone)

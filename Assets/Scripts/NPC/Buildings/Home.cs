@@ -1,14 +1,17 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Home : Building
 {
     protected override Occupation AssociatedOccupation => new BuilderOccupation();
 
+    private ResourceManager _resourceManager;
     private NPCManager _npcManager;
     private TimeManager _timeManager;
 
     public override void Initialize()
     {
+        _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
         _npcManager = GameManager.Instance.GetManager<NPCManager>();
         _timeManager = GameManager.Instance.GetManager<TimeManager>();
         if (_timeManager != null)
@@ -36,7 +39,10 @@ public class Home : Building
     }
     public override void OnSelect(PlayerInputManager playerInputManager)
     {
-        //Skip
+        if (PlayerInputManager.TryGetPreviousWorkerSelection(out IWorker prevWorker))
+        {
+            prevWorker.TravelToZone(AssociatedZone);
+        }
     }
     private void UpdateProduction()
     {
@@ -46,6 +52,18 @@ public class Home : Building
         for(int i = 0; i < npcProcreated; i++)
         {
             _npcManager.SpawnPeasant(AssociatedZone);
+        }
+    }
+    [ContextMenu("GatherPurr")]
+    public void GatherPurr()
+    {
+        if(_timeManager.CurrentDayCycle != DayCycle.Night) return;
+        IEnumerable<NPC> npcs = AssociatedZone.GetNPCsInZone();
+
+        foreach (NPC npc in npcs)
+        {
+            npc.DecreaseLifeSpan(1);
+            _resourceManager.UpdateValue(Resources.Purr, 1);
         }
     }
 }

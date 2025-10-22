@@ -5,8 +5,9 @@ public abstract class NPC : MonoBehaviour
     public string Name {  get; protected set; }
     public int LifeSpan { get; protected set; }
     public float MovementSpeed { get; protected set; }
+    public bool MarkedForDeath { get; protected set; } = false;
 
-    private Zone _currentZone;
+    protected Zone _currentZone;
 
     protected ZoneType _restZoneType;
 
@@ -15,7 +16,10 @@ public abstract class NPC : MonoBehaviour
     public abstract void Initialize(Zone startingZone,string name, int lifeSpan, float movementSpeed, Occupation occupation = null, ZoneType restZoneType = ZoneType.House, DayCycle activeCycle = DayCycle.Day);
     public void DecreaseLifeSpan(int amount)
     {
+        if (LifeSpan <= 0) return;
+
         LifeSpan -= amount;
+        if (LifeSpan <= 0) MarkedForDeath = true;
     }
     protected Occupation CreateDefaultOccupation()
     {
@@ -47,6 +51,7 @@ public interface IWorker
     Occupation Occupation { get;}
     void AssignOccupation(Occupation occupation);
     void GoToWork(DayCycle currentCycle);
+    void TravelToZone(Zone travelZone);
 }
 public interface IPeasant
 {
@@ -54,4 +59,5 @@ public interface IPeasant
     int StarvationValue { get; }
     int DreadFactor { get; }
     void GoToRest();
+    void GatherPurr();
 }
