@@ -72,9 +72,12 @@ public class ZoneMarker : MonoBehaviour
             _collider = GetComponent<Collider>();
 
         Bounds bounds = _collider.bounds;
-
         Vector2 extents = new Vector2(bounds.extents.x, bounds.extents.z);
-        return extents.magnitude;
+
+        float calculatedRadius = extents.magnitude;
+
+        float shrinkFactor = 0.8f;
+        return calculatedRadius * shrinkFactor;
     }
 
     public Zone GetZone() => _zone;
