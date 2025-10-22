@@ -10,6 +10,7 @@ public abstract class Building : MonoBehaviour, IInteractable
     protected Zone AssociatedZone { get; private set; }
     protected ResourceManager ResourceManager { get; private set; }
     protected PlayerInputManager PlayerInputManager { get; private set; }
+    protected UIManager UIManager { get; private set; }
     protected abstract Occupation AssociatedOccupation { get;}
 
     public GameObject Component => gameObject;
@@ -20,7 +21,8 @@ public abstract class Building : MonoBehaviour, IInteractable
         MaterialCost = _buildingData.MaterialCost;
 
         ResourceManager = GameManager.Instance?.GetManager<ResourceManager>();
-        PlayerInputManager = GameManager.Instance.GetManager<PlayerInputManager>();    
+        PlayerInputManager = GameManager.Instance.GetManager<PlayerInputManager>();
+        UIManager = GameManager.Instance.GetManager<UIManager>();
 
         ZoneMarker marker = GetComponent<ZoneMarker>();
         if (marker != null)
@@ -54,10 +56,15 @@ public abstract class Building : MonoBehaviour, IInteractable
 
     public virtual void OnSelect(PlayerInputManager playerInputManager)
     {
-        if (PlayerInputManager.TryGetPreviousWorkerSelection(out IWorker prevWorker))
+        //if (PlayerInputManager.TryGetPreviousWorkerSelection(out IWorker prevWorker))
+        //{
+        //    prevWorker.AssignOccupation(AssociatedOccupation);
+        //    prevWorker.TravelToZone(AssociatedZone);
+        //}
+
+        if(UIManager != null)
         {
-            prevWorker.AssignOccupation(AssociatedOccupation);
-            prevWorker.TravelToZone(AssociatedZone);
+            UIManager.DisplayBuildingInfo(GetNPCsInBuilding());
         }
     }
 
