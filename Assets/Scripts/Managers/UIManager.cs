@@ -120,14 +120,7 @@ public class UIManager : Manager
 
         _hudComponentsDic["Peasants"].Counter[0].text = NPCS.ToString();
     }
-    public void DisplayBuildingInfo(IEnumerable<NPC> npcsInBuilding)
-    {
 
-    }
-    public void HideBuildingInfo()
-    {
-
-    }
     public void DisplayNPCInfo(NPC npc)
     {
         _npcInfo.SetActive(true);
