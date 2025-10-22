@@ -62,8 +62,9 @@ public class PlayerInputManager : Manager
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             return;
 
+        
         Ray ray = _mainCam.ScreenPointToRay(Input.mousePosition);
-
+        
         HandleHover(ray);
         HandleClick(ray);
     }
