@@ -12,6 +12,7 @@ public class UIManager : Manager
     public class HudComponent
     {
         public string Title;
+        public int[] Value;
         public Image[] Icon;
         public TextMeshProUGUI[] Counter;
     }
@@ -51,11 +52,11 @@ public class UIManager : Manager
     {
         for(int i = 0; i < _hudComponents.Length; i++)
         {
-           _hudComponentsDic.Add(_hudComponents[i].Title, _hudComponents[i]);
             for (int j = 0; j < _hudComponents[i].Counter.Length; j++)
             {
-                _hudComponents[i].Counter[j].text = "50";
+                _hudComponents[i].Counter[j].text = _hudComponents[i].Value[j].ToString();
             }
+            _hudComponentsDic.Add(_hudComponents[i].Title, _hudComponents[i]);
         }
     }
 
