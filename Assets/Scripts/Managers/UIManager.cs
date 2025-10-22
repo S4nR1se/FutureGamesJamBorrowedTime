@@ -131,8 +131,11 @@ public class UIManager : Manager
     public void DisplayNPCInfo(NPC npc)
     {
         _npcInfo.SetActive(true);
-        _npcNameText.text = "Name: " + npc.Name;
-       // npcOccupationText.text 
+        _npcNameText.text = "Name:" + npc.Name;
+        if (npc is IWorker worker)
+        {
+            _npcOccupationText.text = worker.Occupation.ToString();
+        }
         _npcLifeSpanText.text = "LifeSpan: " + npc.LifeSpan.ToString();
         //_npcMoodText.text
     }
