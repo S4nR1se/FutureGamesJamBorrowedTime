@@ -11,7 +11,6 @@ public class BuildingData_SO : ScriptableObject
     public int WorkerSize;
     public BuildingData_SO Upgrade;
     public Tier BuildingTier;
-    public int BuildTime;
 
     public float PlacementYOffset = 2f;
     public float DefaultRotationY = 0f;
