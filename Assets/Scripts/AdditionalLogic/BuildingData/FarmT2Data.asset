@@ -10,10 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 593887cc72610954e841a203855c24cf, type: 3}
-  m_Name: WorkshopData
+  m_Name: FarmT2Data
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData_SO
-  MaterialCost: 0
+  MaterialCost: 5
   BuildTime: 1
-  PlacementYOffset: 3
-  DefaultRotationY: -90
-  PreviewPrefab: {fileID: 2502232621807567099, guid: 962bdb915adb01e478c4289d40c08410, type: 3}

@@ -14,6 +14,7 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
     private RoamingBehaviour _roamingBehaviour;
     private GoToZoneBehaviour _goToZoneBehaviour;
     private PlayerInteractionBehaviour _playerInteractionBehaviour;
+    private LoiteringBehaviour _loiteringBehaviour;
 
     internal const int ZERO = 0;
 
@@ -21,10 +22,11 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
 
     private Zone _reservedZone;
     private Zone _occupiedZone;
+    private Zone _preferredZone;
 
-    private TravelPurpose _travelPurpose = TravelPurpose.None;
-
+    private TimeManager _timeManager;
     internal ResourceManager _resourceManager;
+    private ZoneManager _zoneManager;
 
     private void Awake()
     {
@@ -34,6 +36,8 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
     {
         PlayingState.OnPlayingStateUpdate += UpdateComponent;
         _resourceManager = GameManager.Instance?.GetManager<ResourceManager>();
+        _zoneManager = GameManager.Instance.GetManager<ZoneManager>();
+        _timeManager = GameManager.Instance.GetManager<TimeManager>();
     }
     private void OnDisable()
     {
@@ -57,12 +61,14 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
 
         _activeCycle = activeCycle;
 
+        MarkedForDeath = false;
+
         _occupation = occupation ?? CreateDefaultOccupation();
         SetRestZoneType(restZoneType);
 
         _roamingBehaviour = new RoamingBehaviour(this, MovementSpeed, startZone);
-
         _playerInteractionBehaviour = new PlayerInteractionBehaviour(_meshRenderer);
+        _loiteringBehaviour = new LoiteringBehaviour(this, MovementSpeed);
 
         if (startZone != null && startZone.TryEnter(this))
         {
@@ -75,26 +81,28 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
         {
             Travel();
         }
-        else
+        else if(_occupiedZone != null)
         {
             Roam();
+        }
+        else
+        {
+            Loiter();
         }
     }
 
     public void AssignOccupation(Occupation occupation)
     {
         _occupation = occupation;
-
-        if (_isTraveling && _travelPurpose == TravelPurpose.Work)
-        {
-            CancelTravel(); 
-        }
-        GoToWork(_activeCycle);
     }
 
     public void Roam()
     {
         _roamingBehaviour?.Roam();
+    }
+    private void Loiter()
+    {
+        _loiteringBehaviour?.Loiter();
     }
 
     public void Travel()
@@ -118,7 +126,6 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
             SetGoToZoneBehaviour(travelZone);
 
             _isTraveling = true;
-            _travelPurpose = TravelPurpose.None;
         }
     }
     private void GoToZone(Zone travelZone)
@@ -172,12 +179,33 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
     public void GoToWork(DayCycle currentCycle)
     {
         //Ignores Daycycle Simply works
+        ValidatePreferredZone();
+
+        Zone targetZone = _preferredZone;
+
+        if (targetZone == null || targetZone.IsFull())
+        {
+            targetZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(Occupation.WorkZoneType);
+        }
+
         GoToZone(Occupation.WorkZoneType);
-        _travelPurpose = TravelPurpose.Work;
+    }
+    private void ValidatePreferredZone()
+    {
+        if (_preferredZone == null || _preferredZone.IsFull())
+            _preferredZone = null;
     }
     public void TravelToZone(Zone travelZone)
     {
+        if (_timeManager.CurrentDayCycle != _activeCycle)
+        {
+            return;
+        }
+
         if (_isTraveling) CancelTravel();
+
+        _preferredZone = travelZone;
+
         GoToZone(travelZone);
     }
     private void OnArrivedAtDestination(Zone zone)
@@ -197,8 +225,6 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
         _isTraveling = false;
         _roamingBehaviour.SetTargetZone(zone);
         _goToZoneBehaviour.OnArrived -= OnArrivedAtDestination;
-
-        _travelPurpose = TravelPurpose.None;
     }
     private void ReleaseReservation()
     {
