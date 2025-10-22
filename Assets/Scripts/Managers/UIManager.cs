@@ -71,6 +71,7 @@ public class UIManager : Manager
         _hudComponentsDic = new();
         InitializeHudComponentsCounter();
         _npcInfo.SetActive(false);
+        _npcMoodText.enabled = false;
     }
 
     private void OnDisable()
@@ -137,7 +138,6 @@ public class UIManager : Manager
             _npcOccupationText.text = worker.Occupation.ToString();
         }
         _npcLifeSpanText.text = "LifeSpan: " + npc.LifeSpan.ToString();
-        //_npcMoodText.text
     }
 
     public void HideNPCInfo()
