@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 043fdb4007c76954e98b53fbd746b542, type: 3}
   m_Name: NPCNames
   m_EditorClassIdentifier: Assembly-CSharp::NPCNames
+  NPCNamesList: []

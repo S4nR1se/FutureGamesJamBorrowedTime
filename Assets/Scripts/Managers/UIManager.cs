@@ -122,12 +122,12 @@ public class UIManager : Manager
         _hudComponentsDic["Peasants"].Counter[0].text = NPCS.ToString();
     }
 
-    private void DisplayNPCInfo(NPC npc)
+    public void DisplayNPCInfo(NPC npc)
     {
 
     }
 
-    private void HideNPCInfo()
+    public void HideNPCInfo()
     {
 
     }
