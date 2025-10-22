@@ -7,7 +7,7 @@ public class UndeadPool : ObjectPool
     [System.Serializable]
     private struct UndeadPrefab
     {
-        public UndeadTypes type;
+        public UndeadType type;
         public GameObject prefab;
     }
 
@@ -16,8 +16,8 @@ public class UndeadPool : ObjectPool
     private const int MAXCAPACITY = 100;
     private const int MAXACTIVE = -1;
 
-    private Dictionary<UndeadTypes, ObjectPool<IPoolable>> _pools;
-    private Dictionary<UndeadTypes, int> _activeCounts;
+    private Dictionary<UndeadType, ObjectPool<IPoolable>> _pools;
+    private Dictionary<UndeadType, int> _activeCounts;
 
     public override void Initialize()
     {
@@ -25,8 +25,8 @@ public class UndeadPool : ObjectPool
         _maxCapacity = MAXCAPACITY;
         _maxActiveObjects = MAXACTIVE;
 
-        _pools = new Dictionary<UndeadTypes, ObjectPool<IPoolable>>();
-        _activeCounts = new Dictionary<UndeadTypes, int>();
+        _pools = new Dictionary<UndeadType, ObjectPool<IPoolable>>();
+        _activeCounts = new Dictionary<UndeadType, int>();
 
         foreach (var undeadPrefab in _undeadPrefabs)
         {
@@ -43,7 +43,7 @@ public class UndeadPool : ObjectPool
         }
     }
 
-    public IPoolable Get(UndeadTypes type)
+    public IPoolable Get(UndeadType type)
     {
         if (_maxActiveObjects > 0 && _activeCounts[type] >= _maxActiveObjects)
         {
@@ -52,12 +52,12 @@ public class UndeadPool : ObjectPool
         return _pools[type].Get();
     }
 
-    public void Release(IPoolable poolObject, UndeadTypes type)
+    public void Release(IPoolable poolObject, UndeadType type)
     {
         _pools[type].Release(poolObject);
     }
 
-    private IPoolable CreatePoolableObject(GameObject prefab, UndeadTypes type)
+    private IPoolable CreatePoolableObject(GameObject prefab, UndeadType type)
     {
         GameObject poolableObject = Instantiate(prefab, _poolPosition, Quaternion.identity);
         poolableObject.transform.SetParent(transform);
@@ -69,12 +69,12 @@ public class UndeadPool : ObjectPool
     {
     }
 
-    private void OnGetFromPool(IPoolable poolObject, UndeadTypes type)
+    private void OnGetFromPool(IPoolable poolObject, UndeadType type)
     {
         _activeCounts[type]++;
         poolObject.PoolableComponent.SetActive(true);
     }
-    private void OnReturnToPool(IPoolable poolObject, UndeadTypes type)
+    private void OnReturnToPool(IPoolable poolObject, UndeadType type)
     {
         _activeCounts[type]--;
         poolObject.PoolableComponent.SetActive(false);
@@ -88,7 +88,7 @@ public class UndeadPool : ObjectPool
     }
 }
 
-public enum UndeadTypes
+public enum UndeadType
 {
     Skeleton,
     Zombie

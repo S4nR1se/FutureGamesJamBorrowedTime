@@ -45,6 +45,12 @@ public class ZoneManager : Manager
     {
         if (zone == null) return;
 
+        List<NPC> npcs = zone.GetNPCsInZone().ToList();
+        foreach (NPC npc in npcs)
+        {
+            npc.ResetOccupiedZone();
+        }
+
         if (_allZones.Remove(zone))
         {
             _zonesByType[zone.Type].Remove(zone);
