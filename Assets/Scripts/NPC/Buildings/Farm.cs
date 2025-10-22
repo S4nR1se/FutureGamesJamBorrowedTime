@@ -45,7 +45,7 @@ public class Farm : Building
     {
         int foodStockGenerated = AssociatedZone.CurrentOccupancy * FOODSTOCKPERPEASANT;
         ResourceManager.UpdateValue(Resources.FoodStock, foodStockGenerated);
-
+        //UndeadContact()
         _foodStockGenerated = 0;
     }
     public override void OnSelect(PlayerInputManager playerInputManager)
