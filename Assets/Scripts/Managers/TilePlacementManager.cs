@@ -5,6 +5,8 @@ public class TilePlacementManager : Manager
 {
     [SerializeField] private TileDatabase_SO tileDatabase;
 
+    private TilePreviewHelper _previewHelper;
+
     private GridManager _gridManager;
     private ResourceManager _resourceManager;
 
@@ -16,6 +18,12 @@ public class TilePlacementManager : Manager
     {
         _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
         _gridManager = GameManager.Instance.GetManager<GridManager>();
+
+        _previewHelper = GetComponent<TilePreviewHelper>();
+        if(_previewHelper != null)
+        {
+            _previewHelper.Initialize();
+        }
     }
     public void SelectBuilding(TileType tileType)
     {
