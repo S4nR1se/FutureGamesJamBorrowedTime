@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData_SO
   MaterialCost: 25
   BuildTime: 12
-  PlacementYOffset: 3
+  PlacementYOffset: 5.5
   DefaultRotationY: -90
-  PreviewPrefab: {fileID: 3869905220101840964, guid: c4f840112a9dc7d4689b64a24e6d7335, type: 3}
+  PreviewPrefab: {fileID: 4575814731325688492, guid: 7ce5a6d195b003745a0c288aa52fa58c, type: 3}

@@ -16,4 +16,4 @@ MonoBehaviour:
   BuildTime: 1
   PlacementYOffset: 3
   DefaultRotationY: -90
-  PreviewPrefab: {fileID: 3869905220101840964, guid: c4f840112a9dc7d4689b64a24e6d7335, type: 3}
+  PreviewPrefab: {fileID: 7669291683089598282, guid: 3db0d6f472cef0c4dae24499f86241bb, type: 3}

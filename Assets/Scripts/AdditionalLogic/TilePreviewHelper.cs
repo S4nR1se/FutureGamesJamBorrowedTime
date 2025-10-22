@@ -26,7 +26,7 @@ public class TilePreviewHelper : MonoBehaviour
         _yOffset = yOffset;
         _rotationY = rotationY;
 
-        currentPreview = Instantiate(prefab, Vector3.zero, Quaternion.Euler(0, _rotationY, 0), transform);
+        currentPreview = Instantiate(prefab, new Vector3(0, 100000, 0), Quaternion.Euler(0, _rotationY, 0), transform);
 
         foreach (var col in currentPreview.GetComponentsInChildren<Collider>())
             col.enabled = false;
