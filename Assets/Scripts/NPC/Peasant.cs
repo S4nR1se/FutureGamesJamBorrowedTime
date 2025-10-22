@@ -440,4 +440,11 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     {
         return LifeSpan - _dreadFactor;
     }
+    public Mood GetMood()
+    {
+        Zone restZone = _zoneManager.GetRandomAvailableZone(_restZoneType);
+
+        if (_dreadFactor > 0 || _starvationValue > 0 || restZone == null) return Mood.Bad;
+        else return Mood.Neutral;
+    }
 }
