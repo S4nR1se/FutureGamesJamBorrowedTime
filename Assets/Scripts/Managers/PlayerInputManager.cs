@@ -115,7 +115,7 @@ public class PlayerInputManager : Manager
 
             if (interactable != null)
             {
-                if (interactable is Tile tile && _buildingManager.SelectedTileType != TileType.BaseTile)
+                if (Input.GetMouseButtonDown(0) && interactable is Tile tile && _buildingManager.SelectedTileType != TileType.BaseTile)
                 {
                     _buildingManager.TryPlaceBuilding(tile);
                 }
@@ -202,6 +202,9 @@ public class PlayerInputManager : Manager
                 break;
             case "BuildingOption#4":
                 _buildingManager.SelectBuilding(TileType.Temple);
+                break;
+            case "BuildingOption#5":
+                _buildingManager.SelectBuilding(TileType.Graveyard);
                 break;
             default:
                 Debug.LogWarning($"Unhandled action: {action}");

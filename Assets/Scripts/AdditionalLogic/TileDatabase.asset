@@ -24,10 +24,13 @@ MonoBehaviour:
     buildingData: {fileID: 11400000, guid: 9e818423fc141c44ba50bcd882ace8f9, type: 2}
   - tileType: 3
     prefab: {fileID: 8295179934970264446, guid: 281393fe9fd572d48ba5dc9c66c9003c, type: 3}
-    buildingData: {fileID: 11400000, guid: f0dce792d15948d418570f31a0c3a962, type: 2}
+    buildingData: {fileID: 11400000, guid: ebbd076366b4021478a9075a663825b6, type: 2}
   - tileType: 4
     prefab: {fileID: 8295179934970264446, guid: 2912491c03764e045a054eec2f71fb29, type: 3}
-    buildingData: {fileID: 11400000, guid: 39403a0542c456a4784e6c2d75d68757, type: 2}
+    buildingData: {fileID: 11400000, guid: b1493fea56ebcc84e87925659421d0ee, type: 2}
   - tileType: 6
     prefab: {fileID: 8295179934970264446, guid: 5ef0c0c4cd687084880bc2154a398689, type: 3}
     buildingData: {fileID: 11400000, guid: 9117004abb21aed4e9e3f15ae6e32890, type: 2}
+  - tileType: 5
+    prefab: {fileID: 8295179934970264446, guid: a59c01ef8b42d3948a5a88de435c9b1c, type: 3}
+    buildingData: {fileID: 11400000, guid: 06e5fd53add5d7545b0ed956c48ac2ce, type: 2}

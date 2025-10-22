@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 593887cc72610954e841a203855c24cf, type: 3}
-  m_Name: FarmT1Data
+  m_Name: TempleT1Data
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData_SO
   BuildTime: 0
-  OutputPerWorker: 0
-  Resource: 0
-  MaterialCost: 5
+  OutputPerWorker: 1
+  Resource: 4
+  MaterialCost: 25
   PurrCost: 0
-  WorkerSize: 0
+  WorkerSize: 10
   Upgrade: {fileID: 0}
   BuildingTier: 0
-  PlacementYOffset: 3
+  PlacementYOffset: 5.6
   DefaultRotationY: -90
-  PreviewPrefab: {fileID: 7669291683089598282, guid: 3db0d6f472cef0c4dae24499f86241bb, type: 3}
+  PreviewPrefab: {fileID: 4575814731325688492, guid: 7ce5a6d195b003745a0c288aa52fa58c, type: 3}

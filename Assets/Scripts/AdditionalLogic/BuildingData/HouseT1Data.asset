@@ -12,5 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593887cc72610954e841a203855c24cf, type: 3}
   m_Name: HouseT1Data
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData_SO
+  BuildTime: 0
+  OutputPerWorker: 0
+  Resource: 0
   MaterialCost: 10
-  BuildTime: 4
+  PurrCost: 0
+  WorkerSize: 0
+  Upgrade: {fileID: 0}
+  BuildingTier: 0
+  PlacementYOffset: 3
+  DefaultRotationY: -90
+  PreviewPrefab: {fileID: 3869905220101840964, guid: c4f840112a9dc7d4689b64a24e6d7335, type: 3}
