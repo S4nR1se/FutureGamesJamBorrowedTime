@@ -60,4 +60,10 @@ public interface IPeasant
     int DreadFactor { get; }
     void GoToRest();
     void GatherPurr();
+    
+}
+public enum Mood
+{
+    Neutral,
+    Bad
 }

@@ -45,15 +45,16 @@ public class UIManager : Manager
         {
             _npcManager.OnNPCAmountChange += OnNPCAmountChange;
         }
+
+        _hudComponentsDic = new();
+        InitializeHudComponentsCounter();
+        _npcInfo.SetActive(false);
     }
 
     private void InitializeHudComponentsIcon()
     {
 
     }
-
-  
-
     private void InitializeHudComponentsCounter()
     {
         for(int i = 0; i < _hudComponents.Length; i++)
@@ -65,15 +66,6 @@ public class UIManager : Manager
             _hudComponentsDic.Add(_hudComponents[i].Title, _hudComponents[i]);
         }
     }
-
-    private void Start()
-    {
-        _hudComponentsDic = new();
-        InitializeHudComponentsCounter();
-        _npcInfo.SetActive(false);
-        _npcMoodText.enabled = false;
-    }
-
     private void OnDisable()
     {
         if (_resourceManager != null)
@@ -141,7 +133,17 @@ public class UIManager : Manager
         {
             _npcOccupationText.text = "None";
         }
-            _npcLifeSpanText.text = "LifeSpan: " + npc.LifeSpan.ToString();
+        _npcLifeSpanText.text = "LifeSpan: " + npc.LifeSpan.ToString();
+
+        if(npc is Peasant peasant)
+        {
+            _npcMoodText.text = "Mood: " + peasant.GetMood();
+        }
+        else
+        {
+            _npcMoodText.text = " ";
+        }
+
     }
 
     public void HideNPCInfo()
