@@ -39,7 +39,10 @@ public class Home : Building
     }
     public override void OnSelect(PlayerInputManager playerInputManager)
     {
-        //Skip
+        if (PlayerInputManager.TryGetPreviousWorkerSelection(out IWorker prevWorker))
+        {
+            prevWorker.TravelToZone(AssociatedZone);
+        }
     }
     private void UpdateProduction()
     {

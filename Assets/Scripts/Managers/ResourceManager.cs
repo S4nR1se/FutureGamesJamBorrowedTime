@@ -31,7 +31,7 @@ public class ResourceManager : Manager
             var entry = _resourceList.Find(r => r.ResourceType == resource);
             if (entry == null)
             {
-                entry = new ResourceEntry { ResourceType = resource, Amount = 100 };
+                entry = new ResourceEntry { ResourceType = resource, Amount = 0 };
                 _resourceList.Add(entry);
             }
             else
@@ -46,7 +46,10 @@ public class ResourceManager : Manager
     }
     private void InitializeResources()
     {
-        //Code to set initial values
+        foreach (Resources resource in Enum.GetValues(typeof(Resources)))
+        {
+            UpdateValue(resource, 100);
+        }
     }
     public void UpdateValue(Resources resource, int amount)
     {
