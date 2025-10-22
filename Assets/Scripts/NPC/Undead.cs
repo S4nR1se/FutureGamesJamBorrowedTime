@@ -15,12 +15,16 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
     private GoToZoneBehaviour _goToZoneBehaviour;
     private PlayerInteractionBehaviour _playerInteractionBehaviour;
 
+    internal const int ZERO = 0;
+
     private bool _isTraveling = false;
 
     private Zone _reservedZone;
     private Zone _occupiedZone;
 
     private TravelPurpose _travelPurpose = TravelPurpose.None;
+
+    internal ResourceManager _resourceManager;
 
     private void Awake()
     {
@@ -29,6 +33,7 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
     private void OnEnable()
     {
         PlayingState.OnPlayingStateUpdate += UpdateComponent;
+        _resourceManager = GameManager.Instance?.GetManager<ResourceManager>();
     }
     private void OnDisable()
     {
@@ -43,6 +48,7 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
         }
     }
     public abstract int GetPurrCost();
+    public abstract int GetGraveCost();
     public override void Initialize(Zone startZone, string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.Graveyard, DayCycle activeCycle = DayCycle.Night)
     {
         Name = name;

@@ -347,6 +347,11 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         _playerInteractionBehaviour?.OnHoverExit();
     }
 
+    public void UndeadContact()
+    {
+        _dreadFactor++;
+    }
+
     public void NightChecklist()
     {
         _dailyIntake();
@@ -377,6 +382,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         if (CheckDayRemaining() <= ZERO)
             _markedForDeath = true;
     }
+
     public int CheckDayRemaining()
     {
         return LifeSpan - _dreadFactor;
