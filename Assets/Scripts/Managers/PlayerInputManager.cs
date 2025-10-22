@@ -115,7 +115,7 @@ public class PlayerInputManager : Manager
 
             if (interactable != null)
             {
-                if (interactable is Tile tile && _buildingManager.SelectedTileType != TileType.BaseTile)
+                if (Input.GetMouseButtonDown(0) && interactable is Tile tile && _buildingManager.SelectedTileType != TileType.BaseTile)
                 {
                     _buildingManager.TryPlaceBuilding(tile);
                 }

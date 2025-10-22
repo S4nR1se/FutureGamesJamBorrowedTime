@@ -22,7 +22,38 @@ public class TilePlacementManager : Manager
         _previewHelper = GetComponent<TilePreviewHelper>();
         if(_previewHelper != null)
         {
-            _previewHelper.Initialize();
+            _previewHelper.Initialize(_gridManager);
+        }
+    }
+    private void OnEnable()
+    {
+        PlayingState.OnPlayingStateUpdate += UpdatePreview;
+    }
+    private void OnDisable()
+    {
+        PlayingState.OnPlayingStateUpdate -= UpdatePreview;
+    }
+    private void UpdatePreview()
+    {
+        if (_previewHelper != null)
+        {
+            if (_selectedTileType != TileType.BaseTile)
+            {
+                BuildingData_SO data = tileDatabase.tiles
+                    .Find(x => x.tileType == _selectedTileType)?.buildingData;
+
+                if (data != null && data.PreviewPrefab != null)
+                {
+                    if (_previewHelper.CurrentPreview == null)
+                        _previewHelper.ShowPreview(data.PreviewPrefab, data.PlacementYOffset, data.DefaultRotationY);
+
+                    _previewHelper.UpdatePreview();
+                }
+            }
+            else
+            {
+                _previewHelper.ClearPreview();
+            }
         }
     }
     public void SelectBuilding(TileType tileType)
@@ -82,6 +113,8 @@ public class TilePlacementManager : Manager
                 constructionSite.SetUpConstructionZone(targetTile, data.BuildTime, _selectedTileType, tileDatabase);
             }
         }
+
+        _gridManager.SetTileOccupied(gridPos, true);
 
         Destroy(targetTile.gameObject);
     }
