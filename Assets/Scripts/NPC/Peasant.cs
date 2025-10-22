@@ -21,11 +21,10 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     private PlayerInteractionBehaviour _playerInteractionBehaviour;
 
     private const int DAILYMEAL = -1;
-    private const int STARVING = 1;
+    private const int STARVING = 0;
     private const int ZERO = 0;
 
     private bool _isTraveling = false;
-    private bool _markedForDeath = false;
 
     private int _age = 1;
     private int _starvationValue = 0;
@@ -79,6 +78,8 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
 
         _activeCycle = activeCycle;
 
+        MarkedForDeath = false;
+
         _occupation = occupation ?? CreateDefaultOccupation();
         SetRestZoneType(restZoneType);
 
@@ -128,16 +129,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     public void AssignOccupation(Occupation occupation)
     {
         _occupation = occupation;
-
-        if (_isTraveling && _travelPurpose == TravelPurpose.Work)
-        {
-            CancelTravel();
-            GoToWork(_activeCycle);
-        }
-        else if (!_isTraveling && _occupiedZone != null && _occupiedZone.Type == Occupation.WorkZoneType)
-        {
-            GoToWork(_activeCycle);
-        }
     }
 
     public void Roam()
@@ -177,6 +168,45 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
             _travelPurpose = TravelPurpose.None;
         }
     }
+    private void GoToZone(Zone travelZone)
+    {
+        if (_isTraveling)
+        {
+            return;
+        }
+
+        if (_occupiedZone != null)
+        {
+            _occupiedZone.Exit(this);
+            _occupiedZone = null;
+        }
+
+        if (travelZone.TryEnter(this))
+        {
+            _reservedZone = travelZone;
+            SetGoToZoneBehaviour(travelZone);
+            _isTraveling = true;
+            _travelPurpose = TravelPurpose.None;
+        }
+        else
+        {
+            ZoneType zoneType = travelZone.Type;
+            travelZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(zoneType);
+
+            if (travelZone == null)
+            {
+                return;
+            }
+
+            if (travelZone.TryEnter(this))
+            {
+                _reservedZone = travelZone;
+                SetGoToZoneBehaviour(travelZone);
+                _isTraveling = true;
+                _travelPurpose = TravelPurpose.None;
+            }
+        }
+    }
 
     private void SetGoToZoneBehaviour(Zone targetZone)
     {
@@ -193,6 +223,10 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         if (currentCycle != _activeCycle) return;
         GoToZone(Occupation.WorkZoneType);
         _travelPurpose = TravelPurpose.Work;
+    }
+    public void TravelToZone(Zone travelZone)
+    {
+        GoToZone(travelZone);
     }
 
     [ContextMenu("Rest")]
@@ -323,42 +357,38 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         _playerInteractionBehaviour?.OnHoverExit();
     }
 
-    public void NightChecklist()
+    public void RunNightChecklist()
     {
-        _dailyIntake();
-        _checkStarvation();
-        _checkHomelessness();
-        _checkMortality();
+        DailyIntake();
+        CheckStarvation();
+        CheckHomelessness();
+        CheckMortality();
+        Debug.Log(MarkedForDeath);
     }
     
-    private void _dailyIntake()
+    private void DailyIntake()
     {
         if (_resourceManager.GetValue(Resources.FoodStock) > ZERO)
             _resourceManager.UpdateValue(Resources.FoodStock, DAILYMEAL);
         else
             _starvationValue++;
     }
-    private void _checkStarvation()
+    private void CheckStarvation()
     {
         if (_starvationValue > STARVING)
-            _markedForDeath = true;
+            MarkedForDeath = true;
     }
-    private void _checkHomelessness()
+    private void CheckHomelessness()
     {
-        if (_restZoneType == ZoneType.Road)
+        if (_currentZone.Type != _restZoneType)
             _dreadFactor++;
     }
-    private void _checkMortality()
+    private void CheckMortality()
     {
-        if (CheckDayRemaining() <= ZERO)
-            _markedForDeath = true;
+        if (CheckDayRemaining() <= ZERO) MarkedForDeath = true;
     }
     public int CheckDayRemaining()
     {
         return LifeSpan - _dreadFactor;
-    }
-    public void BorrowTime(int borrowedAmout = 1)
-    {
-        DecreaseLifeSpan(borrowedAmout);
     }
 }

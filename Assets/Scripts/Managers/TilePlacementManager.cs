@@ -1,3 +1,4 @@
+using System.Resources;
 using UnityEngine;
 
 public class TilePlacementManager : Manager
@@ -5,12 +6,15 @@ public class TilePlacementManager : Manager
     [SerializeField] private TileDatabase_SO tileDatabase;
 
     private GridManager _gridManager;
+    private ResourceManager _resourceManager;
+
     private TileType _selectedTileType = TileType.BaseTile;
 
     public TileType SelectedTileType => _selectedTileType;
 
     public override void Initialize()
     {
+        _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
         _gridManager = GameManager.Instance.GetManager<GridManager>();
     }
     public void SelectBuilding(TileType tileType)
@@ -33,6 +37,24 @@ public class TilePlacementManager : Manager
             return;
         }
 
+        BuildingData_SO data = tileDatabase.tiles.Find(x => x.tileType == _selectedTileType)?.buildingData;
+        if (data == null)
+        {
+            Debug.LogWarning($"No building data found for tile type {_selectedTileType}");
+            return;
+        }
+
+        int materialCost = data.MaterialCost;
+        int currentMaterials = _resourceManager.GetValue(Resources.Materials);
+
+        if (currentMaterials < materialCost)
+        {
+            Debug.Log($"Not enough materials. Needed: {materialCost}, Current: {currentMaterials}");
+            return;
+        }
+
+        _resourceManager.UpdateValue(Resources.Materials, -materialCost);
+
         GameObject constructionPrefab = tileDatabase.GetPrefab(TileType.ConstructionSite);
         if (constructionPrefab == null)
             return;
@@ -47,7 +69,6 @@ public class TilePlacementManager : Manager
         ConstructionSite constructionSite = constructionGO.GetComponent<ConstructionSite>();
         if (constructionSite != null)
         {
-            BuildingData_SO data = tileDatabase.tiles.Find(x => x.tileType == _selectedTileType)?.buildingData;
             if (data != null)
             {
                 constructionSite.SetUpConstructionZone(targetTile, data.BuildTime, _selectedTileType, tileDatabase);

@@ -31,7 +31,7 @@ public class ResourceManager : Manager
             var entry = _resourceList.Find(r => r.ResourceType == resource);
             if (entry == null)
             {
-                entry = new ResourceEntry { ResourceType = resource, Amount = 0 };
+                entry = new ResourceEntry { ResourceType = resource, Amount = 100 };
                 _resourceList.Add(entry);
             }
             else
@@ -41,8 +41,13 @@ public class ResourceManager : Manager
 
             _resources[resource] = existingAmount;
         }
-    }
 
+        InitializeResources();
+    }
+    private void InitializeResources()
+    {
+        //Code to set initial values
+    }
     public void UpdateValue(Resources resource, int amount)
     {
         if (_resources.ContainsKey(resource))

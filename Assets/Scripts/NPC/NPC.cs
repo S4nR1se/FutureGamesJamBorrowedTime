@@ -5,8 +5,9 @@ public abstract class NPC : MonoBehaviour
     public string Name {  get; protected set; }
     public int LifeSpan { get; protected set; }
     public float MovementSpeed { get; protected set; }
+    public bool MarkedForDeath { get; protected set; } = false;
 
-    private Zone _currentZone;
+    protected Zone _currentZone;
 
     protected ZoneType _restZoneType;
 
@@ -23,7 +24,10 @@ public abstract class NPC : MonoBehaviour
     }
     public void DecreaseLifeSpan(int amount)
     {
+        if (LifeSpan <= 0) return;
+
         LifeSpan -= amount;
+        if (LifeSpan <= 0) MarkedForDeath = true;
     }
     protected Occupation CreateDefaultOccupation()
     {
