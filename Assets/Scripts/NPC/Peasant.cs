@@ -147,33 +147,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     {
         _goToZoneBehaviour?.GoToZone();
     }
-
-    private void GoToZone(ZoneType zoneType)
-    {
-        if (_isTraveling)
-        {
-            return;
-        }
-
-        if (_occupiedZone != null)
-        {
-            _occupiedZone.Exit(this);
-            _occupiedZone = null;
-        }
-
-        Zone travelZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(zoneType);
-        if (travelZone == null)
-        {
-            return;
-        }
-
-        if (travelZone.TryEnter(this))
-        {
-            _reservedZone = travelZone;
-            SetGoToZoneBehaviour(travelZone);
-            _isTraveling = true;
-        }
-    }
     private void GoToZone(Zone travelZone)
     {
         if (_isTraveling)
@@ -235,7 +208,10 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
             targetZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(Occupation.WorkZoneType);
         }
 
-        GoToZone(Occupation.WorkZoneType);
+        if (targetZone != null)
+        {
+            GoToZone(targetZone);
+        }
     }
     private void ValidatePreferredZone()
     {

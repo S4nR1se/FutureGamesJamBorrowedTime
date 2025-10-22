@@ -1629,6 +1629,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 31882655}
     m_Modifications:
+    - target: {fileID: 5703767838753106164, guid: 344b5500a5a3e2d4c9f48515409fcbdf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8295179934970264446, guid: 344b5500a5a3e2d4c9f48515409fcbdf, type: 3}
       propertyPath: m_Name
       value: HouseTile
