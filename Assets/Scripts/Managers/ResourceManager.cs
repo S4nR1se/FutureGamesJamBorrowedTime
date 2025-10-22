@@ -41,8 +41,16 @@ public class ResourceManager : Manager
 
             _resources[resource] = existingAmount;
         }
-    }
 
+        InitializeResources();
+    }
+    private void InitializeResources()
+    {
+        foreach (Resources resource in Enum.GetValues(typeof(Resources)))
+        {
+            UpdateValue(resource, 100);
+        }
+    }
     public void UpdateValue(Resources resource, int amount)
     {
         if (_resources.ContainsKey(resource))

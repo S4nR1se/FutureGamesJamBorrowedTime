@@ -48,7 +48,6 @@ public class TimeManager : Manager
     public void PassTime()
     {
         _isCalculatingCycle = true;
-        Debug.Log($"[TimeManager] Starting cycle calculation (CurrentCycle: {CurrentDayCycle}, Day: {DayNumber})");
 
         OnCycleCalculation?.Invoke();
 

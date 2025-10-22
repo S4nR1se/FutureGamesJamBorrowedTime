@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593887cc72610954e841a203855c24cf, type: 3}
   m_Name: WorkshopData
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData_SO
-  MaterialCost: 20
-  BuildTime: 4
+  MaterialCost: 0
+  BuildTime: 1
