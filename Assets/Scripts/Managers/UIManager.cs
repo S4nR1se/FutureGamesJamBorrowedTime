@@ -170,4 +170,14 @@ public class UIManager : Manager
     {
         _buildingsManager.SelectBuilding(TileType.Workshop);
     }
+
+    public void DisplayBuildingInfo(IEnumerable<NPC> enumerable)
+    {
+        
+    }
+
+    public void HideBuildingInfo()
+    {
+
+    }
 }
