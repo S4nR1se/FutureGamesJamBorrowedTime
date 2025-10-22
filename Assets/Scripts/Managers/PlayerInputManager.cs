@@ -21,6 +21,7 @@ public class PlayerInputManager : Manager
     private IInteractable _currentHover;
 
     private TilePlacementManager _buildingManager;
+    private UIManager _UIManager;
     private GridManager _gridManager;
 
     public GameObject CurrentSelection => _currentSelection.Component;
@@ -36,6 +37,7 @@ public class PlayerInputManager : Manager
 
         _gridManager = GameManager.Instance.GetManager<GridManager>();
         _buildingManager = GameManager.Instance.GetManager<TilePlacementManager>();
+        _UIManager = GameManager.Instance.GetManager<UIManager>();
     }
 
     private void Update()
@@ -111,6 +113,10 @@ public class PlayerInputManager : Manager
                 {
                     interactable = i;
                 }
+                else if (i is NPC)
+                {
+                    interactable = i;
+                }
             }
 
             if (interactable != null)
@@ -131,6 +137,15 @@ public class PlayerInputManager : Manager
 
                     _currentSelection = interactable;
                     _currentSelection.OnSelect(this);
+
+                    if (_currentSelection is NPC selectedNPC)
+                    {
+                        _UIManager.DisplayNPCInfo(selectedNPC);
+                    }
+                    else
+                    {
+                        _UIManager.HideNPCInfo();
+                    }
                 }
             }
             else
@@ -142,6 +157,7 @@ public class PlayerInputManager : Manager
                     _previousSelection = _currentSelection;
 
                 _currentSelection = null;
+                _UIManager.HideNPCInfo();
             }
         }
 
@@ -160,6 +176,7 @@ public class PlayerInputManager : Manager
 
             _currentSelection = null;
             _previousWorkerSelection = null;
+            _UIManager.HideNPCInfo();
         }
     }
     public GameObject GetPreviousSelection()

@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using static Unity.Collections.AllocatorManager;
 
 public class UIManager : Manager
 {
@@ -19,8 +16,6 @@ public class UIManager : Manager
 
     [SerializeField] private HudComponent[] _hudComponents;
     [SerializeField] private Dictionary<string, GameObject> _buildingPrefab;
-
-    private GameObject _selectedBuilding = null;
 
     private Dictionary<string, HudComponent> _hudComponentsDic;
 
@@ -121,41 +116,33 @@ public class UIManager : Manager
         _hudComponentsDic["Peasants"].Counter[0].text = NPCS.ToString();
     }
 
-    private void SelectedBuildingCreation(GameObject Building)
+    public void DisplayNPCInfo(NPC npc)
     {
-        if(_selectedBuilding == null)
-        {
-            //Instatiate building prefab at mouse position
-            //_selectedBuilding = Instatiate(Building, mousePosition);
-        }
-        else
-        {
-            Destroy(_selectedBuilding);
-            //_selectedBuilding = Instatiate(Building, mousePosition);
-        }
+        //To display or hide the Info, I've added a canvas group to it.
+        //To show set the alpha to 1
+    }
+    public void HideNPCInfo()
+    {
+        //To hide set the alpha to 0
     }
 
     public void PickHouse()
     {
         _buildingsManager.SelectBuilding(TileType.House);
-        // SelectedBuildingCreation(_buildingPrefab["House"]);
     }
 
     public void PickTemple()
     {
         _buildingsManager.SelectBuilding(TileType.Temple);
-        //SelectedBuildingCreation(_buildingPrefab["Temple"]);
     }
 
     public void PickFarm()
     {
         _buildingsManager.SelectBuilding(TileType.Farm);
-        //SelectedBuildingCreation(_buildingPrefab["Farm"]);
     }
 
     public void PickWorkshop()
     {
         _buildingsManager.SelectBuilding(TileType.Workshop);
-        //SelectedBuildingCreation(_buildingPrefab["Workshp"]);
     }
 }
