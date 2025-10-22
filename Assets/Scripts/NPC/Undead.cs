@@ -188,7 +188,10 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
             targetZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(Occupation.WorkZoneType);
         }
 
-        GoToZone(Occupation.WorkZoneType);
+        if (targetZone != null)
+        {
+            GoToZone(targetZone);
+        }
     }
     private void ValidatePreferredZone()
     {
