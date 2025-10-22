@@ -20,7 +20,12 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     private GoToZoneBehaviour _goToZoneBehaviour;
     private PlayerInteractionBehaviour _playerInteractionBehaviour;
 
+    private const int DAILYMEAL = -1;
+    private const int STARVING = 1;
+    private const int ZERO = 0;
+
     private bool _isTraveling = false;
+    private bool _markedForDeath = false;
 
     private int _age = 1;
     private int _starvationValue = 0;
@@ -32,6 +37,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     private TravelPurpose _travelPurpose = TravelPurpose.None;
 
     private TimeManager _timeManager;
+    private ResourceManager _resourceManager;
 
     private void Awake()
     {
@@ -42,6 +48,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     {
         PlayingState.OnPlayingStateUpdate += UpdateComponent;
         _timeManager = GameManager.Instance.GetManager<TimeManager>();
+        _resourceManager = GameManager.Instance?.GetManager<ResourceManager>();
         if (_timeManager != null)
         {
             _timeManager.OnCyclePassage += HandleCyclePassage;
@@ -338,5 +345,44 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     public void OnHoverExit()
     {
         _playerInteractionBehaviour?.OnHoverExit();
+    }
+
+    public void NightChecklist()
+    {
+        _dailyIntake();
+        _checkStarvation();
+        _checkHomelessness();
+        _checkMortality();
+    }
+    
+    private void _dailyIntake()
+    {
+        if (_resourceManager.GetValue(Resources.FoodStock) > ZERO)
+            _resourceManager.UpdateValue(Resources.FoodStock, DAILYMEAL);
+        else
+            _starvationValue++;
+    }
+    private void _checkStarvation()
+    {
+        if (_starvationValue > STARVING)
+            _markedForDeath = true;
+    }
+    private void _checkHomelessness()
+    {
+        if (_restZoneType == ZoneType.Road)
+            _dreadFactor++;
+    }
+    private void _checkMortality()
+    {
+        if (CheckDayRemaining() <= ZERO)
+            _markedForDeath = true;
+    }
+    public int CheckDayRemaining()
+    {
+        return LifeSpan - _dreadFactor;
+    }
+    public void BorrowTime(int borrowedAmout = 1)
+    {
+        DecreaseLifeSpan(borrowedAmout);
     }
 }
