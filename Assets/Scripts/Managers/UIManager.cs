@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using static Unity.Collections.AllocatorManager;
 
 public class UIManager : Manager
 {
@@ -16,6 +19,9 @@ public class UIManager : Manager
 
     [SerializeField] private HudComponent[] _hudComponents;
     [SerializeField] private Dictionary<string, GameObject> _buildingPrefab;
+    [SerializeField] private Dictionary<string, TextMeshProUGUI> _npcInfo;
+
+    private GameObject _selectedBuilding = null;
 
     private Dictionary<string, HudComponent> _hudComponentsDic;
 
@@ -116,14 +122,14 @@ public class UIManager : Manager
         _hudComponentsDic["Peasants"].Counter[0].text = NPCS.ToString();
     }
 
-    public void DisplayNPCInfo(NPC npc)
+    private void DisplayNPCInfo(NPC npc)
     {
-        //To display or hide the Info, I've added a canvas group to it.
-        //To show set the alpha to 1
+
     }
-    public void HideNPCInfo()
+
+    private void HideNPCInfo()
     {
-        //To hide set the alpha to 0
+
     }
 
     public void PickHouse()
