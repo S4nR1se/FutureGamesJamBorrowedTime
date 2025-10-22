@@ -15,6 +15,7 @@ MonoBehaviour:
   Title: Your Purr energy is out of control
   Description: You've stored a lot of it, as no one has before you, oh Greatness!!!
     But that's the problem... no one knows how to deal with that amount
+  Tier: 2
   Choices:
   - {fileID: 11400000, guid: 7562947b6e8e5874d93f05a0f6acfd5f, type: 2}
   - {fileID: 11400000, guid: 0b3c9f8da3953ba459c394ad6e964aa1, type: 2}

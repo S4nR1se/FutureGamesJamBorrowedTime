@@ -16,6 +16,7 @@ MonoBehaviour:
   Description: Purr = mc^2  Eureka! This satisfying achievement in a neighboring
     town provides a big boost to prosperity. Everyone wants to be a part of it! Your
     citizens are leaving for your neighbor
+  Tier: 2
   Choices:
   - {fileID: 11400000, guid: 610f9e940fb331a43b4cd1e0e6a14aec, type: 2}
   - {fileID: 11400000, guid: 541fd1f629c86324bb8b2dbc69f34f27, type: 2}

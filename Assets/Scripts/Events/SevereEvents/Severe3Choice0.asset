@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Severe3Choice0
   m_EditorClassIdentifier: Assembly-CSharp::EventChoices_SO
   Description: Bring mana back by using new Purrified machine
-  Outcome: 5
+  Outcome: 4
   OutcomeValue: 420

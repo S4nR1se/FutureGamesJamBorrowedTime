@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EventChoices_SO
   Description: Summon ghost of local workshop guard that died during the robbery,
     to show you the culprit
-  Outcome: 5
+  Outcome: 4
   OutcomeValue: 70

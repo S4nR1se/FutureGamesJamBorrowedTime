@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Medium3Choice0
   m_EditorClassIdentifier: Assembly-CSharp::EventChoices_SO
   Description: Make them forget everything
-  Outcome: 5
+  Outcome: 4
   OutcomeValue: 200

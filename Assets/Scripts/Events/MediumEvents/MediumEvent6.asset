@@ -16,6 +16,7 @@ MonoBehaviour:
   Description: Sometimes a strong will to live is enough to resist the power of necromantic
     control over a dead body. This time, however, the body itself transformed into
     a twisted form of lich
+  Tier: 1
   Choices:
   - {fileID: 11400000, guid: 627e38a229d271145a6c3c3fbb3f331d, type: 2}
   - {fileID: 11400000, guid: 0f59febd7bc92544faea75239749071d, type: 2}

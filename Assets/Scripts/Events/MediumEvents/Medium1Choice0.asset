@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Medium1Choice0
   m_EditorClassIdentifier: Assembly-CSharp::EventChoices_SO
   Description: Agree to offer, but let them pledge eternall loyalty to you
-  Outcome: 5
+  Outcome: 4
   OutcomeValue: 200

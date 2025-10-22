@@ -15,6 +15,7 @@ MonoBehaviour:
   Title: The zombies have found out that your peasants taste good
   Description: Your Meow-ness! There are dead bodies everywhere! Your undead servants
     are eating the citizens!
+  Tier: 2
   Choices:
   - {fileID: 11400000, guid: 510e462e97f11844f99cdf7f9976116f, type: 2}
   - {fileID: 11400000, guid: 77b03a4c2296d2943949fd36d2a8a3c9, type: 2}

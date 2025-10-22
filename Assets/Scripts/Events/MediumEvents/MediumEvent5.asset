@@ -16,6 +16,7 @@ MonoBehaviour:
   Description: Some of your villagers found out about your connection to the shadow
     figures that are appearing from time to time.  Necromeowcy will only bring destruction,
     they said. And so they took to the streets with torches in hand...
+  Tier: 1
   Choices:
   - {fileID: 11400000, guid: a848c19a2a31c9748ab3e77211a30d91, type: 2}
   - {fileID: 11400000, guid: 2e9538bc81c65bb40ac90620a532b80d, type: 2}

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Medium5Choice0
   m_EditorClassIdentifier: Assembly-CSharp::EventChoices_SO
   Description: Showcase your power to them, let them fear you
-  Outcome: 5
+  Outcome: 4
   OutcomeValue: 200

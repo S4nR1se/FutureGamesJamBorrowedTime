@@ -16,6 +16,7 @@ MonoBehaviour:
   Description: Insects have appeared out of nowhere in the thousands Conventional
     methods are useless in dealing with the sheer numbers. If we don't do anything
     our town will be doomed...
+  Tier: 1
   Choices:
   - {fileID: 11400000, guid: a328c1702ab8e19409cb4c7fc3e5421b, type: 2}
   - {fileID: 11400000, guid: a79f4fb5203e1e44e92b00586564d4b1, type: 2}

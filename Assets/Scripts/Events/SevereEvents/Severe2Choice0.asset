@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Severe2Choice0
   m_EditorClassIdentifier: Assembly-CSharp::EventChoices_SO
   Description: Concetrate Purr energy to gain back total control over your servants
-  Outcome: 5
+  Outcome: 4
   OutcomeValue: 420

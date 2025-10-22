@@ -15,6 +15,7 @@ MonoBehaviour:
   Title: Severe drought
   Description: Drought, as never before. We fear that magic experiments in town and
     the storage of Purr energy is causing the fluctuation in the air
+  Tier: 2
   Choices:
   - {fileID: 11400000, guid: e926724770b7986488858c7650ed8029, type: 2}
   - {fileID: 11400000, guid: bc7efc7367081a64e887aed0985c095f, type: 2}

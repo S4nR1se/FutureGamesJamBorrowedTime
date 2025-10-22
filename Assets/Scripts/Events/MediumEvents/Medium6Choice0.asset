@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Medium6Choice0
   m_EditorClassIdentifier: Assembly-CSharp::EventChoices_SO
   Description: Lich? Banish him in the abyss, the undead have only one master
-  Outcome: 5
+  Outcome: 4
   OutcomeValue: 200

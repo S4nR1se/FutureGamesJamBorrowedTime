@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EventChoices_SO
   Description: Send a powerfull blast towards a neighboring town. The smell will
     attract the insects
-  Outcome: 5
+  Outcome: 4
   OutcomeValue: 200

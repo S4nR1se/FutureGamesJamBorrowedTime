@@ -15,6 +15,7 @@ MonoBehaviour:
   Title: Your local priest wants to report you to the authorities
   Description: Priests are wealthy people that use a power stored inside catnip to
     commune with their god. Maybe I can use it to my advantage...
+  Tier: 1
   Choices:
   - {fileID: 11400000, guid: 8eb12447ebfdd594ea7b801e2b63b0f7, type: 2}
   - {fileID: 11400000, guid: e875c63c27b077741b0a99c43277824c, type: 2}

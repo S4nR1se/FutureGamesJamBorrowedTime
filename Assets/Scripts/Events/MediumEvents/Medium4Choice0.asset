@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Medium4Choice0
   m_EditorClassIdentifier: Assembly-CSharp::EventChoices_SO
   Description: Spawn the purrest catnip he has ever seen...
-  Outcome: 5
+  Outcome: 4
   OutcomeValue: 200

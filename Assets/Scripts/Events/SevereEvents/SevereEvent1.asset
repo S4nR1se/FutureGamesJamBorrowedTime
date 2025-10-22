@@ -15,6 +15,7 @@ MonoBehaviour:
   Title: There is a famine
   Description: 'Bad news! Citizens are dying in an unnatural way: their bodies are
     twisted and covered in black fluid. We don''t know what''s causing it'
+  Tier: 2
   Choices:
   - {fileID: 11400000, guid: a5ce4820a6c8e8040a11e29f9fe8745c, type: 2}
   - {fileID: 11400000, guid: 05a6078407fd6e54a808866cda70bf7a, type: 2}

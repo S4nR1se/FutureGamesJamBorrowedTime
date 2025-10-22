@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Severe1Choice0
   m_EditorClassIdentifier: Assembly-CSharp::EventChoices_SO
   Description: Use the Purr to recover anyone that is still alive
-  Outcome: 5
+  Outcome: 4
   OutcomeValue: 420

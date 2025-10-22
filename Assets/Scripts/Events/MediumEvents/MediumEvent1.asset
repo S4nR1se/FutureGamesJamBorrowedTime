@@ -16,6 +16,7 @@ MonoBehaviour:
   Description: Representative of local vampire faction came to seek audience asking
     to feed them with Purr energy. Vampires are strong undead, maybe we can use them
     to strengthen our town...
+  Tier: 1
   Choices:
   - {fileID: 11400000, guid: 56353a400e40a304683feaab4badba8f, type: 2}
   - {fileID: 11400000, guid: 7f82f199754322b48954ed190080b445, type: 2}

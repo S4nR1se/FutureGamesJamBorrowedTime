@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Severe0Choice0
   m_EditorClassIdentifier: Assembly-CSharp::EventChoices_SO
   Description: Push some Purr energy into atmosphere to stabilize it
-  Outcome: 5
+  Outcome: 4
   OutcomeValue: 420

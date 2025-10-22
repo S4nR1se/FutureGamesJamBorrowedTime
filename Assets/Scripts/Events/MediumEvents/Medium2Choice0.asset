@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Medium2Choice0
   m_EditorClassIdentifier: Assembly-CSharp::EventChoices_SO
   Description: Extinguish fire yourself with Purr help
-  Outcome: 5
+  Outcome: 4
   OutcomeValue: 200
