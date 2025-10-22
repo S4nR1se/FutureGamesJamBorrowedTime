@@ -203,6 +203,9 @@ public class PlayerInputManager : Manager
             case "BuildingOption#4":
                 _buildingManager.SelectBuilding(TileType.Temple);
                 break;
+            case "BuildingOption#5":
+                _buildingManager.SelectBuilding(TileType.Graveyard);
+                break;
             default:
                 Debug.LogWarning($"Unhandled action: {action}");
                 break;

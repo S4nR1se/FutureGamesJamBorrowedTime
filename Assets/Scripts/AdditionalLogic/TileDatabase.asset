@@ -31,3 +31,6 @@ MonoBehaviour:
   - tileType: 6
     prefab: {fileID: 8295179934970264446, guid: 5ef0c0c4cd687084880bc2154a398689, type: 3}
     buildingData: {fileID: 11400000, guid: 9117004abb21aed4e9e3f15ae6e32890, type: 2}
+  - tileType: 5
+    prefab: {fileID: 8295179934970264446, guid: a59c01ef8b42d3948a5a88de435c9b1c, type: 3}
+    buildingData: {fileID: 11400000, guid: 06e5fd53add5d7545b0ed956c48ac2ce, type: 2}
