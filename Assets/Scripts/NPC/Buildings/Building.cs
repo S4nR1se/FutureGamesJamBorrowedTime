@@ -72,7 +72,7 @@ public abstract class Building : MonoBehaviour, IInteractable
 
         if(UIManager != null)
         {
-            //UIManager.DisplayBuildingInfo(GetNPCsInBuilding());
+            UIManager.DisplayBuildingInfo();
         }
     }
 

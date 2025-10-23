@@ -43,6 +43,11 @@ public class Home : Building
         {
             prevWorker.TravelToZone(AssociatedZone);
         }
+
+        if (UIManager != null)
+        {
+            UIManager.DisplayBuildingInfo();
+        }
     }
     private void UpdateProduction()
     {

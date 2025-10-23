@@ -50,6 +50,7 @@ public class ResourceManager : Manager
         {
             UpdateValue(resource, 100);
         }
+        OnResourceChange?.Invoke(_resources);
     }
     public void UpdateValue(Resources resource, int amount)
     {

@@ -115,6 +115,10 @@ public class UIManager : Manager
             {
                 _hudComponentsDic["Resources"].Counter[1].text = resource.Value.ToString();
             }
+            else if(resource.Key == Resources.Dread)
+            {
+                _hudComponentsDic["Dread"].Counter[0].text = resource.Value.ToString();
+            }
         }
     }
 
