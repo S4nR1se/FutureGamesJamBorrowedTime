@@ -217,7 +217,7 @@ public class UIManager : Manager
         //    _buildingNPCInfoList.Add(_buildingNPCInfo);
         //}
 
-        for(int i = 0; i < 10; ++i)
+        for(int i = 0; i < 20; ++i)
         {
             GameObject _buildingNPCInfo = Instantiate(_buildingNPCInfoPrefab);
             _buildingNPCInfo.transform.SetParent(posP);
