@@ -18,7 +18,7 @@ MonoBehaviour:
   MaterialCost: 0
   PurrCost: 0
   WorkerSize: 0
-  Upgrade: {fileID: 0}
+  Upgrade: {fileID: 11400000, guid: c660a18f8d1ba8444bba471eb42fc836, type: 2}
   BuildingTier: 0
   PlacementYOffset: 3
   DefaultRotationY: -90
