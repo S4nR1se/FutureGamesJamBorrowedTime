@@ -5,6 +5,8 @@ public class TilePlacementManager : Manager
 {
     [SerializeField] private TileDatabase_SO tileDatabase;
 
+    private TilePreviewHelper _previewHelper;
+
     private GridManager _gridManager;
     private ResourceManager _resourceManager;
 
@@ -16,11 +18,51 @@ public class TilePlacementManager : Manager
     {
         _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
         _gridManager = GameManager.Instance.GetManager<GridManager>();
+
+        _previewHelper = GetComponent<TilePreviewHelper>();
+        if(_previewHelper != null)
+        {
+            _previewHelper.Initialize(_gridManager);
+        }
+    }
+    private void OnEnable()
+    {
+        PlayingState.OnPlayingStateUpdate += UpdatePreview;
+    }
+    private void OnDisable()
+    {
+        PlayingState.OnPlayingStateUpdate -= UpdatePreview;
+    }
+    private void UpdatePreview()
+    {
+        if (_previewHelper != null)
+        {
+            if (_selectedTileType != TileType.BaseTile)
+            {
+                BuildingData_SO data = tileDatabase.tiles
+                    .Find(x => x.tileType == _selectedTileType)?.buildingData;
+
+                if (data != null && data.PreviewPrefab != null)
+                {
+                    if (_previewHelper.CurrentPreview == null ||
+                        !_previewHelper.CurrentPreview.name.StartsWith(data.PreviewPrefab.name))
+                    {
+                        _previewHelper.ShowPreview(data.PreviewPrefab, data.PlacementYOffset, data.DefaultRotationY);
+                    }
+
+                    _previewHelper.UpdatePreview();
+                }
+            }
+            else
+            {
+                _previewHelper.ClearPreview();
+            }
+        }
     }
     public void SelectBuilding(TileType tileType)
     {
         _selectedTileType = tileType;
-        Debug.Log($"Selected building: {_selectedTileType}");
+        if (_previewHelper != null) _previewHelper.ClearPreview();
     }
 
     public void TryPlaceBuilding(Tile targetTile)
@@ -33,14 +75,12 @@ public class TilePlacementManager : Manager
 
         if (existingTile?.tileType != TileType.BaseTile)
         {
-            Debug.Log("Cannot place building: Tile is already occupied.");
             return;
         }
 
         BuildingData_SO data = tileDatabase.tiles.Find(x => x.tileType == _selectedTileType)?.buildingData;
         if (data == null)
         {
-            Debug.LogWarning($"No building data found for tile type {_selectedTileType}");
             return;
         }
 
@@ -49,7 +89,6 @@ public class TilePlacementManager : Manager
 
         if (currentMaterials < materialCost)
         {
-            Debug.Log($"Not enough materials. Needed: {materialCost}, Current: {currentMaterials}");
             return;
         }
 
@@ -75,11 +114,14 @@ public class TilePlacementManager : Manager
             }
         }
 
+        _gridManager.SetTileOccupied(gridPos, true);
+
         Destroy(targetTile.gameObject);
     }
 
     public void ClearSelection()
     {
         _selectedTileType = TileType.BaseTile;
+        if (_previewHelper != null) _previewHelper.ClearPreview();
     }
 }

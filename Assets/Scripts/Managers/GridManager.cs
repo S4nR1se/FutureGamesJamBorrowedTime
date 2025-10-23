@@ -33,11 +33,8 @@ public class GridManager : Manager
         SetupNavMeshSurface();
         BakeNavMesh();
     }
-
-    #region Grid Setup
     private void InitializeGridFromScene()
     {
-        // Register tiles already in the scene
         foreach (Tile tile in GetComponentsInChildren<Tile>())
         {
             Vector2Int gridPos = WorldToGrid(tile.transform.position);
@@ -49,7 +46,6 @@ public class GridManager : Manager
             }
         }
 
-        // Fill missing tiles
         for (int x = 0; x < GridSize; x++)
         {
             for (int y = 0; y < GridSize; y++)
@@ -67,7 +63,7 @@ public class GridManager : Manager
                     tileComponent.tileType = TileType.BaseTile;
                     _tileObjects[x, y] = tileComponent;
                     _tileTypes[x, y] = tileComponent.tileType;
-                    _occupancyGrid[x, y] = false; // BaseTile is free
+                    _occupancyGrid[x, y] = false;
                 }
             }
         }
@@ -88,11 +84,9 @@ public class GridManager : Manager
 
     public void BakeNavMesh()
     {
+        _navMeshSurface.layerMask = ~(1 << LayerMask.NameToLayer("NavMeshIgnore"));
         _navMeshSurface?.BuildNavMesh();
     }
-    #endregion
-
-    #region Grid Conversion
     public Vector3 GridToWorld(Vector2Int gridPos)
     {
         return gridOrigin + new Vector3(gridPos.x * CellSize, 0, gridPos.y * CellSize);
@@ -110,9 +104,6 @@ public class GridManager : Manager
     {
         return pos.x >= 0 && pos.x < GridSize && pos.y >= 0 && pos.y < GridSize;
     }
-    #endregion
-
-    #region Tile Access
     public Tile GetTileAt(Vector2Int gridPos)
     {
         if (!IsValidGridPos(gridPos)) return null;
@@ -131,9 +122,6 @@ public class GridManager : Manager
         }
         return true;
     }
-    #endregion
-
-    #region Tile Replacement
     public void ReplaceTile(Vector2Int gridPos, TileType newTileType, GameObject tilePrefab = null)
     {
         if (!IsValidGridPos(gridPos)) return;
@@ -166,12 +154,9 @@ public class GridManager : Manager
             }
         }
     }
-    #endregion
-}
-
-[System.Serializable]
-public struct Vector2Int
-{
-    public int x, y;
-    public Vector2Int(int x, int y) { this.x = x; this.y = y; }
+    public void SetTileOccupied(Vector2Int pos, bool occupied)
+    {
+        if (!IsValidGridPos(pos)) return;
+        _occupancyGrid[pos.x, pos.y] = occupied;
+    }
 }

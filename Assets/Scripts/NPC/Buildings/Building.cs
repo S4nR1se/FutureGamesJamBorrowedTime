@@ -7,6 +7,10 @@ public abstract class Building : MonoBehaviour, IInteractable
     public Vector2Int Size { get; private set; } = new Vector2Int(1, 1);
     public int BuildTime { get; protected set; }
     public int MaterialCost { get; protected set; }
+    public int PurrCost { get; protected set; }
+    public int OutputPerWorker { get; protected set; }
+    public int WorkerSize { get; protected set; }
+    public Tier BuildingTier { get; protected set; }
     protected Zone AssociatedZone { get; private set; }
     protected ResourceManager ResourceManager { get; private set; }
     protected PlayerInputManager PlayerInputManager { get; private set; }
@@ -19,6 +23,10 @@ public abstract class Building : MonoBehaviour, IInteractable
     {
         BuildTime = _buildingData.BuildTime;
         MaterialCost = _buildingData.MaterialCost;
+        PurrCost = _buildingData.PurrCost;
+        OutputPerWorker = _buildingData.OutputPerWorker;
+        WorkerSize = _buildingData.WorkerSize;
+        BuildingTier = _buildingData.BuildingTier;
 
         ResourceManager = GameManager.Instance?.GetManager<ResourceManager>();
         PlayerInputManager = GameManager.Instance.GetManager<PlayerInputManager>();
@@ -82,4 +90,11 @@ public abstract class Building : MonoBehaviour, IInteractable
     {
 
     }
+}
+
+public enum Tier
+{
+    One,
+    Two,
+    Three
 }

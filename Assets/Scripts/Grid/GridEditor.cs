@@ -42,7 +42,7 @@ public class GridEditor : Editor
                 if (tileComponent == null)
                     tileComponent = tile.AddComponent<Tile>();
 
-                tileComponent.tileType = TileType.BaseTile;
+                if (!(x == 0 && y == 0)) tileComponent.tileType = TileType.BaseTile;
             }
         }
         EditorUtility.SetDirty(gridManager);
