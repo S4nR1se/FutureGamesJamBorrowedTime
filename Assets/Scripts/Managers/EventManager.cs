@@ -1,10 +1,12 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 
 public class EventManager : Manager
 {
+    public EventCatalog_SO EventCatalog;
+
     private TimeManager _timeManager;
-    private EventCatalog_SO _eventCatalog;
 
     private bool _firstEvent;
     private int _currentDay = 0;
@@ -56,39 +58,50 @@ public class EventManager : Manager
         _tierOfGame = 2;
         _firstEvent = true;
     }
+    public void TestNextEvent()
+    {
+        var nextEvent = GetNewEvent();
+        OnNewEvent?.Invoke(nextEvent);
+    }
+    public void TestStage2()
+    {
+        Debug.Log($"stage 2");
+        OnTierUpgrade();
+    }
     private Event_SO GetNewEvent()
     {
         Event_SO nextEvent;
         if (_tierOfGame == 1)
         {
             if (_firstEvent)
-                nextEvent = _eventCatalog.GetRandomEasyEvent();
+                nextEvent = EventCatalog.GetRandomEasyEvent();
             else
             {
                 int rnd = UnityEngine.Random.Range(0, 99);
 
                 if (rnd > 30)
-                    nextEvent = _eventCatalog.GetRandomEasyEvent();
+                    nextEvent = EventCatalog.GetRandomEasyEvent();
                 else
-                    nextEvent = _eventCatalog.GetRandomMediumEvent();
+                    nextEvent = EventCatalog.GetRandomMediumEvent();
             }
         }
         else
         {
             if (_firstEvent)
-                nextEvent = _eventCatalog.GetRandomMediumEvent();
+                nextEvent = EventCatalog.GetRandomMediumEvent();
             else
             {
                 int rnd = UnityEngine.Random.Range(0, 99);
 
                 if (rnd < 10)
-                    nextEvent = _eventCatalog.GetRandomEasyEvent();
+                    nextEvent = EventCatalog.GetRandomEasyEvent();
                 else if (rnd > 55)
-                    nextEvent = _eventCatalog.GetRandomMediumEvent();
+                    nextEvent = EventCatalog.GetRandomMediumEvent();
                 else
-                    nextEvent = _eventCatalog.GetRandomSevereEvent();
+                    nextEvent = EventCatalog.GetRandomSevereEvent();
             }
         }
+        Debug.Log($"returning event {nextEvent.Tier} {nextEvent.Title}");
         return nextEvent;
     }
 }

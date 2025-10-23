@@ -1,6 +1,5 @@
-using NUnit.Framework;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/EventCatalog_SO")]
@@ -24,8 +23,8 @@ public class EventCatalog_SO : ScriptableObject
         int nextIndex;
         do
         {
-            nextIndex = Random.Range(0, _easyCount - 1);
-        } while (_lastEasyEvent != nextIndex);
+            nextIndex = UnityEngine.Random.Range(0, _easyCount - 1);
+        } while (_lastEasyEvent == nextIndex);
         
         _lastEasyEvent = nextIndex;
         return EasyEvents[nextIndex];
@@ -36,8 +35,8 @@ public class EventCatalog_SO : ScriptableObject
         int nextIndex;
         do
         {
-            nextIndex = Random.Range(0, _mediumCount - 1);
-        } while (_lastMediumEvent != nextIndex);
+            nextIndex = UnityEngine.Random.Range(0, _mediumCount - 1);
+        } while (_lastMediumEvent == nextIndex);
 
         _lastMediumEvent = nextIndex;
         return MediumEvents[nextIndex];
@@ -48,8 +47,8 @@ public class EventCatalog_SO : ScriptableObject
         int nextIndex;
         do
         {
-            nextIndex = Random.Range(0, _severeCount - 1);
-        } while (_lastSevereEvent != nextIndex);
+            nextIndex = UnityEngine.Random.Range(0, _severeCount - 1);
+        } while (_lastSevereEvent == nextIndex);
 
         _lastSevereEvent = nextIndex;
         return SevereEvents[nextIndex];

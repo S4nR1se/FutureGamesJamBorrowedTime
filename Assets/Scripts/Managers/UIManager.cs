@@ -29,21 +29,27 @@ public class UIManager : Manager
     [SerializeField] private GameObject      _buildingWindow;
     [SerializeField] private Transform pos;
     [SerializeField] private Transform posP;
+    [SerializeField] private GameObject EvenUI;
 
     private Dictionary<string, HudComponent> _hudComponentsDic;
     private List<GameObject> _buildingNPCInfoList = new();
     private List<TextMeshProUGUI> _borrowTimeText;
     private int _borrowCount = 5;
+    private Event_SO eventToSolve;
 
     private ResourceManager _resourceManager;
     private NPCManager _npcManager;
     private TilePlacementManager _buildingsManager;
+    private EventManager _eventManager;
 
     public override void Initialize()
     {
         _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
         _npcManager = GameManager.Instance.GetManager<NPCManager>();
         _buildingsManager = GameManager.Instance.GetManager<TilePlacementManager>();
+        _eventManager = GameManager.Instance.GetManager<EventManager>();
+
+        //EvenUI.SetActive(false);
 
         if ( _resourceManager != null)
         {
@@ -52,6 +58,10 @@ public class UIManager : Manager
         if(_npcManager != null)
         {
             _npcManager.OnNPCAmountChange += OnNPCAmountChange;
+        }
+        if(_npcManager != null)
+        {
+            _eventManager.OnNewEvent += OnNewEvent;
         }
 
         _hudComponentsDic = new();
@@ -257,6 +267,51 @@ public class UIManager : Manager
             Debug.Log("hi");
             _borrowTimeText[i].text = _borrowCount.ToString();
         }
-        
-    }    
+
+    }
+
+    public void OpenEventUI()
+    {
+        EvenUI.SetActive(!EvenUI.activeInHierarchy);
+    }
+
+    public void NewEvent()
+    {
+        _eventManager.TestNextEvent();
+    }
+
+    private void OnNewEvent(Event_SO newEvent)
+    {
+        eventToSolve = newEvent;
+        var textElements = EvenUI.GetComponentsInChildren<TextMeshProUGUI>();
+        foreach (var text in textElements)
+        {
+            if (text.name == "Title")
+            {
+                text.text = newEvent.Title;
+            }
+            else if (text.name == "Description")
+            {
+                text.text = newEvent.Description;
+            }
+            else if (text.name == "ChoiceText0")
+            {
+                text.text = newEvent.Choices[0].Description;
+            }
+            else if (text.name == "ChoiceText1")
+            {
+                text.text = newEvent.Choices[1].Description;
+            }
+            else if (text.name == "ChoiceText2")
+            {
+                text.text = newEvent.Choices[2].Description;
+            }
+        }
+    }
+
+    public void SolveEventOutcome(int choice)
+    {
+        var asd = eventToSolve.Choices[choice];
+        Debug.Log($"{asd.Outcome} {asd.OutcomeValue}");
+    }
 }
