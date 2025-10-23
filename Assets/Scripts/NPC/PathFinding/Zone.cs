@@ -42,22 +42,49 @@ public class Zone
 
     public bool TryEnter(NPC npc)
     {
-        if (IsFull()) return false;
+        if (npc == null)
+        {
+            Debug.LogWarning($"[Zone] {Name} cannot register null NPC");
+            return false;
+        }
+
+        if (IsFull())
+        {
+            Debug.LogWarning($"[Zone] {Name} is full (Occupancy: {CurrentOccupancy}/{Capacity})");
+            return false;
+        }
+
         if (_npcsInZone.Add(npc))
         {
             CurrentOccupancy++;
             NPCEntered?.Invoke(npc);
+            Debug.Log($"[Zone] {Name} registered NPC {npc.Name}, Occupancy: {CurrentOccupancy}/{Capacity}");
+            ValidateState();
             return true;
         }
+
+        Debug.LogWarning($"[Zone] {Name} failed to register NPC {npc.Name}: already in zone");
         return false;
     }
 
     public void Exit(NPC npc)
     {
+        if (npc == null)
+        {
+            Debug.LogWarning($"[Zone] {Name} cannot remove null NPC");
+            return;
+        }
+
         if (_npcsInZone.Remove(npc))
         {
             CurrentOccupancy = Mathf.Max(0, CurrentOccupancy - 1);
             NPCExited?.Invoke(npc);
+            Debug.Log($"[Zone] {Name} removed NPC {npc.Name}, Occupancy: {CurrentOccupancy}/{Capacity}");
+            ValidateState();
+        }
+        else
+        {
+            Debug.LogWarning($"[Zone] {Name} could not remove NPC {npc.Name}: not in zone");
         }
     }
 
@@ -84,6 +111,20 @@ public class Zone
     public float GetDistanceTo(Vector3 position)
     {
         return Vector3.Distance(Center, position);
+    }
+
+    public void ValidateState()
+    {
+        int actualCount = _npcsInZone.Count;
+        if (CurrentOccupancy != actualCount)
+        {
+            Debug.LogWarning($"[Zone] {Name} occupancy mismatch: CurrentOccupancy={CurrentOccupancy}, Actual={actualCount}. Correcting...");
+            CurrentOccupancy = actualCount;
+        }
+    }
+    public Vector3 GetCenter()
+    {
+        return Center;
     }
 }
 

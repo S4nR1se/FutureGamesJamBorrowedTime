@@ -9,6 +9,7 @@ public class TileDatabase_SO : ScriptableObject
     {
         public TileType tileType;
         public GameObject prefab;
+        public BuildingData_SO buildingData;
     }
 
     public List<TileEntry> tiles = new List<TileEntry>();

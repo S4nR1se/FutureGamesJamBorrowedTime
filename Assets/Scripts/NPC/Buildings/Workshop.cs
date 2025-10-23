@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class Workshop : Building
 {
+    protected override Occupation AssociatedOccupation => new LaborerOccupation();
     private int _materialGenerated = 0;
-    private const int MATERIALPERPEASANT = 3;
+    //private const int MATERIALPERPEASANT = 3;
     public override void Initialize()
     {
         _materialGenerated = 0;
@@ -30,12 +31,12 @@ public class Workshop : Building
 
     protected override void OnNPCEnter(NPC npc)
     {
-        _materialGenerated += MATERIALPERPEASANT;
+        _materialGenerated += OutputPerWorker;
     }
 
     protected override void OnNPCExit(NPC npc)
     {
-        _materialGenerated = Mathf.Max(0, _materialGenerated - MATERIALPERPEASANT);
+        _materialGenerated = Mathf.Max(0, _materialGenerated - OutputPerWorker);
     }
 
     private void UpdateProduction()

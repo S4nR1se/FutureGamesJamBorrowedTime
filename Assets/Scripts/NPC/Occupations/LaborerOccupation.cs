@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class LaborerOccupation : Occupation
 {
-    public LaborerOccupation(ZoneType workZoneType) : base(workZoneType)
+    public override string Title { get; protected set; } = "Laborer";
+    public LaborerOccupation(ZoneType workZoneType = ZoneType.Workshop) : base(workZoneType)
     {
     }
 }
