@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using static Unity.Collections.AllocatorManager;
+using static UnityEngine.UI.Image;
 
 public class UIManager : Manager
 {
@@ -24,6 +25,10 @@ public class UIManager : Manager
     [SerializeField] private TextMeshProUGUI _npcOccupationText;
     [SerializeField] private TextMeshProUGUI _npcLifeSpanText;
     [SerializeField] private TextMeshProUGUI _npcMoodText;
+    [SerializeField] private GameObject      _buildingNPCInfoPrefab;
+    [SerializeField] private GameObject[]      _buildingWindow;
+    [SerializeField] private Transform pos;
+    [SerializeField] private Transform posP;
 
     private Dictionary<string, HudComponent> _hudComponentsDic;
 
@@ -171,9 +176,14 @@ public class UIManager : Manager
         _buildingsManager.SelectBuilding(TileType.Workshop);
     }
 
-    public void DisplayBuildingInfo(IEnumerable<NPC> enumerable)
+    public void DisplayBuildingInfo()//IEnumerable<NPC> enumerable)
     {
-        
+        GameObject _buildingNPCInfo = Instantiate(_buildingNPCInfoPrefab);
+
+        //Instantiate(_buildingNPCInfo);
+        _buildingNPCInfo.transform.SetParent(posP);
+        _buildingNPCInfo.transform.position = pos.transform.position;
+
     }
 
     public void HideBuildingInfo()
