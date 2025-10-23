@@ -178,12 +178,22 @@ public class UIManager : Manager
 
     public void DisplayBuildingInfo()//IEnumerable<NPC> enumerable)
     {
-        GameObject _buildingNPCInfo = Instantiate(_buildingNPCInfoPrefab);
+        int new_height = 0;
+        for(int i = 0; i < 1; i++)
+        {
+            GameObject _buildingNPCInfo = Instantiate(_buildingNPCInfoPrefab);
+            for (int j = 0; j < _buildingNPCInfo.transform.childCount; ++j)
+            {
+                Transform child = _buildingNPCInfo.transform.GetChild(j);
+               
+            }
 
-        //Instantiate(_buildingNPCInfo);
-        _buildingNPCInfo.transform.SetParent(posP);
-        _buildingNPCInfo.transform.position = pos.transform.position;
-
+            _buildingNPCInfo.transform.SetParent(posP);
+            Vector3 NewPos = new Vector3(pos.transform.position.x, pos.transform.position.y + new_height, pos.transform.position.z);
+            _buildingNPCInfo.transform.position = NewPos;
+            new_height -= 30;
+        }
+      
     }
 
     public void HideBuildingInfo()
