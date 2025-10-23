@@ -201,29 +201,7 @@ public class UIManager : Manager
     public void DisplayBuildingInfo()//IEnumerable<NPC> enumerable)
     {
         _buildingWindow.SetActive(true);
-        //foreach (NPC npc in enumerable)
-        //{
-        //    GameObject _buildingNPCInfo = Instantiate(_buildingNPCInfoPrefab);
-        //    _buildingNPCInfo.transform.SetParent(posP);
-        //    Vector3 NewPos = new Vector3(pos.transform.position.x, pos.transform.position.y + new_height, pos.transform.position.z);
-        //    _buildingNPCInfo.transform.position = NewPos;
-        //    new_height -= 30;
-        //    for (int j = 0; j < _buildingNPCInfo.transform.childCount; ++j)
-        //    {
-        //        Transform child = _buildingNPCInfo.transform.GetChild(j);
-        //        if(child.name == "Name")
-        //        {
-        //            child.gameObject.GetComponent<TextMeshProUGUI>().text = npc.name;
-        //        }
-        //        else if(child.name == "BTCounter")
-        //        {
-        //            child.gameObject.GetComponent<TextMeshProUGUI>().text = npc.LifeSpan.ToString();
-        //        }
-        //    }
-
-        //    _buildingNPCInfoList.Add(_buildingNPCInfo);
-        //}
-
+ 
         for(int i = 0; i < 20; ++i)
         {
             GameObject _buildingNPCInfo = Instantiate(_buildingNPCInfoPrefab);
@@ -278,7 +256,6 @@ public class UIManager : Manager
 
     public void TestOpenEventUI()
     {
-        //Instantiate(_eventUIPrefab);
         _eventUIPrefab.SetActive(true);
     }
 
@@ -295,8 +272,7 @@ public class UIManager : Manager
     private void OnNewEvent(Event_SO newEvent)
     {
         _eventToSolve = newEvent;
-        _event = Instantiate(_eventUIPrefab);
-        var textElements = _event.GetComponentsInChildren<TextMeshProUGUI>();
+        var textElements = _eventUIPrefab.GetComponentsInChildren<TextMeshProUGUI>();
         foreach (var text in textElements)
         {
             if (text.name == "Title")
