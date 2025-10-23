@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Home : Building
 {
-    protected override Occupation AssociatedOccupation => new BuilderOccupation();
+    protected override Occupation AssociatedOccupation => new UnemployedOccupation();
 
     private ResourceManager _resourceManager;
     private NPCManager _npcManager;

@@ -45,9 +45,8 @@ public class RoamingBehaviour
 
         if (!_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance)
         {
-            //Vector3 randomPoint = GetRandomPointInZone();
-            Vector3 centerPoint = GetCenterZone();
-            _agent.SetDestination(centerPoint);
+            Vector3 destinationPoint = _targetZone.Type == ZoneType.ConstructionSite ? GetRandomPointInZone() : GetCenterZone();
+            _agent.SetDestination(destinationPoint);
             _timeSinceLastDestination = 0f;
         }
         else
@@ -69,9 +68,8 @@ public class RoamingBehaviour
     private void HandleStuckNPC()
     {
         _agent.ResetPath();
-        //Vector3 randomPoint = GetRandomPointInZone();
-        Vector3 centerPoint = GetCenterZone();
-        _agent.SetDestination(centerPoint);
+        Vector3 destinationPoint = _targetZone.Type == ZoneType.ConstructionSite ? GetRandomPointInZone() : GetCenterZone();
+        _agent.SetDestination(destinationPoint);
         _timeSinceLastDestination = 0f;
     }
     private Vector3 GetRandomPointInZone()

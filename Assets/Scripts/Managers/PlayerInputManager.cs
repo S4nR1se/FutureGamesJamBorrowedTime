@@ -102,7 +102,7 @@ public class PlayerInputManager : Manager
             {
                 if (i is NPC npc)
                 {
-                    if (npc.GetOccupiedZone() != null)
+                    if (npc.GetOccupiedZone() != null && npc.GetOccupiedZone().Type != ZoneType.ConstructionSite)
                     {
                         continue;
                     }

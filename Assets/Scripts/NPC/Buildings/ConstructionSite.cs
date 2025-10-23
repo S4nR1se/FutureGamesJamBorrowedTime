@@ -66,4 +66,13 @@ public class ConstructionSite : Building
     protected override void OnNPCExit(NPC npc)
     {
     }
+    public override void OnSelect(PlayerInputManager playerInputManager)
+    {
+        if (PlayerInputManager.TryGetPreviousWorkerSelection(out IWorker prevWorker))
+        {
+            prevWorker.AssignOccupation(AssociatedOccupation);
+            prevWorker.TravelToZone(AssociatedZone);
+            return;
+        }
+    }
 }

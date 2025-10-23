@@ -24,6 +24,9 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     private const int STARVING = 0;
     private const int ZERO = 0;
 
+    private float _timeSinceLastZoneCheck = 0f;
+    private const float ZONE_CHECK_INTERVAL = 2f;
+
     private bool _isTraveling = false;
 
     private int _starvationValue = 0;
@@ -191,8 +194,30 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     private void Loiter()
     {
         _loiteringBehaviour?.Loiter();
-    }
 
+        CheckForAvailableWorkZone();
+    }
+    private void CheckForAvailableWorkZone()
+    {
+        if (_timeManager.CurrentDayCycle != _activeCycle)
+            return;
+
+        _timeSinceLastZoneCheck += Time.deltaTime;
+        if (_timeSinceLastZoneCheck < ZONE_CHECK_INTERVAL)
+            return;
+
+        _timeSinceLastZoneCheck = 0f;
+
+        if (_isTraveling || _occupiedZone != null)
+            return;
+
+        Zone availableWorkZone = _zoneManager.GetRandomAvailableZone(_occupation.WorkZoneType);
+
+        if (availableWorkZone != null)
+        {
+            GoToZone(availableWorkZone);
+        }
+    }
     public void Travel()
     {
         _goToZoneBehaviour?.GoToZone();

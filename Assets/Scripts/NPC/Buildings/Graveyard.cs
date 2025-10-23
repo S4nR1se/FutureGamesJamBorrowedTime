@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Graveyard : Building
 {
-    protected override Occupation AssociatedOccupation => new BuilderOccupation(); //PlaceHolder
+    protected override Occupation AssociatedOccupation => new UnemployedOccupation(); //PlaceHolder
 
     private NPCManager _npcManager;
     private ResourceManager _resourceManager;
