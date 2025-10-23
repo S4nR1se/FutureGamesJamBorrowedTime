@@ -279,6 +279,11 @@ public class UIManager : Manager
         _eventManager.TestNextEvent();
     }
 
+    public void TestStage2()
+    {
+        _eventManager.TestStage2();
+    }
+
     private void OnNewEvent(Event_SO newEvent)
     {
         eventToSolve = newEvent;

@@ -74,7 +74,10 @@ public class EventManager : Manager
         if (_tierOfGame == 1)
         {
             if (_firstEvent)
+            {
                 nextEvent = EventCatalog.GetRandomEasyEvent();
+                _firstEvent = false;
+            }
             else
             {
                 int rnd = UnityEngine.Random.Range(0, 99);
@@ -88,7 +91,10 @@ public class EventManager : Manager
         else
         {
             if (_firstEvent)
+            {
                 nextEvent = EventCatalog.GetRandomMediumEvent();
+                _firstEvent = false;
+            }
             else
             {
                 int rnd = UnityEngine.Random.Range(0, 99);
