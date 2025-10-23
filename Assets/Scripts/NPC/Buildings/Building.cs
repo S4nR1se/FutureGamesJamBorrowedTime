@@ -3,17 +3,32 @@ using UnityEngine;
 
 public abstract class Building : MonoBehaviour, IInteractable
 {
+    [SerializeField] private BuildingData_SO _buildingData;
     public Vector2Int Size { get; private set; } = new Vector2Int(1, 1);
     public int BuildTime { get; protected set; }
     public int MaterialCost { get; protected set; }
+    public int PurrCost { get; protected set; }
+    public int OutputPerWorker { get; protected set; }
+    public int WorkerSize { get; protected set; }
+    public Tier BuildingTier { get; protected set; }
     protected Zone AssociatedZone { get; private set; }
     protected ResourceManager ResourceManager { get; private set; }
+    protected PlayerInputManager PlayerInputManager { get; private set; }
+    protected abstract Occupation AssociatedOccupation { get;}
 
-    public GameObject Component => throw new System.NotImplementedException();
+    public GameObject Component => gameObject;
 
     public virtual void Initialize()
     {
+        BuildTime = _buildingData.BuildTime;
+        MaterialCost = _buildingData.MaterialCost;
+        PurrCost = _buildingData.PurrCost;
+        OutputPerWorker = _buildingData.OutputPerWorker;
+        WorkerSize = _buildingData.WorkerSize;
+        BuildingTier = _buildingData.BuildingTier;
+
         ResourceManager = GameManager.Instance?.GetManager<ResourceManager>();
+        PlayerInputManager = GameManager.Instance.GetManager<PlayerInputManager>();    
 
         ZoneMarker marker = GetComponent<ZoneMarker>();
         if (marker != null)
@@ -47,7 +62,11 @@ public abstract class Building : MonoBehaviour, IInteractable
 
     public virtual void OnSelect(PlayerInputManager playerInputManager)
     {
-
+        if (PlayerInputManager.TryGetPreviousWorkerSelection(out IWorker prevWorker))
+        {
+            prevWorker.AssignOccupation(AssociatedOccupation);
+            prevWorker.TravelToZone(AssociatedZone);
+        }
     }
 
     public virtual void OnDeselect()
@@ -64,4 +83,11 @@ public abstract class Building : MonoBehaviour, IInteractable
     {
 
     }
+}
+
+public enum Tier
+{
+    One,
+    Two,
+    Three
 }

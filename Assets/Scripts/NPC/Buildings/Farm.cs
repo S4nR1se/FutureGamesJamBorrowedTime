@@ -3,7 +3,10 @@ using UnityEngine;
 public class Farm : Building
 {
     private int _foodStockGenerated = 0;
-    private const int FOODSTOCKPERPEASANT = 5;
+    //private const int FOODSTOCKPERPEASANT = 2;
+
+    protected override Occupation AssociatedOccupation => new FarmerOccupation();
+
     public override void Initialize()
     {
         _foodStockGenerated = 0;
@@ -30,19 +33,23 @@ public class Farm : Building
 
     protected override void OnNPCEnter(NPC npc)
     {
-        _foodStockGenerated += FOODSTOCKPERPEASANT;
+        _foodStockGenerated += OutputPerWorker;
     }
 
     protected override void OnNPCExit(NPC npc)
     {
-        _foodStockGenerated = Mathf.Max(0, _foodStockGenerated - FOODSTOCKPERPEASANT);
+        _foodStockGenerated = Mathf.Max(0, _foodStockGenerated - OutputPerWorker);
     }
 
     private void UpdateProduction()
     {
-        int foodStockGenerated = AssociatedZone.CurrentOccupancy * FOODSTOCKPERPEASANT;
+        int foodStockGenerated = AssociatedZone.CurrentOccupancy * OutputPerWorker;
         ResourceManager.UpdateValue(Resources.FoodStock, foodStockGenerated);
-
+        //UndeadContact()
         _foodStockGenerated = 0;
+    }
+    public override void OnSelect(PlayerInputManager playerInputManager)
+    {
+        base.OnSelect(playerInputManager);
     }
 }

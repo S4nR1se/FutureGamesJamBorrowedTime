@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ResourceManager : Manager
 {
+    public event Action<Dictionary<Resources, int>> OnResourceChange;
+
     [System.Serializable]
     public class ResourceEntry
     {
@@ -39,14 +41,24 @@ public class ResourceManager : Manager
 
             _resources[resource] = existingAmount;
         }
-    }
 
+        InitializeResources();
+    }
+    private void InitializeResources()
+    {
+        foreach (Resources resource in Enum.GetValues(typeof(Resources)))
+        {
+            UpdateValue(resource, 100);
+        }
+    }
     public void UpdateValue(Resources resource, int amount)
     {
         if (_resources.ContainsKey(resource))
         {
             int updatedValue = _resources[resource] + amount;
             _resources[resource] = Mathf.Max(0, updatedValue);
+
+            OnResourceChange?.Invoke(_resources);
 
             ResourceEntry entry = _resourceList.Find(r => r.ResourceType == resource);
             if (entry != null)
