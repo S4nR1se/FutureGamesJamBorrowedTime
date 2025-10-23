@@ -14,12 +14,12 @@ public class ZoneMarker : MonoBehaviour
 
     private Zone _zone;
     private Collider _collider;
-
     private NavMeshSurface _parentSurface;
+    private bool _isZoneRegistered; // Track registration state
 
     private void Start()
     {
-        if (_zone == null)
+        if (_zone == null && !_isZoneRegistered)
         {
             InitializeZone();
         }
@@ -27,11 +27,24 @@ public class ZoneMarker : MonoBehaviour
 
     public void InitializeZone()
     {
+        if (_isZoneRegistered)
+        {
+            Debug.LogWarning($"Zone {zoneName} is already registered!", this);
+            return;
+        }
+
         ZoneManager zoneManager = GameManager.Instance.GetManager<ZoneManager>();
+        if (zoneManager == null)
+        {
+            Debug.LogError("ZoneManager not found!", this);
+            return;
+        }
+
         _parentSurface = zoneManager.ParentSurface;
 
         _zone = CreateZone();
         zoneManager.RegisterZone(_zone);
+        _isZoneRegistered = true;
 
         Building associatedBuilding = GetComponent<Building>();
         if (associatedBuilding != null)
@@ -53,7 +66,7 @@ public class ZoneMarker : MonoBehaviour
     {
         return type switch
         {
-            ZoneType.House => 1,
+            ZoneType.House => 10,
             ZoneType.Farm => 5,
             ZoneType.Church => 10,
             ZoneType.Workshop => 5,
@@ -75,7 +88,6 @@ public class ZoneMarker : MonoBehaviour
         Vector2 extents = new Vector2(bounds.extents.x, bounds.extents.z);
 
         float calculatedRadius = extents.magnitude;
-
         float shrinkFactor = 0.8f;
         return calculatedRadius * shrinkFactor;
     }
@@ -84,13 +96,42 @@ public class ZoneMarker : MonoBehaviour
 
     public void UpdateZone()
     {
-        if (_zone != null)
+        if (_zone == null)
+        {
+            Debug.LogWarning($"No zone to update for {zoneName}!", this);
+            return;
+        }
+
+        ZoneManager zoneManager = GameManager.Instance.GetManager<ZoneManager>();
+        if (zoneManager == null)
+        {
+            Debug.LogError("ZoneManager not found!", this);
+            return;
+        }
+
+        // Unregister the old zone
+        if (_isZoneRegistered)
+        {
+            zoneManager.UnregisterZone(_zone);
+            _isZoneRegistered = false;
+        }
+
+        // Create and register new zone
+        _zone = CreateZone();
+        zoneManager.RegisterZone(_zone);
+        _isZoneRegistered = true;
+    }
+
+    private void OnDestroy()
+    {
+        if (_isZoneRegistered && _zone != null)
         {
             ZoneManager zoneManager = GameManager.Instance.GetManager<ZoneManager>();
-            zoneManager.UnregisterZone(_zone);
-
-            _zone = CreateZone();
-            zoneManager.RegisterZone(_zone);
+            if (zoneManager != null)
+            {
+                zoneManager.UnregisterZone(_zone);
+                _isZoneRegistered = false;
+            }
         }
     }
 }

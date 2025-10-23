@@ -54,6 +54,7 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
     public override void Initialize(Zone startZone, string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.Graveyard, DayCycle activeCycle = DayCycle.Night)
     {
         Name = name;
+        Age = 0;
         LifeSpan = lifeSpan;
         MovementSpeed = movementSpeed;
 
@@ -171,6 +172,7 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
 
     public void GoToWork(DayCycle currentCycle)
     {
+        if (currentCycle == DayCycle.Day) Age++;
         //Ignores Daycycle Simply works
         ValidatePreferredZone();
 
@@ -319,5 +321,9 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
             _occupiedZone.Exit(this);
             _occupiedZone = null;
         }
+    }
+    public override Zone GetOccupiedZone()
+    {
+        return _occupiedZone;
     }
 }

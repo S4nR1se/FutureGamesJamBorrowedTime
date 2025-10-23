@@ -3,6 +3,7 @@ using UnityEngine;
 public abstract class NPC : MonoBehaviour
 {
     public string Name {  get; protected set; }
+    public int Age { get; protected set; }
     public int LifeSpan { get; protected set; }
     public float MovementSpeed { get; protected set; }
     public bool MarkedForDeath { get; protected set; } = false;
@@ -38,6 +39,7 @@ public abstract class NPC : MonoBehaviour
         _currentZone = null;
     }
     public abstract void ResetOccupiedZone();
+    public abstract Zone GetOccupiedZone();
     public Zone GetCurrentZone() => _currentZone;
 }
 public enum TravelPurpose
@@ -56,7 +58,6 @@ public interface IWorker
 }
 public interface IPeasant
 {
-    int Age { get; }
     int StarvationValue { get; }
     int DreadFactor { get; }
     void GoToRest();

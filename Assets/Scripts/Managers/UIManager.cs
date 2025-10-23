@@ -14,6 +14,15 @@ public class UIManager : Manager
         public TextMeshProUGUI[] Counter;
     }
 
+    [System.Serializable]
+    private class NPCEntryData
+    {
+        public NPC NPC;
+        public GameObject GameObject;
+        public TextMeshProUGUI CounterText;
+        public int CounterValue;
+    }
+
     [SerializeField] private HudComponent[] _hudComponents;
     [SerializeField] private Dictionary<string, GameObject> _buildingPrefab;
     [SerializeField] private GameObject _npcInfo;
@@ -21,17 +30,14 @@ public class UIManager : Manager
     [SerializeField] private TextMeshProUGUI _npcOccupationText;
     [SerializeField] private TextMeshProUGUI _npcLifeSpanText;
     [SerializeField] private TextMeshProUGUI _npcMoodText;
-    [SerializeField] private GameObject _buildingNPCInfoPrefab;
-    [SerializeField] private GameObject _buildingWindow;
+    [SerializeField] private GameObject _npcEntryTemplate;
+    [SerializeField] private GameObject _buildingWindowParent;
     [SerializeField] private Transform _parentTransform;
 
     private CanvasGroup _npcInfoCanvasGroup;
     private CanvasGroup _buildingInfoCanvasGroup;
-
     private Dictionary<string, HudComponent> _hudComponentsDic;
-    private List<GameObject> _buildingNPCInfoList = new();
-    private List<TextMeshProUGUI> _borrowTimeText;
-    private int _borrowCount = 5;
+    private List<NPCEntryData> _npcEntries = new();
 
     private ResourceManager _resourceManager;
     private NPCManager _npcManager;
@@ -43,34 +49,35 @@ public class UIManager : Manager
         _npcManager = GameManager.Instance.GetManager<NPCManager>();
         _buildingsManager = GameManager.Instance.GetManager<TilePlacementManager>();
 
-        if ( _resourceManager != null)
+        if (_resourceManager != null)
         {
             _resourceManager.OnResourceChange += OnResourceChange;
         }
-        if(_npcManager != null)
+        if (_npcManager != null)
         {
             _npcManager.OnNPCAmountChange += OnNPCAmountChange;
         }
 
         _npcInfoCanvasGroup = _npcInfo.GetComponent<CanvasGroup>();
-        _buildingInfoCanvasGroup = _buildingWindow.GetComponent<CanvasGroup>();
+        _buildingInfoCanvasGroup = _buildingWindowParent.GetComponent<CanvasGroup>();
 
-        _borrowTimeText = new();
         _hudComponentsDic = new();
+        _npcEntries = new();
 
         HideBuildingInfo();
         HideNPCInfo();
 
+        if (_npcEntryTemplate != null)
+        {
+            _npcEntryTemplate.SetActive(false);
+        }
+
         InitializeHudComponentsCounter();
     }
 
-    private void InitializeHudComponentsIcon()
-    {
-
-    }
     private void InitializeHudComponentsCounter()
     {
-        for(int i = 0; i < _hudComponents.Length; i++)
+        for (int i = 0; i < _hudComponents.Length; i++)
         {
             for (int j = 0; j < _hudComponents[i].Counter.Length; j++)
             {
@@ -79,6 +86,7 @@ public class UIManager : Manager
             _hudComponentsDic.Add(_hudComponents[i].Title, _hudComponents[i]);
         }
     }
+
     private void OnDisable()
     {
         if (_resourceManager != null)
@@ -90,6 +98,7 @@ public class UIManager : Manager
             _npcManager.OnNPCAmountChange -= OnNPCAmountChange;
         }
     }
+
     private void OnResourceChange(Dictionary<Resources, int> resources)
     {
         if (resources == null || _hudComponentsDic == null)
@@ -99,7 +108,7 @@ public class UIManager : Manager
 
         foreach (var resource in resources)
         {
-            if(resource.Key == Resources.Purr)
+            if (resource.Key == Resources.Purr)
             {
                 _hudComponentsDic["Purr"].Counter[0].text = resource.Value.ToString();
             }
@@ -115,7 +124,7 @@ public class UIManager : Manager
             {
                 _hudComponentsDic["Resources"].Counter[1].text = resource.Value.ToString();
             }
-            else if(resource.Key == Resources.Dread)
+            else if (resource.Key == Resources.Dread)
             {
                 _hudComponentsDic["Dread"].Counter[0].text = resource.Value.ToString();
             }
@@ -155,7 +164,7 @@ public class UIManager : Manager
         }
         _npcLifeSpanText.text = "LifeSpan: " + npc.LifeSpan.ToString();
 
-        if(npc is Peasant peasant)
+        if (npc is Peasant peasant)
         {
             _npcMoodText.text = "Mood: " + peasant.GetMood();
         }
@@ -163,7 +172,6 @@ public class UIManager : Manager
         {
             _npcMoodText.text = " ";
         }
-
     }
 
     public void HideNPCInfo()
@@ -193,55 +201,106 @@ public class UIManager : Manager
         _buildingsManager.SelectBuilding(TileType.Workshop);
     }
 
-    public void DisplayBuildingInfo()//IEnumerable<NPC> enumerable)
+    public void DisplayBuildingInfo(IEnumerable<NPC> npcs = null)
     {
+        if (npcs == null)
+        {
+            Debug.LogWarning("No NPCs provided for DisplayBuildingInfo");
+            return;
+        }
+
+        foreach (var entry in _npcEntries)
+        {
+            Destroy(entry.GameObject);
+        }
+        _npcEntries.Clear();
 
         _buildingInfoCanvasGroup.alpha = 1f;
         _buildingInfoCanvasGroup.interactable = true;
         _buildingInfoCanvasGroup.blocksRaycasts = true;
 
-        //foreach (NPC npc in enumerable)
-        //{
-        //    GameObject _buildingNPCInfo = Instantiate(_buildingNPCInfoPrefab);
-        //    _buildingNPCInfo.transform.SetParent(posP);
-        //    Vector3 NewPos = new Vector3(pos.transform.position.x, pos.transform.position.y + new_height, pos.transform.position.z);
-        //    _buildingNPCInfo.transform.position = NewPos;
-        //    new_height -= 30;
-        //    for (int j = 0; j < _buildingNPCInfo.transform.childCount; ++j)
-        //    {
-        //        Transform child = _buildingNPCInfo.transform.GetChild(j);
-        //        if(child.name == "Name")
-        //        {
-        //            child.gameObject.GetComponent<TextMeshProUGUI>().text = npc.name;
-        //        }
-        //        else if(child.name == "BTCounter")
-        //        {
-        //            child.gameObject.GetComponent<TextMeshProUGUI>().text = npc.LifeSpan.ToString();
-        //        }
-        //    }
+        List<NPC> npcList = new List<NPC>(npcs);
+        int counter = 0;
 
-        //    _buildingNPCInfoList.Add(_buildingNPCInfo);
-        //}
-
-        for (int i = 0; i < 20; ++i)
+        foreach (NPC npc in npcList)
         {
-            GameObject _buildingNPCInfo = Instantiate(_buildingNPCInfoPrefab);
-            _buildingNPCInfo.transform.SetParent(_parentTransform);
-            for (int j = 0; j < _buildingNPCInfo.transform.childCount; ++j)
+            counter++;
+
+            if (_npcEntryTemplate == null)
             {
-                Transform child = _buildingNPCInfo.transform.GetChild(j);
-                if (child.name == "Name")
+                Debug.LogError("NPCEntryTemplate is not assigned!");
+                return;
+            }
+
+            GameObject buildingNPCInfo = Instantiate(_npcEntryTemplate, _parentTransform);
+            buildingNPCInfo.GetComponent<RectTransform>().localScale = Vector3.one;
+            buildingNPCInfo.SetActive(true);
+
+            TextMeshProUGUI nameText = null;
+            TextMeshProUGUI counterText = null;
+            Button button1 = null, button2 = null, button3 = null, button4 = null;
+
+            foreach (Transform child in buildingNPCInfo.transform)
+            {
+                if (child.name == "Info")
                 {
-                    child.gameObject.GetComponent<TextMeshProUGUI>().text = "Hi";
+                    button1 = child.GetComponentInChildren<Button>();
+                    nameText = child.GetComponent<TextMeshProUGUI>();
+                    nameText.text = $"{counter}. {npc.Name} {npc.Age}";
                 }
-                else if (child.name == "BTCounter")
+                else if (child.name == "Purr")
                 {
-                    child.gameObject.GetComponent<TextMeshProUGUI>().text = _borrowCount.ToString();
-                    _borrowTimeText.Add(child.gameObject.GetComponent<TextMeshProUGUI>());
+                    button2 = child.GetComponentInChildren<Button>();
+                }
+                else if (child.name == "Add")
+                {
+                    button3 = child.GetComponentInChildren<Button>();
+                }
+                else if (child.name == "Counter")
+                {
+                    counterText = child.GetComponent<TextMeshProUGUI>();
+                    counterText.text = "0";
+                }
+                else if (child.name == "Detract")
+                {
+                    button4 = child.GetComponentInChildren<Button>();
                 }
             }
 
-            _buildingNPCInfoList.Add(_buildingNPCInfo);
+            NPCEntryData entryData = new NPCEntryData
+            {
+                NPC = npc,
+                GameObject = buildingNPCInfo,
+                CounterText = counterText,
+                CounterValue = 0 
+            };
+
+            if (button1 != null)
+            {
+                button1.onClick.AddListener(() => OnButton1Clicked(npc));
+            }
+            if (button2 != null)
+            {
+                button2.onClick.AddListener(() => OnButton2Clicked(npc, entryData));
+            }
+            if (button3 != null)
+            {
+                button3.onClick.AddListener(() => OnAddButtonClicked(entryData));
+            }
+            if (button4 != null)
+            {
+                button4.onClick.AddListener(() => OnDetractButtonClicked(entryData));
+            }
+
+            _npcEntries.Add(entryData);
+        }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_parentTransform.GetComponent<RectTransform>());
+
+        ScrollRect scrollRect = _parentTransform.GetComponentInParent<ScrollRect>();
+        if (scrollRect != null)
+        {
+            scrollRect.normalizedPosition = new Vector2(0, 1);
         }
     }
 
@@ -250,30 +309,48 @@ public class UIManager : Manager
         _buildingInfoCanvasGroup.alpha = 0f;
         _buildingInfoCanvasGroup.interactable = false;
         _buildingInfoCanvasGroup.blocksRaycasts = false;
-        for(int i = 0; i < _buildingNPCInfoList.Count; ++i)
+
+        foreach (var entry in _npcEntries)
         {
-            Destroy(_buildingNPCInfoList[i]);
+            Destroy(entry.GameObject);
+        }
+        _npcEntries.Clear();
+    }
+
+    private void OnButton1Clicked(NPC npc)
+    {
+        DisplayNPCInfo(npc);
+    }
+
+    private void OnButton2Clicked(NPC npc, NPCEntryData entry)
+    {
+        if(npc is Peasant peasant)
+        {
+            for (int i = 0; i < entry.CounterValue; i++)
+            {
+                peasant.GatherPurr();
+            }
         }
     }
 
-    public void BorrowDayPlusButton()
+    private void OnAddButtonClicked(NPCEntryData entry)
     {
-        _borrowCount++;
-        UpdateBorrowTimeText();
-    }
-
-    public void BorrowDayMinusButton()
-    {
-        _borrowCount--;
-        UpdateBorrowTimeText();
-    }
-
-    public void UpdateBorrowTimeText()
-    {
-        for(int i = 0; i < _borrowTimeText.Count; ++i)
+        entry.CounterValue++;
+        if (entry.CounterText != null)
         {
-            _borrowTimeText[i].text = _borrowCount.ToString();
+            entry.CounterText.text = entry.CounterValue.ToString();
         }
-        
-    }    
+    }
+
+    private void OnDetractButtonClicked(NPCEntryData entry)
+    {
+        if (entry.CounterValue > 0)
+        {
+            entry.CounterValue--;
+            if (entry.CounterText != null)
+            {
+                entry.CounterText.text = entry.CounterValue.ToString();
+            }
+        }
+    }
 }

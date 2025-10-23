@@ -10,7 +10,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     private Renderer _meshRenderer;
 
     public Occupation Occupation => _occupation;
-    public int Age => _age;
     public int StarvationValue => _starvationValue;
     public int DreadFactor => _dreadFactor;
 
@@ -27,7 +26,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
 
     private bool _isTraveling = false;
 
-    private int _age = 1;
     private int _starvationValue = 0;
     private int _dreadFactor = 0;
 
@@ -76,6 +74,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     {
         Name = name;
         LifeSpan = lifeSpan;
+        Age = 0;
         MovementSpeed = movementSpeed;
 
         _activeCycle = activeCycle;
@@ -388,6 +387,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         CheckStarvation();
         CheckHomelessness();
         CheckMortality();
+        Age++;
     }
     
     private void DailyIntake()
@@ -430,5 +430,9 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
             _occupiedZone.Exit(this);
             _occupiedZone = null;
         }
+    }
+    public override Zone GetOccupiedZone()
+    {
+        return _occupiedZone;
     }
 }

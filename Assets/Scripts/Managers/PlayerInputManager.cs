@@ -100,7 +100,15 @@ public class PlayerInputManager : Manager
 
             foreach (var i in interactables)
             {
-                if (i is Building)
+                if (i is NPC npc)
+                {
+                    if (npc.GetOccupiedZone() != null)
+                    {
+                        continue;
+                    }
+                    interactable = i;
+                }
+                else if (i is Building)
                 {
                     interactable = i;
                     break;
@@ -110,10 +118,6 @@ public class PlayerInputManager : Manager
                     interactable = i;
                 }
                 else if (i is IWorker)
-                {
-                    interactable = i;
-                }
-                else if (i is NPC)
                 {
                     interactable = i;
                 }
@@ -177,6 +181,7 @@ public class PlayerInputManager : Manager
             _currentSelection = null;
             _previousWorkerSelection = null;
             _UIManager.HideNPCInfo();
+            _UIManager.HideBuildingInfo();
         }
     }
     public GameObject GetPreviousSelection()
