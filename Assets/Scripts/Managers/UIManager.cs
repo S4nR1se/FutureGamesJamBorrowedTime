@@ -1,11 +1,7 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using static Unity.Collections.AllocatorManager;
-using static UnityEngine.UI.Image;
 
 public class UIManager : Manager
 {
@@ -25,10 +21,12 @@ public class UIManager : Manager
     [SerializeField] private TextMeshProUGUI _npcOccupationText;
     [SerializeField] private TextMeshProUGUI _npcLifeSpanText;
     [SerializeField] private TextMeshProUGUI _npcMoodText;
-    [SerializeField] private GameObject      _buildingNPCInfoPrefab;
-    [SerializeField] private GameObject      _buildingWindow;
-    [SerializeField] private Transform pos;
+    [SerializeField] private GameObject _buildingNPCInfoPrefab;
+    [SerializeField] private GameObject _buildingWindow;
     [SerializeField] private Transform posP;
+
+    private CanvasGroup _npcInfoCanvasGroup;
+    private CanvasGroup _buildingInfoCanvasGroup;
 
     private Dictionary<string, HudComponent> _hudComponentsDic;
     private List<GameObject> _buildingNPCInfoList = new();
@@ -54,11 +52,16 @@ public class UIManager : Manager
             _npcManager.OnNPCAmountChange += OnNPCAmountChange;
         }
 
-        _hudComponentsDic = new();
-        InitializeHudComponentsCounter();
-        _npcInfo.SetActive(false);
-        _buildingWindow.SetActive(false);
+        _npcInfoCanvasGroup = _npcInfo.GetComponent<CanvasGroup>();
+        _buildingInfoCanvasGroup = _buildingWindow.GetComponent<CanvasGroup>();
+
         _borrowTimeText = new();
+        _hudComponentsDic = new();
+
+        HideBuildingInfo();
+        HideNPCInfo();
+
+        InitializeHudComponentsCounter();
     }
 
     private void InitializeHudComponentsIcon()
@@ -133,7 +136,10 @@ public class UIManager : Manager
 
     public void DisplayNPCInfo(NPC npc)
     {
-        _npcInfo.SetActive(true);
+        _npcInfoCanvasGroup.alpha = 1;
+        _npcInfoCanvasGroup.interactable = true;
+        _npcInfoCanvasGroup.blocksRaycasts = true;
+
         _npcNameText.text = "Name: " + npc.Name;
         if (npc is IWorker worker)
         {
@@ -158,7 +164,9 @@ public class UIManager : Manager
 
     public void HideNPCInfo()
     {
-        _npcInfo.SetActive(false);
+        _npcInfoCanvasGroup.alpha = 0;
+        _npcInfoCanvasGroup.interactable = false;
+        _npcInfoCanvasGroup.blocksRaycasts = false;
     }
 
     public void PickHouse()
@@ -183,7 +191,11 @@ public class UIManager : Manager
 
     public void DisplayBuildingInfo()//IEnumerable<NPC> enumerable)
     {
-        _buildingWindow.SetActive(true);
+
+        _buildingInfoCanvasGroup.alpha = 1f;
+        _buildingInfoCanvasGroup.interactable = true;
+        _buildingInfoCanvasGroup.blocksRaycasts = true;
+
         //foreach (NPC npc in enumerable)
         //{
         //    GameObject _buildingNPCInfo = Instantiate(_buildingNPCInfoPrefab);
@@ -207,7 +219,7 @@ public class UIManager : Manager
         //    _buildingNPCInfoList.Add(_buildingNPCInfo);
         //}
 
-        for(int i = 0; i < 20; ++i)
+        for (int i = 0; i < 20; ++i)
         {
             GameObject _buildingNPCInfo = Instantiate(_buildingNPCInfoPrefab);
             _buildingNPCInfo.transform.SetParent(posP);
@@ -231,7 +243,9 @@ public class UIManager : Manager
 
     public void HideBuildingInfo()
     {
-        _buildingWindow.SetActive(false);
+        _buildingInfoCanvasGroup.alpha = 0f;
+        _buildingInfoCanvasGroup.interactable = false;
+        _buildingInfoCanvasGroup.blocksRaycasts = false;
         for(int i = 0; i < _buildingNPCInfoList.Count; ++i)
         {
             Destroy(_buildingNPCInfoList[i]);
