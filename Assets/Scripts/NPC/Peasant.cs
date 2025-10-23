@@ -254,7 +254,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     {
         ResourceManager resourceManager = GameManager.Instance.GetManager<ResourceManager>();
         if (resourceManager == null) return;
-        resourceManager.UpdateValue(Resources.Purr, 1);
+        resourceManager.UpdateValue(Resources.Purr, 9);
         DecreaseLifeSpan(1);
     }
     private void OnArrivedAtDestination(Zone zone)
