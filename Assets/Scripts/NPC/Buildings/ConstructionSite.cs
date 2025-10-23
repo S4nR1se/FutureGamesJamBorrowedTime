@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ConstructionSite : Building
 {
+    public AudioClip ConstructionSFX;
+
     protected override Occupation AssociatedOccupation => new BuilderOccupation();
 
     private Tile _targetTile;
@@ -26,6 +29,8 @@ public class ConstructionSite : Building
             timeManager.OnCycleCalculation += UpdateConstruction;
 
         base.Initialize();
+
+        SoundManager.PlaySoundEffect(ConstructionSFX, this.transform.position);
     }
 
     private void OnDisable()
@@ -53,6 +58,7 @@ public class ConstructionSite : Building
         GameObject finalPrefab = _tileDatabase.GetPrefab(_finalTileType);
         if (finalPrefab != null)
         {
+            SoundManager.PlaySoundEffect(ConstructionSFX, this.transform.position);
             Instantiate(finalPrefab, transform.position, Quaternion.identity);
             GameManager.Instance.GetManager<ZoneManager>().UnregisterZone(AssociatedZone);
             Destroy(gameObject);

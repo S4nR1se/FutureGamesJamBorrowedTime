@@ -1,14 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class NPCScheduler : MonoBehaviour
 {
+    public AudioClip DeathPeasantSFX;
+    public AudioClip DayAmbianceSFX;
+    public AudioClip NightAmbianceSFX;
+    public AudioSource DayAmbianceSource;
+    public AudioSource NightAmbianceSource;
+
     private TimeManager _timeManager;
     private NPCManager _npcManager;
+    private SoundManager _soundManager;
     public void Initialize(NPCManager npcManager, TimeManager timeManager)
     {
         _npcManager = npcManager;
         _timeManager = timeManager;
+        _soundManager = GameManager.Instance.GetManager<SoundManager>();
 
         _timeManager.OnCyclePassage += OnTimePassage;
     }
@@ -23,10 +32,22 @@ public class NPCScheduler : MonoBehaviour
     {
         if(currentCycle == DayCycle.Day)
         {
+            if (DayAmbianceSource == null)
+                DayAmbianceSource = _soundManager.PlayLoopingSound(DayAmbianceSFX, this.transform.position);
+            else
+                DayAmbianceSource.Play();
+
+            _soundManager.StopSound(NightAmbianceSource, 1);
             ScheduleNightTimeCalculations(); 
         }
         else
         {
+            if (NightAmbianceSource == null)
+                NightAmbianceSource = _soundManager.PlaySoundEffect(NightAmbianceSFX, this.transform.position);
+            else
+                NightAmbianceSource.Play();
+
+            _soundManager.StopSound(DayAmbianceSource, 1);
             ScheduleRest();
         }
         ScheduleWorkers(currentCycle);
@@ -50,6 +71,7 @@ public class NPCScheduler : MonoBehaviour
         {
             if(npc is Peasant peasant)
             {
+                _soundManager.PlaySoundEffect(DeathPeasantSFX, peasant.transform.position);
                 _npcManager.DespawnPeasant(peasant);
             }
             else if(npc is Undead undead)

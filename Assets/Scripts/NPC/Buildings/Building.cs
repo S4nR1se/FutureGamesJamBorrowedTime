@@ -14,6 +14,7 @@ public abstract class Building : MonoBehaviour, IInteractable
     protected Zone AssociatedZone { get; private set; }
     protected ResourceManager ResourceManager { get; private set; }
     protected PlayerInputManager PlayerInputManager { get; private set; }
+    protected SoundManager SoundManager { get; private set; }
     protected abstract Occupation AssociatedOccupation { get;}
 
     public GameObject Component => gameObject;
@@ -29,6 +30,7 @@ public abstract class Building : MonoBehaviour, IInteractable
 
         ResourceManager = GameManager.Instance?.GetManager<ResourceManager>();
         PlayerInputManager = GameManager.Instance.GetManager<PlayerInputManager>();    
+        SoundManager = GameManager.Instance.GetManager<SoundManager>();
 
         ZoneMarker marker = GetComponent<ZoneMarker>();
         if (marker != null)
