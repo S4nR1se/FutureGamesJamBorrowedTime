@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bda2fc378349e64794446f94bc1598d, type: 3}
+  m_Name: MediumEvent0
+  m_EditorClassIdentifier: Assembly-CSharp::Event_SO
+  Title: Plague of mutated locusts
+  Description: Insects have appeared out of nowhere in the thousands Conventional
+    methods are useless in dealing with the sheer numbers. If we don't do anything
+    our town will be doomed...
+  Tier: 1
+  Choices:
+  - {fileID: 11400000, guid: a328c1702ab8e19409cb4c7fc3e5421b, type: 2}
+  - {fileID: 11400000, guid: a79f4fb5203e1e44e92b00586564d4b1, type: 2}
+  - {fileID: 11400000, guid: c96d80a7f96ed604a9a6cd9a6491193b, type: 2}

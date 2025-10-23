@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bda2fc378349e64794446f94bc1598d, type: 3}
+  m_Name: EasyEvent2
+  m_EditorClassIdentifier: Assembly-CSharp::Event_SO
+  Title: Your students decided to use some Purr power for a different purr-pose
+  Description: You thought everyone was working to make your great invention, the
+    magic purr-portal ,  complete. But now someone is stealing your precious Purr
+    for pranks
+  Choices:
+  - {fileID: 11400000, guid: 1108fb989b3f7e84aa706ca8da3f2f97, type: 2}
+  - {fileID: 11400000, guid: af5072c433895ca408fa8e0cfb8be400, type: 2}
+  - {fileID: 11400000, guid: 17dd5dae46e91cc448756915889148c9, type: 2}
