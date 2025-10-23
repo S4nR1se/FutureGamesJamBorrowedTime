@@ -126,7 +126,14 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         SetCurrentZone(startZone);
         if (startZone != null && startZone.TryEnter(this))
         {
-            _occupiedZone = startZone;
+            if (_timeManager.CurrentDayCycle == _activeCycle && startZone.Type == _restZoneType)
+            {
+                _occupiedZone = null;
+            }
+            else
+            {
+                _occupiedZone = startZone;
+            }
         }
     }
     private void UpdateComponent()
@@ -148,8 +155,18 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     private void HandleCyclePassage(DayCycle newCycle)
     {
         if (_timeManager.IsCalculatingCycle())
-        {
             return;
+        if (_preferredZone != null && _preferredZone.Type == _restZoneType && _timeManager.CurrentDayCycle == _activeCycle)
+        {
+            _preferredZone = null;
+        }
+
+        if (_isTraveling && _reservedZone != null && _reservedZone.Type == _restZoneType)
+        {
+            if (newCycle == _activeCycle)
+            {
+                CancelTravel();
+            }
         }
 
         if (newCycle == _activeCycle)
@@ -183,9 +200,10 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     private void GoToZone(Zone travelZone)
     {
         if (_isTraveling)
-        {
             return;
-        }
+
+        if (_timeManager.CurrentDayCycle == DayCycle.Day && travelZone.Type == _restZoneType)
+            return;
 
         if (_occupiedZone != null)
         {
@@ -205,9 +223,10 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
             travelZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(zoneType);
 
             if (travelZone == null)
-            {
                 return;
-            }
+
+            if (_timeManager.CurrentDayCycle == DayCycle.Day && travelZone.Type == _restZoneType)
+                return;
 
             if (travelZone.TryEnter(this))
             {
@@ -230,7 +249,17 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     }
     public void GoToWork(DayCycle currentCycle)
     {
-        if (currentCycle != _activeCycle) return;
+        if (currentCycle != _activeCycle)
+        {
+            ResetOccupiedZone();
+            return;
+        }
+
+        if (_occupiedZone != null && _occupiedZone.Type == _restZoneType)
+        {
+            _occupiedZone.Exit(this);
+            _occupiedZone = null;
+        }
 
         ValidatePreferredZone();
 
@@ -268,12 +297,12 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     [ContextMenu("Rest")]
     public void GoToRest()
     {
-        Zone restZone = _zoneManager.GetRandomAvailableZone(_restZoneType);
+        if (_timeManager.CurrentDayCycle == _activeCycle)
+            return;
 
+        Zone restZone = _zoneManager.GetRandomAvailableZone(_restZoneType);
         if (restZone != null)
-        {
             GoToZone(restZone);
-        }
         else
         {
             _occupiedZone = null;

@@ -68,6 +68,7 @@ public abstract class Building : MonoBehaviour, IInteractable
         {
             prevWorker.AssignOccupation(AssociatedOccupation);
             prevWorker.TravelToZone(AssociatedZone);
+            return;
         }
 
         if(UIManager != null)

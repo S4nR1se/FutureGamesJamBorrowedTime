@@ -340,7 +340,7 @@ public class UIManager : Manager
 
     private void OnAddButtonClicked(NPCEntryData entry)
     {
-        entry.CounterValue++;
+        entry.CounterValue = Mathf.Min(entry.CounterValue + 1, entry.NPC.LifeSpan);
         if (entry.CounterText != null)
         {
             entry.CounterText.text = entry.CounterValue.ToString();
@@ -349,13 +349,10 @@ public class UIManager : Manager
 
     private void OnDetractButtonClicked(NPCEntryData entry)
     {
-        if (entry.CounterValue > 0)
+        entry.CounterValue = Mathf.Max(0, entry.CounterValue - 1);
+        if (entry.CounterText != null)
         {
-            entry.CounterValue--;
-            if (entry.CounterText != null)
-            {
-                entry.CounterText.text = entry.CounterValue.ToString();
-            }
+            entry.CounterText.text = entry.CounterValue.ToString();
         }
     }
 }
