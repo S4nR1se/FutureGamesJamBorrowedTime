@@ -12,5 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593887cc72610954e841a203855c24cf, type: 3}
   m_Name: GraveyardT2Data
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData_SO
-  MaterialCost: 0
-  BuildTime: 0
+  BuildTime: 12
+  OutputPerWorker: 0
+  Resource: 0
+  MaterialCost: 100
+  PurrCost: 0
+  WorkerSize: 0
+  Upgrade: {fileID: 0}
+  BuildingTier: 1
