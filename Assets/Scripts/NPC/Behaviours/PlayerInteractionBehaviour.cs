@@ -44,7 +44,7 @@ public class PlayerInteractionBehaviour : Behaviour
         {
             _isOutlineActive = true;
 
-            _outlineMaterial.SetFloat("_OutlineScale", 1.2f);
+            _outlineMaterial.SetFloat("_OutlineScale", 1.1f);
         }
     }
 
