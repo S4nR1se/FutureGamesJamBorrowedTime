@@ -51,7 +51,7 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
             _occupiedZone = null;
         }
     }
-    public override void Initialize(Zone startZone, string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.Graveyard, DayCycle activeCycle = DayCycle.Night)
+    public override void Initialize(Zone startZone, string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.Graveyard, DayCycle activeCycle = DayCycle.Night, SoundManager soundManager = null)
     {
         Name = name;
         LifeSpan = lifeSpan;
@@ -64,6 +64,7 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
         _occupation = occupation ?? CreateDefaultOccupation();
         SetRestZoneType(restZoneType);
 
+        _soundManager = soundManager;
         _roamingBehaviour = new RoamingBehaviour(this, MovementSpeed, startZone);
         _playerInteractionBehaviour = new PlayerInteractionBehaviour(_meshRenderer);
         _loiteringBehaviour = new LoiteringBehaviour(this, MovementSpeed);

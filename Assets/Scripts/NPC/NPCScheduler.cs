@@ -7,8 +7,9 @@ public class NPCScheduler : MonoBehaviour
     public AudioClip DeathPeasantSFX;
     public AudioClip DayAmbianceSFX;
     public AudioClip NightAmbianceSFX;
-    public AudioSource DayAmbianceSource;
-    public AudioSource NightAmbianceSource;
+
+    private AudioSource DayAmbianceSource;
+    private AudioSource NightAmbianceSource;
 
     private TimeManager _timeManager;
     private NPCManager _npcManager;

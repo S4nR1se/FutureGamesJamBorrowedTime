@@ -7,6 +7,8 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     public GameObject PoolableComponent => gameObject;
     public GameObject Component => gameObject;
 
+    public AudioClip PeasantGaspSFX;
+
     private Renderer _meshRenderer;
 
     public Occupation Occupation => _occupation;
@@ -72,7 +74,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         }
     }
 
-    public override void Initialize(Zone startZone, string name = "NPC", int lifeSpan = 11, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.House, DayCycle activeCycle = DayCycle.Day)
+    public override void Initialize(Zone startZone, string name = "NPC", int lifeSpan = 11, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.House, DayCycle activeCycle = DayCycle.Day, SoundManager soundManager = null)
     {
         Name = name;
         LifeSpan = lifeSpan;
@@ -85,6 +87,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         _occupation = occupation ?? CreateDefaultOccupation();
         SetRestZoneType(restZoneType);
 
+        _soundManager = soundManager;
         _roamingBehaviour = new RoamingBehaviour(this, MovementSpeed, startZone);
         _playerInteractionBehaviour = new PlayerInteractionBehaviour(_meshRenderer);
         _loiteringBehaviour = new LoiteringBehaviour(this, MovementSpeed);
@@ -379,6 +382,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
 
     public void UndeadContact()
     {
+        _soundManager.PlaySoundEffect(PeasantGaspSFX, this.transform.position);
         _dreadFactor++;
     }
 
