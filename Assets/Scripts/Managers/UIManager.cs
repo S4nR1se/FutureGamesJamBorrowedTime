@@ -27,7 +27,6 @@ public class UIManager : Manager
     [SerializeField] private TextMeshProUGUI _npcMoodText;
     [SerializeField] private GameObject      _buildingNPCInfoPrefab;
     [SerializeField] private GameObject      _buildingWindow;
-    [SerializeField] private Transform pos;
     [SerializeField] private Transform posP;
     [SerializeField] private GameObject EvenUI;
 

@@ -20627,10 +20627,8 @@ MonoBehaviour:
   _buildingNPCInfoPrefab: {fileID: 2654107268212800875, guid: 65d993030ad3c2f45b6e87b8e9dc667e, type: 3}
   _buildingWindow: {fileID: 749277274}
   pos: {fileID: 658923485}
-  posP: {fileID: 0}
   EvenUI: {fileID: 287798600}
   _buildingWindow: {fileID: 59117702}
-  pos: {fileID: 0}
   posP: {fileID: 738344388}
 --- !u!1001 &2089034291
 PrefabInstance:
