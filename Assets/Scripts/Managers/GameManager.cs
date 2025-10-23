@@ -15,7 +15,7 @@ public class GameManager : StateMachine
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
         RegisterManagers();
         InitializeManagers();
