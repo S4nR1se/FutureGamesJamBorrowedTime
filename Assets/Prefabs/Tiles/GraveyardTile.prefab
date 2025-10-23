@@ -239,7 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7452fe8282609b419654aca215d81da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Graveyard
-  _buildingData: {fileID: 0}
+  _buildingData: {fileID: 11400000, guid: 06e5fd53add5d7545b0ed956c48ac2ce, type: 2}
 --- !u!4 &8671037455369626052 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}

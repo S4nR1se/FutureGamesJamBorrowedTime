@@ -30,7 +30,7 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
 
     private void Awake()
     {
-        _meshRenderer = GetComponent<Renderer>();
+        _meshRenderer = GetComponentInChildren<Renderer>();
     }
     private void OnEnable()
     {
@@ -51,8 +51,6 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
             _occupiedZone = null;
         }
     }
-    public abstract int GetPurrCost();
-    public abstract int GetGraveCost();
     public override void Initialize(Zone startZone, string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.Graveyard, DayCycle activeCycle = DayCycle.Night)
     {
         Name = name;
@@ -69,11 +67,6 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
         _roamingBehaviour = new RoamingBehaviour(this, MovementSpeed, startZone);
         _playerInteractionBehaviour = new PlayerInteractionBehaviour(_meshRenderer);
         _loiteringBehaviour = new LoiteringBehaviour(this, MovementSpeed);
-
-        if (startZone != null && startZone.TryEnter(this))
-        {
-            _occupiedZone = startZone;
-        }
     }
     private void UpdateComponent()
     {
@@ -183,12 +176,20 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
 
         Zone targetZone = _preferredZone;
 
-        if (targetZone == null || targetZone.IsFull())
+        if (targetZone == null || targetZone.IsFull() || targetZone.Type != Occupation.WorkZoneType)
         {
             targetZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(Occupation.WorkZoneType);
         }
 
-        GoToZone(Occupation.WorkZoneType);
+        if (targetZone != null)
+        {
+            GoToZone(targetZone);
+        }
+        else
+        {
+            _occupiedZone = null;
+            Loiter();
+        }
     }
     private void ValidatePreferredZone()
     {
@@ -310,5 +311,13 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
     public void OnHoverExit()
     {
         _playerInteractionBehaviour?.OnHoverExit();
+    }
+    public override void ResetOccupiedZone()
+    {
+        if (_occupiedZone != null)
+        {
+            _occupiedZone.Exit(this);
+            _occupiedZone = null;
+        }
     }
 }

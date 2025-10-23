@@ -23,13 +23,13 @@ public class NPCScheduler : MonoBehaviour
     {
         if(currentCycle == DayCycle.Day)
         {
-            ScheduleNightTimeCalculations();
-            ScheduleWorkers(currentCycle);
+            ScheduleNightTimeCalculations(); 
         }
         else
         {
             ScheduleRest();
         }
+        ScheduleWorkers(currentCycle);
     }
     private void ScheduleNightTimeCalculations()
     {

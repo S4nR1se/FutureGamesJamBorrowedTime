@@ -122,6 +122,10 @@ public class Zone
             CurrentOccupancy = actualCount;
         }
     }
+    public Vector3 GetCenter()
+    {
+        return Center;
+    }
 }
 
 public enum ZoneType
