@@ -51,7 +51,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 3e65826d85b271d449e97c504a344cab, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 63caed5b9d6388b4cb57ce522cfe8583, type: 2}
+      objectReference: {fileID: 2100000, guid: 9ba8d901b8c04f74b96569a7be36641f, type: 2}
     - target: {fileID: 919132149155446097, guid: 3e65826d85b271d449e97c504a344cab, type: 3}
       propertyPath: m_Name
       value: church
@@ -132,7 +132,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
       propertyPath: m_Materials.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
