@@ -12,3 +12,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 043fdb4007c76954e98b53fbd746b542, type: 3}
   m_Name: NPCNames
   m_EditorClassIdentifier: Assembly-CSharp::NPCNames
+  NPCNamesList:
+  - <Name>k__BackingField: Clawrence Kitt
+  - <Name>k__BackingField: Purrcy McWhiskers
+  - <Name>k__BackingField: 'Catniel DiCatrio '
+  - <Name>k__BackingField: 'Tuna Whiskerford '
+  - <Name>k__BackingField: 'Mewbin Scratchalot '
+  - <Name>k__BackingField: 'Catwin Scratchalot '
+  - <Name>k__BackingField: 'Catlex Everpurr '
+  - <Name>k__BackingField: Catcuit Furrchill
+  - <Name>k__BackingField: Catlie Pawsley
+  - <Name>k__BackingField: Mewsam Meowden
+  - <Name>k__BackingField: Whispurr Pawcasso
+  - <Name>k__BackingField: Catthew Radclaw
+  - <Name>k__BackingField: Catvery Fishburne
+  - <Name>k__BackingField: Mewiley Purrdan
+  - <Name>k__BackingField: Catgrey Purrl
+  - <Name>k__BackingField: 'Mewiver Furrnsworth '
+  - <Name>k__BackingField: Purrwyn Meowden
+  - <Name>k__BackingField: Mewomer Pawsley
+  - <Name>k__BackingField: Catkota Pawtner
+  - <Name>k__BackingField: Purrpkin Pawsley
+  - <Name>k__BackingField: Mewzzy Furrbanks
+  - <Name>k__BackingField: Catnix Furrnsworth
+  - <Name>k__BackingField: Tofu Pawthrop
+  - <Name>k__BackingField: Mewchi Fishburne
+  - <Name>k__BackingField: Purreo Purrington
+  - <Name>k__BackingField: Mewpin Meowden
+  - <Name>k__BackingField: Catsper Meowhart
+  - <Name>k__BackingField: Mewblue Kitt
+  - <Name>k__BackingField: Catbby DiCatrio
+  - <Name>k__BackingField: Mewwi Scratchalot
+  - <Name>k__BackingField: Purrnut Everpurr
+  - <Name>k__BackingField: Pawlie Whiskerella
+  - <Name>k__BackingField: Mewrgan Whiskerford

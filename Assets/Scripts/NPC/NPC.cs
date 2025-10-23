@@ -61,6 +61,7 @@ public interface IPeasant
     int DreadFactor { get; }
     void GoToRest();
     void GatherPurr();
+    
     Mood GetMood();
 }
 public enum Mood
