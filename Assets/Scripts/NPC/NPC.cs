@@ -37,6 +37,7 @@ public abstract class NPC : MonoBehaviour
     {
         _currentZone = null;
     }
+    public abstract void ResetOccupiedZone();
     public Zone GetCurrentZone() => _currentZone;
 }
 public enum TravelPurpose
@@ -60,7 +61,7 @@ public interface IPeasant
     int DreadFactor { get; }
     void GoToRest();
     void GatherPurr();
-    
+    Mood GetMood();
 }
 public enum Mood
 {

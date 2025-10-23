@@ -7,6 +7,8 @@ public class TimeManager : Manager
     public event Action<DayCycle> OnCyclePassage;
     public DayCycle CurrentDayCycle { get; private set; } = DayCycle.Night;
 
+    private SunTransitioner _sunTransitioner;
+
     public int DayNumber { get; private set; }
     public float LevelTime { get; private set; }
 
@@ -21,6 +23,12 @@ public class TimeManager : Manager
         LevelTime = 0;
         DayNumber = 0;
         CurrentDayCycle = DayCycle.Night;
+
+        _sunTransitioner = GetComponent<SunTransitioner>();
+        if(_sunTransitioner != null)
+        {
+            _sunTransitioner.InitializeLighting(CurrentDayCycle);
+        }
     }
 
     private void OnEnable()
@@ -56,6 +64,11 @@ public class TimeManager : Manager
 
         Debug.Log($"[TimeManager] Cycle changed to {CurrentDayCycle}, Day: {DayNumber}");
         OnCyclePassage?.Invoke(CurrentDayCycle);
+
+        if (_sunTransitioner != null)
+        {
+            _sunTransitioner.TransitionToCycle(CurrentDayCycle);
+        }
 
         _cycleTimer = 0;
         _isCalculatingCycle = false;

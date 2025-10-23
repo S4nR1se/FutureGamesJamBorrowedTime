@@ -147,33 +147,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     {
         _goToZoneBehaviour?.GoToZone();
     }
-
-    private void GoToZone(ZoneType zoneType)
-    {
-        if (_isTraveling)
-        {
-            return;
-        }
-
-        if (_occupiedZone != null)
-        {
-            _occupiedZone.Exit(this);
-            _occupiedZone = null;
-        }
-
-        Zone travelZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(zoneType);
-        if (travelZone == null)
-        {
-            return;
-        }
-
-        if (travelZone.TryEnter(this))
-        {
-            _reservedZone = travelZone;
-            SetGoToZoneBehaviour(travelZone);
-            _isTraveling = true;
-        }
-    }
     private void GoToZone(Zone travelZone)
     {
         if (_isTraveling)
@@ -230,12 +203,15 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
 
         Zone targetZone = _preferredZone;
 
-        if (targetZone == null || targetZone.IsFull())
+        if (targetZone == null || targetZone.IsFull() || targetZone.Type != Occupation.WorkZoneType)
         {
             targetZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(Occupation.WorkZoneType);
         }
 
-        GoToZone(Occupation.WorkZoneType);
+        if (targetZone != null)
+        {
+            GoToZone(targetZone);
+        }
     }
     private void ValidatePreferredZone()
     {
@@ -278,7 +254,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     {
         ResourceManager resourceManager = GameManager.Instance.GetManager<ResourceManager>();
         if (resourceManager == null) return;
-        resourceManager.UpdateValue(Resources.Purr, 1);
+        resourceManager.UpdateValue(Resources.Purr, 9);
         DecreaseLifeSpan(1);
     }
     private void OnArrivedAtDestination(Zone zone)
@@ -446,5 +422,14 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
 
         if (_dreadFactor > 0 || _starvationValue > 0 || restZone == null) return Mood.Bad;
         else return Mood.Neutral;
+    }
+	
+    public override void ResetOccupiedZone()
+    {
+        if (_occupiedZone != null)
+        {
+            _occupiedZone.Exit(this);
+            _occupiedZone = null;
+        }
     }
 }

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 593887cc72610954e841a203855c24cf, type: 3}
+  m_Name: GraveyardT1Data
+  m_EditorClassIdentifier: Assembly-CSharp::BuildingData_SO
+  BuildTime: 0
+  OutputPerWorker: 0
+  Resource: 0
+  MaterialCost: 0
+  PurrCost: 0
+  WorkerSize: 0
+  Upgrade: {fileID: 11400000, guid: c660a18f8d1ba8444bba471eb42fc836, type: 2}
+  BuildingTier: 0
+  PlacementYOffset: 3
+  DefaultRotationY: -90
+  PreviewPrefab: {fileID: 1564977999483900876, guid: 94d4d39f8c27af84bbc2114330db2dad, type: 3}

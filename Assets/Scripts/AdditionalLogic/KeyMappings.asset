@@ -21,3 +21,5 @@ MonoBehaviour:
     key: 51
   - actionName: BuildingOption#4
     key: 52
+  - actionName: BuildingOption#5
+    key: 53

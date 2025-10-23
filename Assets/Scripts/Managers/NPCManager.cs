@@ -158,40 +158,9 @@ public class NPCManager : Manager
         }
         return null;
     }
-
-    public Undead SpawnUndead()
+    public Undead SpawnUndead(Zone correctZone, UndeadType undeadType)
     {
-        IPoolable poolable = _undeadPool.Get();
-
-        Undead undead = poolable.PoolableComponent.GetComponent<Undead>();
-        if (undead != null)
-        {
-            Zone correctZone = _zoneManager.GetRandomAvailableZone(ZoneType.House);
-            if (correctZone == null)
-            {
-                return null;
-            }
-            Vector3 position = correctZone.GetRandomPointInZone();
-            undead.transform.position = position;
-
-            UnityEngine.AI.NavMeshAgent agent = undead.GetComponent<UnityEngine.AI.NavMeshAgent>();
-            if (agent != null)
-            {
-                agent.enabled = true;
-            }
-
-            string generatedName = GenerateName(undead);
-            undead.Initialize(correctZone, generatedName);
-
-            RegisterNPC(undead);
-            return undead;
-        }
-
-        return null;
-    }
-    public Undead SpawnUndead(Zone correctZone)
-    {
-        IPoolable poolable = _undeadPool.Get();
+        IPoolable poolable = _undeadPool.Get(undeadType);
 
         Undead undead = poolable.PoolableComponent.GetComponent<Undead>();
         if (undead != null)

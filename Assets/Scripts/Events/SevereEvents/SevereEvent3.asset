@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bda2fc378349e64794446f94bc1598d, type: 3}
+  m_Name: SevereEvent3
+  m_EditorClassIdentifier: Assembly-CSharp::Event_SO
+  Title: Your Purr energy is out of control
+  Description: You've stored a lot of it, as no one has before you, oh Greatness!!!
+    But that's the problem... no one knows how to deal with that amount
+  Tier: 2
+  Choices:
+  - {fileID: 11400000, guid: 7562947b6e8e5874d93f05a0f6acfd5f, type: 2}
+  - {fileID: 11400000, guid: 0b3c9f8da3953ba459c394ad6e964aa1, type: 2}
+  - {fileID: 11400000, guid: 2e90e494a0942434ba017f50904bac7e, type: 2}
