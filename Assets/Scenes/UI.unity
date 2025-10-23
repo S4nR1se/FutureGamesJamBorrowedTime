@@ -2274,6 +2274,57 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8671037455369626052, guid: bbb58a9a1996bf041bc34b0bf1d03315, type: 3}
   m_PrefabInstance: {fileID: 469192583}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &351509403
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 351509405}
+  - component: {fileID: 351509404}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &351509404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 351509403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a449cd12d499b464980f7325ebe827e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundManager
+  _soundLibrary: {fileID: 11400000, guid: 94297888301593541a37831d7199ed21, type: 2}
+  _maxAudioSources: 10
+  _masterVolume: 0.5
+  _masterSFXVolume: 0.5
+  _masterMusicVolume: 0.5
+  _enablePitchVariation: 1
+  _pitchVariationAmount: 0.1
+--- !u!4 &351509405
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 351509403}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 14.18462, y: 0.5, z: 33.64298}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &354524398 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8671037455369626052, guid: bbb58a9a1996bf041bc34b0bf1d03315, type: 3}
@@ -11384,6 +11435,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCManager
   _nPCNames: {fileID: 0}
+  SpawnPeasantSFX: {fileID: 0}
+  SpawnSkeletonSFX: {fileID: 0}
+  SpawnZombieSFX: {fileID: 0}
 --- !u!114 &1361685424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11409,6 +11463,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0947995d155651b4784479dc4464eba6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCScheduler
+  DeathPeasantSFX: {fileID: 0}
+  DayAmbianceSFX: {fileID: 0}
+  NightAmbianceSFX: {fileID: 0}
 --- !u!114 &1361685426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24422,3 +24479,4 @@ SceneRoots:
   - {fileID: 1337766280}
   - {fileID: 1905053800}
   - {fileID: 1085051109}
+  - {fileID: 351509405}

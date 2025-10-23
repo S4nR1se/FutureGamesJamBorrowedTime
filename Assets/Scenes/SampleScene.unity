@@ -541,6 +541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a449cd12d499b464980f7325ebe827e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
+  _soundLibrary: {fileID: 11400000, guid: 94297888301593541a37831d7199ed21, type: 2}
   _maxAudioSources: 10
   _masterVolume: 0.5
   _masterSFXVolume: 0.5
