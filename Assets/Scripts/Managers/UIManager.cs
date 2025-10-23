@@ -271,7 +271,6 @@ public class UIManager : Manager
     {
         for(int i = 0; i < _borrowTimeText.Count; ++i)
         {
-            Debug.Log("hi");
             _borrowTimeText[i].text = _borrowCount.ToString();
         }
 
@@ -279,7 +278,8 @@ public class UIManager : Manager
 
     public void TestOpenEventUI()
     {
-        Instantiate(_eventUIPrefab);
+        //Instantiate(_eventUIPrefab);
+        _eventUIPrefab.SetActive(true);
     }
 
     public void TestNextEvent()
@@ -324,10 +324,17 @@ public class UIManager : Manager
 
     public void SolveEventOutcome(int choice)
     {
+        if(!_eventToSolve)
+        {
+            Debug.Log("There is no triggered event");
+            return;
+        }
+
         var chosenEvent = _eventToSolve.Choices[choice];
         Debug.Log($"{chosenEvent.Outcome} {chosenEvent.OutcomeValue}");
         chosenEvent.SolveEncounter();
-        _event.SetActive(false);
+        //_event.SetActive(false);
+        _eventUIPrefab.SetActive(false);
     }
 
     public void TestGameOver(GameResult result, int lostCondition = 0)
@@ -365,5 +372,10 @@ public class UIManager : Manager
                 text.text = message;
             }
         }
+    }
+
+    public void buttonClick()
+    {
+        Debug.Log("HI");
     }
 }
