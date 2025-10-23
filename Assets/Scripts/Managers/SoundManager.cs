@@ -7,6 +7,30 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set; }
 
+    [System.Serializable]
+    public struct SoundDefinition
+    {
+        public string name;
+        public AudioClip clip;
+        [Range(0f, 1f)] public float volume;
+        public bool is2D;
+        public bool loop;
+        public float pitch;
+
+        public SoundDefinition(string name, AudioClip clip, float volume = 1f, bool is2D = true, bool loop = false, float pitch = 1f)
+        {
+            this.name = name;
+            this.clip = clip;
+            this.volume = volume;
+            this.is2D = is2D;
+            this.loop = loop;
+            this.pitch = pitch;
+        }
+    }
+
+    [Header("Sound Library")]
+    [SerializeField] private SoundLibrary _soundLibrary;
+
     public float GetMasterVolume() => _masterVolume;
     public float GetSFXVolume() => _masterSFXVolume;
     public float GetMusicVolume() => _masterMusicVolume;
@@ -54,6 +78,15 @@ public class SoundManager : MonoBehaviour
         {
             CreateAudioSource();
         }
+
+        if (_soundLibrary != null)
+        {
+            _soundLibrary.Initialize();
+        }
+        else
+        {
+            Debug.LogWarning("SoundManager: No SoundLibrary assigned.");
+        }
     }
     private void OnDestroy()
     {
@@ -63,9 +96,26 @@ public class SoundManager : MonoBehaviour
             Instance = null;
         }
     }
-    /// <summary>
-    /// Plays a sound effect at a specified position
-    /// </summary>
+    public AudioSource PlaySound(string name, Vector3 position = default)
+    {
+        if (_soundLibrary == null)
+        {
+            Debug.LogWarning("No SoundLibrary assigned to SoundManager.");
+            return null;
+        }
+
+        if (!_soundLibrary.TryGetSound(name, out SoundDefinition sound))
+        {
+            Debug.LogWarning($"Sound '{name}' not found in SoundLibrary.");
+            return null;
+        }
+
+        if (sound.loop)
+            return PlayLoopingSound(sound.clip, position, sound.volume, sound.is2D, sound.pitch);
+        else
+            return PlaySoundEffect(sound.clip, position, sound.volume, sound.is2D, sound.pitch);
+    }
+
     public AudioSource PlaySoundEffect(AudioClip clip, Vector3 position, float volume = 0.25f, bool is2D = true, float pitch = 1f)
     {
         if (clip == null)
