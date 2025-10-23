@@ -31,6 +31,7 @@ public class UIManager : Manager
     [SerializeField] private Transform posP;
     [SerializeField] private GameObject _eventUIPrefab;
     [SerializeField] private GameObject _gameEnderUIPrefab;
+    [SerializeField] private Button _gameOver;
 
     private Dictionary<string, HudComponent> _hudComponentsDic;
     private List<GameObject> _buildingNPCInfoList = new();
@@ -76,6 +77,8 @@ public class UIManager : Manager
         _npcInfo.SetActive(false);
         _buildingWindow.SetActive(false);
         _borrowTimeText = new();
+
+        _gameOver.onClick.AddListener(delegate { TestGameOver(GameResult.GameWon, 2); });
     }
 
     private void InitializeHudComponentsIcon()
@@ -307,6 +310,7 @@ public class UIManager : Manager
         }
 
         var chosenEvent = _eventToSolve.Choices[choice];
+        //var chosenEvent = _eventToSolve.GetChoices()[choice];
         Debug.Log($"{chosenEvent.Outcome} {chosenEvent.OutcomeValue}");
         chosenEvent.SolveEncounter();
         //_event.SetActive(false);
@@ -315,6 +319,7 @@ public class UIManager : Manager
 
     public void TestGameOver(GameResult result, int lostCondition = 0)
     {
+        Debug.Log("Hi");
         switch (result)
         {
             case GameResult.GameWon:
@@ -328,8 +333,9 @@ public class UIManager : Manager
 
     private void GameOver(GameResult result, string message)
     {
-        _gameEnder = Instantiate(_gameEnderUIPrefab);
-        var textElements = _gameEnder.GetComponentsInChildren<TextMeshProUGUI>();
+        //_gameEnder = Instantiate(_gameEnderUIPrefab);
+        _gameEnderUIPrefab.SetActive(true);
+        var textElements = _gameEnderUIPrefab.GetComponentsInChildren<TextMeshProUGUI>();
         foreach (var text in textElements)
         {
             if (text.name == "Title")

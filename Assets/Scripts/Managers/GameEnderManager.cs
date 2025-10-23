@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
+using UnityEngine;
+
 
 namespace Assets.Scripts.Managers
 {
@@ -90,7 +88,8 @@ namespace Assets.Scripts.Managers
 
         public void ExitGame()
         {
-            SceneManager.LoadSceneAsync("MainMenu");
+            UnityEngine.Debug.Log("end");   
+            //SceneManager.LoadSceneAsync("MainMenu");
             //SceneManager.LoadSceneAsync("Credits");
         }
     }
