@@ -8,7 +8,7 @@ public class ParticleSystemManager : MonoBehaviour
     public struct ParticleDefinition
     {
         public string name;
-        public ParticleSystem prefab;
+        public GameObject prefab;
         public float lifetimeOverride;
     }
     public static ParticleSystemManager Instance { get; private set; }
@@ -36,23 +36,27 @@ public class ParticleSystemManager : MonoBehaviour
     {
         if (_particleLibrary == null)
         {
-            Debug.LogWarning("No ParticleLibrary assigned to ParticleSystemManager.");
             return null;
         }
 
         if (!_particleLibrary.TryGetParticle(name, out ParticleDefinition definition))
         {
-            Debug.LogWarning($"Particle '{name}' not found in ParticleLibrary.");
             return null;
         }
 
         if (definition.prefab == null) return null;
 
-        ParticleSystem instance = Instantiate(definition.prefab, position, rotation);
-        float lifetime = definition.lifetimeOverride > 0 ? definition.lifetimeOverride : instance.main.duration;
-        StartCoroutine(CleanupAfterDuration(instance, lifetime));
+        GameObject instance = Instantiate(definition.prefab, position, rotation);
+        ParticleSystem ps = instance.GetComponent<ParticleSystem>();
+        if (ps == null)
+        {
+            return null;
+        }
 
-        return instance;
+        float lifetime = definition.lifetimeOverride > 0 ? definition.lifetimeOverride : ps.main.duration;
+        StartCoroutine(CleanupAfterDuration(ps, lifetime));
+
+        return ps;
     }
 
     private IEnumerator CleanupAfterDuration(ParticleSystem ps, float duration)
