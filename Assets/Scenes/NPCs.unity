@@ -1500,6 +1500,7 @@ GameObject:
   m_Component:
   - component: {fileID: 151148892}
   - component: {fileID: 151148893}
+  - component: {fileID: 151148894}
   m_Layer: 0
   m_Name: TImeManager
   m_TagString: Untagged
@@ -1534,6 +1535,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d2b09f59d2e5824eb1a0dd3a77776f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimeManager
+--- !u!114 &151148894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 151148891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8713899f3c810e147b5d07bd79c4b3f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SunTransitioner
 --- !u!1001 &151673009
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2225,13 +2238,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 216350451}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.2120122, y: 0.55403227, z: -0.14845252, w: 0.79124016}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 70, z: 0}
 --- !u!114 &216350454
 MonoBehaviour:
   m_ObjectHideFlags: 0
