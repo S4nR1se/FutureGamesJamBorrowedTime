@@ -24,6 +24,7 @@ public class UIManager : Manager
     [SerializeField] private GameObject _buildingNPCInfoPrefab;
     [SerializeField] private GameObject _buildingWindow;
     [SerializeField] private Transform _parentTransform;
+    [SerializeField] private Material PURRmat;
 
     private CanvasGroup _npcInfoCanvasGroup;
     private CanvasGroup _buildingInfoCanvasGroup;
@@ -102,6 +103,10 @@ public class UIManager : Manager
             if(resource.Key == Resources.Purr)
             {
                 _hudComponentsDic["Purr"].Counter[0].text = resource.Value.ToString();
+                if (PURRmat != null)
+                {
+                    PURRmat.SetFloat("_Fill",resource.Value);
+                }
             }
             else if (resource.Key == Resources.Graves)
             {
