@@ -26,16 +26,19 @@ public class UIManager : Manager
     [SerializeField] private TextMeshProUGUI _npcLifeSpanText;
     [SerializeField] private TextMeshProUGUI _npcMoodText;
     [SerializeField] private GameObject      _buildingNPCInfoPrefab;
-    [SerializeField] private GameObject[]      _buildingWindow;
+    [SerializeField] private GameObject      _buildingWindow;
     [SerializeField] private Transform pos;
     [SerializeField] private Transform posP;
 
     private Dictionary<string, HudComponent> _hudComponentsDic;
+    private List<GameObject> _buildingNPCInfoList = new();
+    private TextMeshProUGUI _borrowTimeText;
+    private int _borrowCount;
 
     private ResourceManager _resourceManager;
     private NPCManager _npcManager;
     private TilePlacementManager _buildingsManager;
-    private IWorker _workerInterface;
+
     public override void Initialize()
     {
         _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
@@ -54,6 +57,7 @@ public class UIManager : Manager
         _hudComponentsDic = new();
         InitializeHudComponentsCounter();
         _npcInfo.SetActive(false);
+        _buildingWindow.SetActive(false);
     }
 
     private void InitializeHudComponentsIcon()
@@ -178,26 +182,79 @@ public class UIManager : Manager
 
     public void DisplayBuildingInfo()//IEnumerable<NPC> enumerable)
     {
+        _buildingWindow.SetActive(true);
         int new_height = 0;
-        for(int i = 0; i < 1; i++)
+        //foreach (NPC npc in enumerable)
+        //{
+        //    GameObject _buildingNPCInfo = Instantiate(_buildingNPCInfoPrefab);
+        //    _buildingNPCInfo.transform.SetParent(posP);
+        //    Vector3 NewPos = new Vector3(pos.transform.position.x, pos.transform.position.y + new_height, pos.transform.position.z);
+        //    _buildingNPCInfo.transform.position = NewPos;
+        //    new_height -= 30;
+        //    for (int j = 0; j < _buildingNPCInfo.transform.childCount; ++j)
+        //    {
+        //        Transform child = _buildingNPCInfo.transform.GetChild(j);
+        //        if(child.name == "Name")
+        //        {
+        //            child.gameObject.GetComponent<TextMeshProUGUI>().text = npc.name;
+        //        }
+        //        else if(child.name == "BTCounter")
+        //        {
+        //            child.gameObject.GetComponent<TextMeshProUGUI>().text = npc.LifeSpan.ToString();
+        //        }
+        //    }
+
+        //    _buildingNPCInfoList.Add(_buildingNPCInfo);
+        //}
+
+        for(int i = 0; i < 4; ++i)
         {
             GameObject _buildingNPCInfo = Instantiate(_buildingNPCInfoPrefab);
-            for (int j = 0; j < _buildingNPCInfo.transform.childCount; ++j)
-            {
-                Transform child = _buildingNPCInfo.transform.GetChild(j);
-               
-            }
-
             _buildingNPCInfo.transform.SetParent(posP);
             Vector3 NewPos = new Vector3(pos.transform.position.x, pos.transform.position.y + new_height, pos.transform.position.z);
             _buildingNPCInfo.transform.position = NewPos;
             new_height -= 30;
+            for (int j = 0; j < _buildingNPCInfo.transform.childCount; ++j)
+            {
+                Transform child = _buildingNPCInfo.transform.GetChild(j);
+                if (child.name == "Name")
+                {
+                    child.gameObject.GetComponent<TextMeshProUGUI>().text = "Hi";
+                }
+                else if (child.name == "BTCounter")
+                {
+                    child.gameObject.GetComponent<TextMeshProUGUI>().text = "5";
+                    _borrowTimeText = child.gameObject.GetComponent<TextMeshProUGUI>();
+                }
+            }
+
+            _buildingNPCInfoList.Add(_buildingNPCInfo);
         }
-      
     }
 
     public void HideBuildingInfo()
     {
-
+        _buildingWindow.SetActive(false);
+        for(int i = 0; i < _buildingNPCInfoList.Count; ++i)
+        {
+            Destroy(_buildingNPCInfoList[i]);
+        }
     }
+
+    public void BorrowDayPlusButton()
+    {
+        _borrowCount++;
+        UpdateBorrowTimeText();
+    }
+
+    public void BorrowDayMinusButton()
+    {
+        _borrowCount--;
+        UpdateBorrowTimeText();
+    }
+
+    public void UpdateBorrowTimeText()
+    {
+        _borrowTimeText.text = _borrowCount.ToString();
+    }    
 }
