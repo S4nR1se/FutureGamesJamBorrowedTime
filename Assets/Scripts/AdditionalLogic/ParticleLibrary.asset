@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34f1ef45be5bf5b409b1d470986d3e8c, type: 3}
   m_Name: ParticleLibrary
   m_EditorClassIdentifier: Assembly-CSharp::ParticleLibrary
-  particles: []
+  particles:
+  - name: 
+    prefab: {fileID: 0}
+    lifetimeOverride: 0
