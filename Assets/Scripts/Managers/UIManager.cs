@@ -1,3 +1,4 @@
+using Assets.Scripts.Managers;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -28,18 +29,22 @@ public class UIManager : Manager
     [SerializeField] private GameObject      _buildingNPCInfoPrefab;
     [SerializeField] private GameObject      _buildingWindow;
     [SerializeField] private Transform posP;
-    [SerializeField] private GameObject EvenUI;
+    [SerializeField] private GameObject _eventUIPrefab;
+    [SerializeField] private GameObject _gameEnderUIPrefab;
 
     private Dictionary<string, HudComponent> _hudComponentsDic;
     private List<GameObject> _buildingNPCInfoList = new();
     private List<TextMeshProUGUI> _borrowTimeText;
     private int _borrowCount = 5;
-    private Event_SO eventToSolve;
+    private Event_SO _eventToSolve;
+    private GameObject _event;
+    private GameObject _gameEnder;
 
     private ResourceManager _resourceManager;
     private NPCManager _npcManager;
     private TilePlacementManager _buildingsManager;
     private EventManager _eventManager;
+    private GameEnderManager _gameEnderManager;
 
     public override void Initialize()
     {
@@ -47,8 +52,7 @@ public class UIManager : Manager
         _npcManager = GameManager.Instance.GetManager<NPCManager>();
         _buildingsManager = GameManager.Instance.GetManager<TilePlacementManager>();
         _eventManager = GameManager.Instance.GetManager<EventManager>();
-
-        //EvenUI.SetActive(false);
+        _gameEnderManager = GameManager.Instance.GetManager<GameEnderManager>();
 
         if ( _resourceManager != null)
         {
@@ -58,9 +62,13 @@ public class UIManager : Manager
         {
             _npcManager.OnNPCAmountChange += OnNPCAmountChange;
         }
-        if(_npcManager != null)
+        if(_eventManager != null)
         {
             _eventManager.OnNewEvent += OnNewEvent;
+        }
+        if(_gameEnderManager != null)
+        {
+            _gameEnderManager.GameOver += GameOver;
         }
 
         _hudComponentsDic = new();
@@ -269,12 +277,12 @@ public class UIManager : Manager
 
     }
 
-    public void OpenEventUI()
+    public void TestOpenEventUI()
     {
-        EvenUI.SetActive(!EvenUI.activeInHierarchy);
+        Instantiate(_eventUIPrefab);
     }
 
-    public void NewEvent()
+    public void TestNextEvent()
     {
         _eventManager.TestNextEvent();
     }
@@ -286,8 +294,9 @@ public class UIManager : Manager
 
     private void OnNewEvent(Event_SO newEvent)
     {
-        eventToSolve = newEvent;
-        var textElements = EvenUI.GetComponentsInChildren<TextMeshProUGUI>();
+        _eventToSolve = newEvent;
+        _event = Instantiate(_eventUIPrefab);
+        var textElements = _event.GetComponentsInChildren<TextMeshProUGUI>();
         foreach (var text in textElements)
         {
             if (text.name == "Title")
@@ -315,7 +324,46 @@ public class UIManager : Manager
 
     public void SolveEventOutcome(int choice)
     {
-        var asd = eventToSolve.Choices[choice];
-        Debug.Log($"{asd.Outcome} {asd.OutcomeValue}");
+        var chosenEvent = _eventToSolve.Choices[choice];
+        Debug.Log($"{chosenEvent.Outcome} {chosenEvent.OutcomeValue}");
+        chosenEvent.SolveEncounter();
+        _event.SetActive(false);
+    }
+
+    public void TestGameOver(GameResult result, int lostCondition = 0)
+    {
+        switch (result)
+        {
+            case GameResult.GameWon:
+                _gameEnderManager.GameWon();
+                break;
+            case GameResult.GameLost:
+                _gameEnderManager.TestGameLost(lostCondition);
+                break;
+        }
+    }
+
+    private void GameOver(GameResult result, string message)
+    {
+        _gameEnder = Instantiate(_gameEnderUIPrefab);
+        var textElements = _gameEnder.GetComponentsInChildren<TextMeshProUGUI>();
+        foreach (var text in textElements)
+        {
+            if (text.name == "Title")
+            {
+                if (result == GameResult.GameWon)
+                {
+                    text.text = "YOU WIN";
+                }
+                else
+                {
+                    text.text = "YOU LOSE";
+                }
+            }
+            else if (text.name == "Description")
+            {
+                text.text = message;
+            }
+        }
     }
 }

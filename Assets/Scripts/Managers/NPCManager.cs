@@ -265,4 +265,20 @@ public class NPCManager : Manager
 
         return newName;
     }
+
+    internal void DespawnPeasantAtRandom(int outcomeValue)
+    {
+        for (int i = 0; i < outcomeValue; i++)
+        {
+            TestDespawn();
+        }
+    }
+    internal void IncreaseGlobalDread(int outcomeValue)
+    {
+        List<Peasant> peasants = GetNPCsOfType<Peasant>();
+        foreach (var peasant in peasants)
+        {
+            peasant.IncreaseDread(outcomeValue);
+        }
+    }
 }

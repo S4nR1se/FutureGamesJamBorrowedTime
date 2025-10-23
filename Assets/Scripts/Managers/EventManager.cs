@@ -58,16 +58,6 @@ public class EventManager : Manager
         _tierOfGame = 2;
         _firstEvent = true;
     }
-    public void TestNextEvent()
-    {
-        var nextEvent = GetNewEvent();
-        OnNewEvent?.Invoke(nextEvent);
-    }
-    public void TestStage2()
-    {
-        Debug.Log($"stage 2");
-        OnTierUpgrade();
-    }
     private Event_SO GetNewEvent()
     {
         Event_SO nextEvent;
@@ -109,5 +99,16 @@ public class EventManager : Manager
         }
         Debug.Log($"returning event {nextEvent.Tier} {nextEvent.Title}");
         return nextEvent;
+    }
+
+    public void TestNextEvent()
+    {
+        var nextEvent = GetNewEvent();
+        OnNewEvent?.Invoke(nextEvent);
+    }
+    public void TestStage2()
+    {
+        Debug.Log($"stage 2");
+        OnTierUpgrade();
     }
 }

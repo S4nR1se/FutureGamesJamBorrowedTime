@@ -376,10 +376,14 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     {
         _playerInteractionBehaviour?.OnHoverExit();
     }
+    public void IncreaseDread(int amount = 1)
+    {
+        _dreadFactor = _dreadFactor + amount;
+    }
 
     public void UndeadContact()
     {
-        _dreadFactor++;
+        IncreaseDread();
     }
 
     public void RunNightChecklist()
@@ -405,7 +409,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     private void CheckHomelessness()
     {
         if (_currentZone.Type != _restZoneType)
-            _dreadFactor++;
+            IncreaseDread();
     }
     private void CheckMortality()
     {

@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Managers
 {
+    public enum GameResult
+    {
+        GameWon,
+        GameLost
+    }
     internal class GameEnderManager : Manager
     {
         internal const int INQUISITIONDAY = 51;
@@ -32,15 +37,29 @@ namespace Assets.Scripts.Managers
 
             _yersterdaysPeasants = _npcManager.GetActivePeasantCount();
         }
-        public enum GameResult
-        {
-            GameWon,
-            GameLost
-        }
 
         public void GameWon()
         {
             GameOver?.Invoke(GameResult.GameWon, "You managed to build the portal just in time... The traitor will suffer!");
+        }
+
+        public void TestGameLost(int lostCondition = 0)
+        {
+            switch (lostCondition)
+            {
+                case 0:
+                    GameOver?.Invoke(GameResult.GameLost, "You took too long to have you vengeance... The inquisition has found you!");
+                    break;
+                case 1:
+                    GameOver?.Invoke(GameResult.GameLost, "There are no more peasants around to help you build the portal. In time, the inquisition will come and you won't have your vengeance...");
+                    break;
+                case 2:
+                    GameOver?.Invoke(GameResult.GameLost, "The peasants area leaving, as their families are perishing. In time, the inquisition will come and you won't have your vengeance...");
+                    break;
+                case 3:
+                    GameOver?.Invoke(GameResult.GameLost, "The peasants are scared of you, they will leave your town. In time, the inquisition will come and won't have your vengeance...");
+                    break;
+            }
         }
 
         private void OnTimePassage(DayCycle currentCycle)
