@@ -92,6 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07192a3828ad5c54c9bca0e4215ccade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Skeleton
+  RisingSkeleton: {fileID: 8300000, guid: a52ba14fbd4dc2f44a0494ff9b9e4175, type: 3}
 --- !u!1 &6920223528076596755
 GameObject:
   m_ObjectHideFlags: 0

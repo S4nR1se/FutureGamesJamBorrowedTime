@@ -92,6 +92,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f62b87db62f66e94fab625c7fcc3a2bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Zombie
+  ZombieSpawnSFX:
+  - {fileID: 8300000, guid: 7bb880eef22e78243b4c90238523573b, type: 3}
+  - {fileID: 8300000, guid: de66966e3426aa94ab76a6d1e08f9c38, type: 3}
+  - {fileID: 8300000, guid: d9c8698eb14bec443a8f1689170381d2, type: 3}
+  ZombieBiteSFX: {fileID: 8300000, guid: 7a150402d35912f458205a485cc34076, type: 3}
 --- !u!1 &6920223528076596755
 GameObject:
   m_ObjectHideFlags: 0
