@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8907024516731521726
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7643673824126845470}
+  - component: {fileID: 4707328170551629609}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7643673824126845470
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8907024516731521726}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4707328170551629609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8907024516731521726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43ff713cf63ae7e4f976569648f7cdb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIManager
+  _hudComponents:
+  - Title: Day
+    Value: 00000000
+    Icon: []
+    Counter:
+    - {fileID: 0}
+  - Title: BorrowTime
+    Value: 00000000
+    Icon:
+    - {fileID: 0}
+    Counter:
+    - {fileID: 0}
+  - Title: Summoning
+    Value: 0000000000000000
+    Icon:
+    - {fileID: 0}
+    - {fileID: 0}
+    Counter:
+    - {fileID: 0}
+    - {fileID: 0}
+  - Title: Graves
+    Value: 00000000
+    Icon:
+    - {fileID: 0}
+    Counter:
+    - {fileID: 0}
+  - Title: Purr
+    Value: 00000000
+    Icon: []
+    Counter:
+    - {fileID: 0}
+  - Title: Buildings
+    Value: 08000000050000000a0000000f000000
+    Icon:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    Counter:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+  - Title: Resources
+    Value: 1400000014000000
+    Icon:
+    - {fileID: 0}
+    - {fileID: 0}
+    Counter:
+    - {fileID: 0}
+    - {fileID: 0}
+  - Title: Peasants
+    Value: 00000000
+    Icon:
+    - {fileID: 0}
+    Counter:
+    - {fileID: 0}
+  _npcInfo: {fileID: 0}
+  _npcNameText: {fileID: 0}
+  _npcOccupationText: {fileID: 0}
+  _npcLifeSpanText: {fileID: 0}
+  _npcMoodText: {fileID: 0}
+  _buildingNPCInfoPrefab: {fileID: 2654107268212800875, guid: 65d993030ad3c2f45b6e87b8e9dc667e, type: 3}
+  _buildingWindow: {fileID: 0}
+  pos: {fileID: 0}
+  posP: {fileID: 0}

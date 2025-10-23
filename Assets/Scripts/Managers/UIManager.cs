@@ -32,8 +32,8 @@ public class UIManager : Manager
 
     private Dictionary<string, HudComponent> _hudComponentsDic;
     private List<GameObject> _buildingNPCInfoList = new();
-    private TextMeshProUGUI _borrowTimeText;
-    private int _borrowCount;
+    private List<TextMeshProUGUI> _borrowTimeText;
+    private int _borrowCount = 5;
 
     private ResourceManager _resourceManager;
     private NPCManager _npcManager;
@@ -58,6 +58,7 @@ public class UIManager : Manager
         InitializeHudComponentsCounter();
         _npcInfo.SetActive(false);
         _buildingWindow.SetActive(false);
+        _borrowTimeText = new();
     }
 
     private void InitializeHudComponentsIcon()
@@ -183,7 +184,6 @@ public class UIManager : Manager
     public void DisplayBuildingInfo()//IEnumerable<NPC> enumerable)
     {
         _buildingWindow.SetActive(true);
-        int new_height = 0;
         //foreach (NPC npc in enumerable)
         //{
         //    GameObject _buildingNPCInfo = Instantiate(_buildingNPCInfoPrefab);
@@ -207,13 +207,10 @@ public class UIManager : Manager
         //    _buildingNPCInfoList.Add(_buildingNPCInfo);
         //}
 
-        for(int i = 0; i < 4; ++i)
+        for(int i = 0; i < 10; ++i)
         {
             GameObject _buildingNPCInfo = Instantiate(_buildingNPCInfoPrefab);
             _buildingNPCInfo.transform.SetParent(posP);
-            Vector3 NewPos = new Vector3(pos.transform.position.x, pos.transform.position.y + new_height, pos.transform.position.z);
-            _buildingNPCInfo.transform.position = NewPos;
-            new_height -= 30;
             for (int j = 0; j < _buildingNPCInfo.transform.childCount; ++j)
             {
                 Transform child = _buildingNPCInfo.transform.GetChild(j);
@@ -223,8 +220,8 @@ public class UIManager : Manager
                 }
                 else if (child.name == "BTCounter")
                 {
-                    child.gameObject.GetComponent<TextMeshProUGUI>().text = "5";
-                    _borrowTimeText = child.gameObject.GetComponent<TextMeshProUGUI>();
+                    child.gameObject.GetComponent<TextMeshProUGUI>().text = _borrowCount.ToString();
+                    _borrowTimeText.Add(child.gameObject.GetComponent<TextMeshProUGUI>());
                 }
             }
 
@@ -255,6 +252,11 @@ public class UIManager : Manager
 
     public void UpdateBorrowTimeText()
     {
-        _borrowTimeText.text = _borrowCount.ToString();
+        for(int i = 0; i < _borrowTimeText.Count; ++i)
+        {
+            Debug.Log("hi");
+            _borrowTimeText[i].text = _borrowCount.ToString();
+        }
+        
     }    
 }
