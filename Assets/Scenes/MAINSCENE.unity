@@ -9816,7 +9816,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43ff713cf63ae7e4f976569648f7cdb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
-  _hudComponents: []
+  _hudComponents:
+  - Title: Day
+    Value: 00000000
+    Icon: []
+    Counter:
+    - {fileID: 3855690301238453174}
+  - Title: Graves
+    Value: 00000000
+    Icon:
+    - {fileID: 6588255482581700972}
+    Counter:
+    - {fileID: 8004787483353577773}
+  - Title: Summoning
+    Value: 0000000000000000
+    Icon:
+    - {fileID: 7946249219359594980}
+    - {fileID: 3960149347040645275}
+    Counter:
+    - {fileID: 2101206802809290312}
+    - {fileID: 8340229963947628371}
+  - Title: Purr
+    Value: 00000000
+    Icon: []
+    Counter:
+    - {fileID: 24217670786396438}
+  - Title: Buildings
+    Value: 05000000080000000a0000000f000000
+    Icon:
+    - {fileID: 4604129894738424631}
+    - {fileID: 4035976599802721277}
+    - {fileID: 4212188995929486799}
+    - {fileID: 2409499795966620436}
+    Counter:
+    - {fileID: 4227982030584872076}
+    - {fileID: 5125812982991789568}
+    - {fileID: 988398939824569458}
+    - {fileID: 9096717863029578858}
+  - Title: Resources
+    Value: 0000000000000000
+    Icon:
+    - {fileID: 7898844791355685715}
+    - {fileID: 2856324324536581482}
+    Counter:
+    - {fileID: 640061543333217802}
+    - {fileID: 8946102863600755815}
+  - Title: Peasants
+    Value: 00000000
+    Icon:
+    - {fileID: 3507432707334243066}
+    Counter:
+    - {fileID: 8916948321435452741}
   _npcInfo: {fileID: 146061350299572536}
   _npcNameText: {fileID: 1345353238747108911}
   _npcOccupationText: {fileID: 8682003159846529602}
@@ -9824,7 +9874,7 @@ MonoBehaviour:
   _npcMoodText: {fileID: 6020080873776160034}
   _buildingNPCInfoPrefab: {fileID: 2654107268212800875, guid: 65d993030ad3c2f45b6e87b8e9dc667e, type: 3}
   _buildingWindow: {fileID: 5226265196587179954}
-  posP: {fileID: 7296726111262792524}
+  _parentTransform: {fileID: 5394229556512432563}
 --- !u!1001 &1217788423
 PrefabInstance:
   m_ObjectHideFlags: 0

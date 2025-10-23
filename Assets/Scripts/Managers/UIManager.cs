@@ -23,7 +23,7 @@ public class UIManager : Manager
     [SerializeField] private TextMeshProUGUI _npcMoodText;
     [SerializeField] private GameObject _buildingNPCInfoPrefab;
     [SerializeField] private GameObject _buildingWindow;
-    [SerializeField] private Transform posP;
+    [SerializeField] private Transform _parentTransform;
 
     private CanvasGroup _npcInfoCanvasGroup;
     private CanvasGroup _buildingInfoCanvasGroup;
@@ -222,7 +222,7 @@ public class UIManager : Manager
         for (int i = 0; i < 20; ++i)
         {
             GameObject _buildingNPCInfo = Instantiate(_buildingNPCInfoPrefab);
-            _buildingNPCInfo.transform.SetParent(posP);
+            _buildingNPCInfo.transform.SetParent(_parentTransform);
             for (int j = 0; j < _buildingNPCInfo.transform.childCount; ++j)
             {
                 Transform child = _buildingNPCInfo.transform.GetChild(j);
@@ -268,7 +268,6 @@ public class UIManager : Manager
     {
         for(int i = 0; i < _borrowTimeText.Count; ++i)
         {
-            Debug.Log("hi");
             _borrowTimeText[i].text = _borrowCount.ToString();
         }
         
