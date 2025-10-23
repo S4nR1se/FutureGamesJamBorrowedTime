@@ -4,6 +4,7 @@ using System.Linq;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Managers
 {
@@ -85,6 +86,12 @@ namespace Assets.Scripts.Managers
                 GameOver?.Invoke(GameResult.GameLost, "The peasants are scared of you, they will leave your town. In time, the inquisition will come and won't have your vengeance...");
             }
             _yersterdaysPeasants = _npcManager.GetActivePeasantCount();
+        }
+
+        public void ExitGame()
+        {
+            SceneManager.LoadSceneAsync("MainMenu");
+            //SceneManager.LoadSceneAsync("Credits");
         }
     }
 }
