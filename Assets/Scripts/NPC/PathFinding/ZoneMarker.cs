@@ -11,6 +11,7 @@ public class ZoneMarker : MonoBehaviour
 
     private bool _autoCalculateRadius = true;
     private const float MANUALRADIUS = 10f;
+    private ParticleSystem ParticlesSpawned;
 
     private Zone _zone;
     private Collider _collider;
@@ -33,7 +34,16 @@ public class ZoneMarker : MonoBehaviour
         _zone = CreateZone();
         zoneManager.RegisterZone(_zone);
 
-        Building associatedBuilding = GetComponent<Building>();
+        if (zoneType == ZoneType.ConstructionSite)
+        {
+            ParticlesSpawned = ParticleSystemManager.Instance.Spawn("Construction", transform.position);
+        }
+        else
+        {
+            Destroy(ParticlesSpawned);
+        }
+
+            Building associatedBuilding = GetComponent<Building>();
         if (associatedBuilding != null)
         {
             associatedBuilding.Initialize();
