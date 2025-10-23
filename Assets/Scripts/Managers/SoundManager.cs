@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundManager : Manager
+public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set; }
 
@@ -45,7 +45,7 @@ public class SoundManager : Manager
             Destroy(gameObject);
         }
     }
-    public override void Initialize()
+    private void Start()
     {
         _audioSourceParent = new GameObject("AudioSourceParent");
         _audioSourceParent.transform.SetParent(transform);
