@@ -26,10 +26,13 @@ public class UIManager : Manager
     [SerializeField] private HudComponent[] _hudComponents;
     [SerializeField] private Dictionary<string, GameObject> _buildingPrefab;
     [SerializeField] private GameObject _npcInfo;
+
     [SerializeField] private TextMeshProUGUI _npcNameText;
     [SerializeField] private TextMeshProUGUI _npcOccupationText;
     [SerializeField] private TextMeshProUGUI _npcLifeSpanText;
     [SerializeField] private TextMeshProUGUI _npcMoodText;
+    [SerializeField] private Image _npcPhoto;
+
     [SerializeField] private GameObject _npcEntryTemplate;
     [SerializeField] private GameObject _buildingWindowParent;
     [SerializeField] private Transform _parentTransform;
@@ -152,6 +155,8 @@ public class UIManager : Manager
         _npcInfoCanvasGroup.alpha = 1;
         _npcInfoCanvasGroup.interactable = true;
         _npcInfoCanvasGroup.blocksRaycasts = true;
+
+        _npcPhoto.sprite = npc.PassportPhoto;
 
         _npcNameText.text = "Name: " + npc.Name;
         if (npc is IWorker worker)

@@ -92,6 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51698abc1f7590d4b98b8b2e7d01d6ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Peasant
+  _meshRenderer: {fileID: 5869411081198066500}
 --- !u!1 &6920223528076596755
 GameObject:
   m_ObjectHideFlags: 0

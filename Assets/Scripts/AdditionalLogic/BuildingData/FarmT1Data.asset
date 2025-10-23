@@ -23,3 +23,5 @@ MonoBehaviour:
   PlacementYOffset: 3
   DefaultRotationY: -90
   PreviewPrefab: {fileID: 7669291683089598282, guid: 3db0d6f472cef0c4dae24499f86241bb, type: 3}
+  BuildingName: Farm
+  Description: Building does stuff fr

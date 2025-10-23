@@ -2,10 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class NPCManager : Manager
 {
+    [System.Serializable]
+    public struct CatIdentity
+    {
+        public Material Material;
+        public Texture2D Photo;
+    }
+
+    [SerializeField] private CatIdentity[] _identities;
     [SerializeField] private NPCNames _nPCNames;
     public event Action<Dictionary<Type, List<NPC>>> OnNPCAmountChange;
 
@@ -127,7 +134,10 @@ public class NPCManager : Manager
             }
 
             string generatedName = GenerateName(peasant);
-            peasant.Initialize(correctZone, generatedName);
+
+            CatIdentity chosenIdentity = _identities[UnityEngine.Random.Range(0, _identities.Length)];
+
+            peasant.Initialize(correctZone, chosenIdentity, generatedName);
 
             RegisterNPC(peasant);
             return peasant;
@@ -151,7 +161,10 @@ public class NPCManager : Manager
             }
 
             string generatedName = GenerateName(peasant);
-            peasant.Initialize(correctZone, generatedName);
+
+            CatIdentity chosenIdentity = _identities[UnityEngine.Random.Range(0, _identities.Length)];
+
+            peasant.Initialize(correctZone, chosenIdentity, generatedName);
 
             RegisterNPC(peasant);
             return peasant;

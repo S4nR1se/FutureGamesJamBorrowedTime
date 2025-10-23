@@ -23,3 +23,5 @@ MonoBehaviour:
     key: 52
   - actionName: BuildingOption#5
     key: 53
+  - actionName: PassTime
+    key: 116

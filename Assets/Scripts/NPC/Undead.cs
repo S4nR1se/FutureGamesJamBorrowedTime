@@ -1,8 +1,10 @@
 using System.Linq;
+using System.Security.Principal;
 using UnityEngine;
 
 public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
 {
+    [SerializeField] private Texture2D _passPortPhoto;
     public GameObject PoolableComponent => gameObject;
     public GameObject Component => gameObject;
 
@@ -57,6 +59,12 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
         Age = 0;
         LifeSpan = lifeSpan;
         MovementSpeed = movementSpeed;
+
+        PassportPhoto = Sprite.Create(
+                _passPortPhoto,
+                new Rect(0, 0, _passPortPhoto.width, _passPortPhoto.height),
+                new Vector2(0.5f, 0.5f)
+            );
 
         _activeCycle = activeCycle;
 

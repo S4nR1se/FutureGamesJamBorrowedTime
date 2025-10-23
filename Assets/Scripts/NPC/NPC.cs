@@ -4,6 +4,7 @@ public abstract class NPC : MonoBehaviour
 {
     public string Name {  get; protected set; }
     public int Age { get; protected set; }
+    public Sprite PassportPhoto { get; protected set; }
     public int LifeSpan { get; protected set; }
     public float MovementSpeed { get; protected set; }
     public bool MarkedForDeath { get; protected set; } = false;

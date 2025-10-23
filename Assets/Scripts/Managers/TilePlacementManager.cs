@@ -47,7 +47,7 @@ public class TilePlacementManager : Manager
                     if (_previewHelper.CurrentPreview == null ||
                         !_previewHelper.CurrentPreview.name.StartsWith(data.PreviewPrefab.name))
                     {
-                        _previewHelper.ShowPreview(data.PreviewPrefab, data.PlacementYOffset, data.DefaultRotationY);
+                        _previewHelper.ShowPreview(data);
                     }
 
                     _previewHelper.UpdatePreview();

@@ -92,6 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07192a3828ad5c54c9bca0e4215ccade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Skeleton
+  _passPortPhoto: {fileID: 2800000, guid: 96d59e5d8e7285b4da59d16683d4befe, type: 3}
 --- !u!1 &6920223528076596755
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,7 +159,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 13979faa3ff8e3844bd98dff51c870ee, type: 2}
+  - {fileID: 2100000, guid: 681c30b7f3b68a4449ad49affbbd8caf, type: 2}
   - {fileID: 2100000, guid: ff0ccddb96821224d88f0c91ac6fb72b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0

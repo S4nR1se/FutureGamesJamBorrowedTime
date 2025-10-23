@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class TilePreviewHelper : MonoBehaviour
 {
+    [SerializeField] private PlacementPopupUI popupUI;
+
     [SerializeField] private Material validMaterial;
     [SerializeField] private Material invalidMaterial;
 
@@ -11,6 +13,8 @@ public class TilePreviewHelper : MonoBehaviour
     private GridManager _gridManager;
     private Camera _mainCam;
 
+    private CanvasGroup _popUpCanvasGroup;
+
     private float _yOffset;
     private float _rotationY;
 
@@ -18,18 +22,25 @@ public class TilePreviewHelper : MonoBehaviour
     {
         _gridManager = gridManager;
         _mainCam = Camera.main;
+
+        _popUpCanvasGroup = popupUI.GetComponent<CanvasGroup>();
+        _popUpCanvasGroup.alpha = 0f;
     }
 
-    public void ShowPreview(GameObject prefab, float yOffset, float rotationY)
+    public void ShowPreview(BuildingData_SO buildData)
     {
         ClearPreview();
-        _yOffset = yOffset;
-        _rotationY = rotationY;
+        _yOffset = buildData.PlacementYOffset;
+        _rotationY = buildData.DefaultRotationY;
+        GameObject prefab = buildData.PreviewPrefab;
 
         currentPreview = Instantiate(prefab, new Vector3(0, 100000, 0), Quaternion.Euler(0, _rotationY, 0), transform);
 
         foreach (var col in currentPreview.GetComponentsInChildren<Collider>())
             col.enabled = false;
+
+        popupUI.Initialize(buildData);
+        _popUpCanvasGroup.alpha = 1f;
     }
 
     public void UpdatePreview()
@@ -47,6 +58,8 @@ public class TilePreviewHelper : MonoBehaviour
 
             bool canPlace = _gridManager.IsAreaFree(gridPos, Vector2Int.one);
             ApplyMaterial(canPlace);
+
+            popupUI.FollowMouse();
         }
     }
 
@@ -61,5 +74,6 @@ public class TilePreviewHelper : MonoBehaviour
     {
         if (currentPreview != null)
             Destroy(currentPreview);
+        _popUpCanvasGroup.alpha = 0f;
     }
 }

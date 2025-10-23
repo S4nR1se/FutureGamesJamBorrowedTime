@@ -7,7 +7,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     public GameObject PoolableComponent => gameObject;
     public GameObject Component => gameObject;
 
-    private Renderer _meshRenderer;
+    [SerializeField] private Renderer _meshRenderer;
 
     public Occupation Occupation => _occupation;
     public int StarvationValue => _starvationValue;
@@ -36,11 +36,6 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     private TimeManager _timeManager;
     private ResourceManager _resourceManager;
     private ZoneManager _zoneManager;
-
-    private void Awake()
-    {
-        _meshRenderer = GetComponentInChildren<Renderer>();
-    }
 
     private void OnEnable()
     {
@@ -94,7 +89,46 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
             _occupiedZone = startZone;
         }
     }
+    public void Initialize(Zone startZone,NPCManager.CatIdentity identity, string name = "NPC", int lifeSpan = 10, float movementSpeed = 5, Occupation occupation = null, ZoneType restZoneType = ZoneType.House, DayCycle activeCycle = DayCycle.Day)
+    {
+        Name = name;
+        LifeSpan = lifeSpan;
+        Age = 0;
+        MovementSpeed = movementSpeed;
 
+        _activeCycle = activeCycle;
+
+        MarkedForDeath = false;
+
+        _occupation = occupation ?? CreateDefaultOccupation();
+        SetRestZoneType(restZoneType);
+
+        _roamingBehaviour = new RoamingBehaviour(this, MovementSpeed, startZone);
+        _playerInteractionBehaviour = new PlayerInteractionBehaviour(_meshRenderer);
+        _loiteringBehaviour = new LoiteringBehaviour(this, MovementSpeed);
+
+        if (_meshRenderer != null && identity.Material != null)
+        {
+            Material[] mats = _meshRenderer.materials;
+            mats[0] = identity.Material;
+            _meshRenderer.materials = mats;
+        }
+
+        if (identity.Photo != null)
+        {
+            PassportPhoto = Sprite.Create(
+                identity.Photo,
+                new Rect(0, 0, identity.Photo.width, identity.Photo.height),
+                new Vector2(0.5f, 0.5f)
+            );
+        }
+
+        SetCurrentZone(startZone);
+        if (startZone != null && startZone.TryEnter(this))
+        {
+            _occupiedZone = startZone;
+        }
+    }
     private void UpdateComponent()
     {
         if (_isTraveling)
