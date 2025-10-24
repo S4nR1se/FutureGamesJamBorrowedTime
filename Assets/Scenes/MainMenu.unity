@@ -607,9 +607,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 102900000, guid: 326c1ec60e28fe44abadbea6ec572c38, type: 3}
-        m_TargetAssemblyTypeName: UnityEditor.SceneAsset, UnityEditor.CoreModule
-        m_MethodName: 
+      - m_Target: {fileID: 1936201136}
+        m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
+        m_MethodName: Start_Game
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -745,7 +745,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1936201130}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
         m_MethodName: Open_Stats_Menu
         m_Mode: 1
@@ -1774,7 +1774,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1936201130}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
         m_MethodName: Quit_Game
         m_Mode: 1
@@ -1915,8 +1915,8 @@ GameObject:
   - component: {fileID: 1936201133}
   - component: {fileID: 1936201132}
   - component: {fileID: 1936201131}
-  - component: {fileID: 1936201130}
   - component: {fileID: 1936201135}
+  - component: {fileID: 1936201136}
   m_Layer: 5
   m_Name: MainMenu
   m_TagString: Untagged
@@ -1924,18 +1924,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1936201130
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1936201129}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4985ffafea8655c46b57008f24421e9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MainMenuManager
 --- !u!114 &1936201131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2118,6 +2106,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1936201136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936201129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce6a44a89e3c82a4faa6ce2d9879fc41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MainMenuManager
 --- !u!1 &2071632671
 GameObject:
   m_ObjectHideFlags: 0
@@ -2317,15 +2317,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 521330334688720410, guid: 861d790815f88df4fb5416fa2dbf988e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 731331370897913258, guid: 861d790815f88df4fb5416fa2dbf988e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1223759245093005177, guid: 861d790815f88df4fb5416fa2dbf988e, type: 3}
       propertyPath: m_Name
       value: SettingsMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223759245093005177, guid: 861d790815f88df4fb5416fa2dbf988e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5203197839858981025, guid: 861d790815f88df4fb5416fa2dbf988e, type: 3}
       propertyPath: m_Pivot.x
@@ -2409,19 +2413,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6938084011388857959, guid: 861d790815f88df4fb5416fa2dbf988e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7375233567365726891, guid: 861d790815f88df4fb5416fa2dbf988e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7462258212666439610, guid: 861d790815f88df4fb5416fa2dbf988e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9091269899458819722, guid: 861d790815f88df4fb5416fa2dbf988e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
