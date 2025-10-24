@@ -43,6 +43,8 @@ public class UIManager : Manager
     [SerializeField] private GameObject _buildingWindowParent;
     [SerializeField] private TextMeshProUGUI _buildingTitle;
     [SerializeField] private TextMeshProUGUI _buildingTier;
+    [SerializeField] private TextMeshProUGUI _buildingUpgradeText;
+    [SerializeField] private Button _buildingUpgradeButton;
 
     [SerializeField] private GameObject _graveYardWindow;
     [SerializeField] private TextMeshProUGUI _graveYardTitle;
@@ -185,10 +187,6 @@ public class UIManager : Manager
             {
                 _hudComponentsDic["Resources"].Counter[1].text = resource.Value.ToString();
             }
-            else if (resource.Key == Resources.Dread)
-            {
-                _hudComponentsDic["Dread"].Counter[0].text = resource.Value.ToString();
-            }
         }
     }
 
@@ -306,6 +304,8 @@ public class UIManager : Manager
 
         _buildingTitle.text = $"{building.BuildData.BuildingName} - Occupants: {building.GetOccupantsNumber()} - Tier {building.BuildData.BuildingTier}";
         _buildingTier.text = $"Tier {building.BuildData.BuildingTier}";
+        _buildingUpgradeText.text = $"Upgrade? Cost: {building.BuildData.MaterialCost} Materials & {building.BuildData.PurrCost} Purr";
+        _buildingUpgradeButton.onClick.AddListener(() => OnUpgradeButtonClick(building));
 
         foreach (var entry in _npcEntries)
         {
@@ -407,6 +407,8 @@ public class UIManager : Manager
         _buildingInfoCanvasGroup.alpha = 0f;
         _buildingInfoCanvasGroup.interactable = false;
         _buildingInfoCanvasGroup.blocksRaycasts = false;
+
+        _buildingUpgradeButton.onClick.RemoveAllListeners();
 
         foreach (var entry in _npcEntries)
         {
@@ -540,5 +542,9 @@ public class UIManager : Manager
         HideGraveyardInfo();
         HideBuildingInfo();
         HideCastleInfo();
+    }
+    private void OnUpgradeButtonClick(Building building)
+    {
+
     }
 }
