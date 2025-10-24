@@ -65,7 +65,7 @@ public class TilePlacementManager : Manager
     }
     public void UpdateConstructionPreview(ConstructionSite site)
     {
-        Debug.Log("flag1");
+        if (_selectedTileType != TileType.BaseTile) return;
         _constructionPopupCanvas.alpha = 1;
         _constructionPopupUI.Initialize(site.BuildData, site.RemainingBuildTime);
         _constructionPopupUI.FollowMouse();

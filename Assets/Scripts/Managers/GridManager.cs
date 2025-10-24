@@ -8,7 +8,6 @@ public class GridManager : Manager
 
     [Header("Tile Prefabs")]
     [SerializeField] private GameObject[] _baseTilePrefabs;
-    [SerializeField] private GameObject _houseTilePrefab;
     [SerializeField] private GameObject _castleTilePrefab;
     [SerializeField] private GameObject _graveyardTilePrefab;
 
@@ -36,7 +35,6 @@ public class GridManager : Manager
     private NavMeshSurface _navMeshSurface;
 
     public GameObject[] BaseTilePrefabs => _baseTilePrefabs;
-    public GameObject HouseTilePrefab => _houseTilePrefab;
     public float FirstPrefabWeight => _firstPrefabWeight;
     public float DecorationSpawnChance => _decorationSpawnChance;
     public GameObject GrassPrefab => _grassPrefab;
@@ -267,18 +265,8 @@ public class GridManager : Manager
             graveyardPos = GetRandomPositionNear(center, radius);
         } while (Vector2Int.Distance(graveyardPos, castlePos) < minDistance);
 
-        Vector2Int housePos;
-        do
-        {
-            housePos = GetRandomPositionNear(center, radius);
-        } while (
-            Vector2Int.Distance(housePos, castlePos) < minDistance ||
-            Vector2Int.Distance(housePos, graveyardPos) < minDistance
-        );
-
         ReplaceTile(castlePos, TileType.Castle, _castleTilePrefab);
         ReplaceTile(graveyardPos, TileType.Graveyard, _graveyardTilePrefab);
-        ReplaceTile(housePos, TileType.House, _houseTilePrefab);
     }
 
     private Vector2Int GetRandomPositionNear(Vector2Int center, int radius)

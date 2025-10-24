@@ -7,7 +7,7 @@ public class ConstructionPopupUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _buildingTime;
     [SerializeField] private TextMeshProUGUI _buildingDescription;
 
-    private Vector3 offset = new Vector3(0, 10f, 20f);
+    [SerializeField] private Vector3 offset = new Vector3(0, 5f, 10f);
 
     private Camera _mainCam;
 
@@ -17,7 +17,7 @@ public class ConstructionPopupUI : MonoBehaviour
     }
     public void Initialize(BuildingData_SO data, int remainingBuildTime)
     {
-        _buildingType.text = $"Type: {data.BuildingName}";
+        _buildingType.text = $"{data.BuildingName}";
         _buildingTime.text = $"Build Time: {remainingBuildTime}";
         _buildingDescription.text = $"{data.Description}";
     }

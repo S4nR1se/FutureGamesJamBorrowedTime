@@ -49,14 +49,17 @@ public class UIManager : Manager
     [SerializeField] private Button _buildingUpgradeButton;
 
     [SerializeField] private GameObject _graveYardWindow;
+    [SerializeField] private TextMeshProUGUI _graveYardUpgradeText;
     [SerializeField] private TextMeshProUGUI _graveYardTitle;
     [SerializeField] private TextMeshProUGUI _graveyardTier;
     [SerializeField] private Button _skeletonButton;
     [SerializeField] private Button _zombieButton;
+    [SerializeField] private Button _graveyardUpgradeButton;
 
     [SerializeField] private GameObject _castleWindow;
     [SerializeField] private TextMeshProUGUI _castleTier;
     [SerializeField] private TextMeshProUGUI _castleRequirements;
+    [SerializeField] private Button _castleUpgradeButton;
 
     [SerializeField] private Transform _parentTransform;
     [SerializeField] private Material PURRmat;
@@ -230,17 +233,39 @@ public class UIManager : Manager
     private void OnNPCAmountChange(Dictionary<System.Type, List<NPC>> npcsByType)
     {
         if (npcsByType == null || _hudComponentsDic == null)
-        {
             return;
-        }
 
-        int NPCS = 0;
-        foreach (var npc in npcsByType)
+        int peasants = 0;
+        int skeletons = 0;
+        int zombies = 0;
+
+        foreach (var kvp in npcsByType)
         {
-            NPCS += npc.Value.Count;
+            Type npcType = kvp.Key;
+            List<NPC> npcList = kvp.Value;
+
+            if (typeof(Peasant).IsAssignableFrom(npcType))
+            {
+                peasants += npcList.Count;
+            }
+            else if (typeof(Skeleton).IsAssignableFrom(npcType))
+            {
+                skeletons += npcList.Count;
+            }
+            else if (typeof(Zombie).IsAssignableFrom(npcType))
+            {
+                zombies += npcList.Count;
+            }
         }
 
-        _hudComponentsDic["Peasants"].Counter[0].text = NPCS.ToString();
+        if (_hudComponentsDic.ContainsKey("Peasants"))
+            _hudComponentsDic["Peasants"].Counter[0].text = peasants.ToString();
+
+        if (_hudComponentsDic.ContainsKey("Summoning"))
+        {
+            _hudComponentsDic["Summoning"].Counter[0].text = skeletons.ToString();
+            _hudComponentsDic["Summoning"].Counter[1].text = zombies.ToString();
+        }
     }
 
     public void DisplayNPCInfo(NPC npc)
@@ -523,7 +548,7 @@ public class UIManager : Manager
     {
         if (building is Graveyard graveyard)
         {
-            graveyard.SpawnSkeleton();
+            graveyard.SpawnZombie();
         }
     }
     public void DisplayGraveyardInfo(Building building)
@@ -537,6 +562,8 @@ public class UIManager : Manager
 
         _graveYardTitle.text = $"Graveyard";
         _graveyardTier.text = $"Tier {building.BuildData.BuildingTier}";
+        _graveYardUpgradeText.text = $"Upgrade? Requirements: {building.BuildData.MaterialCost} Materials & {building.BuildData.PurrCost} Purr";
+        _graveyardUpgradeButton.onClick.AddListener(() => OnUpgradeButtonClick(building));
 
 
         _skeletonButton.onClick.AddListener(() => OnSpawnSkeleton(building));
@@ -547,6 +574,8 @@ public class UIManager : Manager
         _graveYardCanvasGroup.alpha = 0;
         _graveYardCanvasGroup.interactable = false;
         _graveYardCanvasGroup.blocksRaycasts = false;
+
+        _graveyardUpgradeButton.onClick.RemoveAllListeners();
     }
     public void DisplayCastleInfo(Building building)
     {
@@ -558,12 +587,16 @@ public class UIManager : Manager
         //_castleCanvasGroup.onClick.AddListener(() => OnUpgradeButtonClick(building));
 
         _castleTier.text = $"Tier {building.BuildData.BuildingTier}";
+        _castleRequirements.text = $"Requirements {building.BuildData.MaterialCost} Materials & {building.BuildData.PurrCost} Purr";
+        _castleUpgradeButton.onClick.AddListener(() => OnUpgradeButtonClick(building));
     }
     public void HideCastleInfo()
     {
         _castleCanvasGroup.alpha = 0;
         _castleCanvasGroup.interactable = false;
         _castleCanvasGroup.blocksRaycasts = false;
+
+        _castleUpgradeButton.onClick.RemoveAllListeners();
     }
     public void HideAllInfo()
     {
