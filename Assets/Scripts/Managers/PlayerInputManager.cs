@@ -92,7 +92,7 @@ public class PlayerInputManager : Manager
 
     private void HandleClick(Ray ray)
     {
-        if (!Input.GetMouseButtonDown(0) && !Input.GetMouseButtonDown(1))
+        if (!Input.GetMouseButtonDown(0))
             return;
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _interactableLayer | LayerMask.GetMask("Ground")))

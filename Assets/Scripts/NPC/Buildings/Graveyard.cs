@@ -32,6 +32,10 @@ public class Graveyard : Building
     }
     public override void OnSelect(PlayerInputManager playerInputManager)
     {
+        if (PlayerInputManager.TryGetPreviousWorkerSelection(out IWorker prevWorker))
+        {
+            return;
+        }
         UIManager.DisplayGraveyardInfo(this);
     }
 

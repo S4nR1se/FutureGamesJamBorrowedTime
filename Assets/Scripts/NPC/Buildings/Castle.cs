@@ -22,6 +22,10 @@ public class Castle : Building
     }
     public override void OnSelect(PlayerInputManager playerInputManager)
     {
+        if (PlayerInputManager.TryGetPreviousWorkerSelection(out IWorker prevWorker))
+        {
+            return;
+        }
         UIManager.DisplayCastleInfo(this);
     }
 }

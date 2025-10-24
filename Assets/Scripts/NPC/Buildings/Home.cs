@@ -41,7 +41,7 @@ public class Home : Building
     {
         if (PlayerInputManager.TryGetPreviousWorkerSelection(out IWorker prevWorker))
         {
-            prevWorker.TravelToZone(AssociatedZone);
+            return;
         }
 
         if (UIManager != null)
