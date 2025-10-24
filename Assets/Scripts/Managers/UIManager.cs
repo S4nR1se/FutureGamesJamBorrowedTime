@@ -64,6 +64,7 @@ public class UIManager : Manager
         if (_resourceManager != null)
         {
             _resourceManager.OnResourceChange += OnResourceChange;
+            OnResourceChange(_resourceManager.GetAllResources());
         }
         if (_npcManager != null)
         {

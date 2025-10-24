@@ -15,13 +15,13 @@ public class GameManager : StateMachine
         }
 
         Instance = this;
-        //DontDestroyOnLoad(gameObject);
 
         RegisterManagers();
         InitializeManagers();
 
+        RegisterState(new InitializingState());
         RegisterState(new PlayingState());
-        SwitchState<PlayingState>();
+        StartCoroutine(InitializationRoutine());
     }
     private void Update()
     {
@@ -60,5 +60,10 @@ public class GameManager : StateMachine
     public bool HasManager<T>() where T : Manager
     {
         return _managers.ContainsKey(typeof(T));
+    }
+    private System.Collections.IEnumerator InitializationRoutine()
+    {
+        yield return new WaitForEndOfFrame();
+        SwitchState<InitializingState>();
     }
 }

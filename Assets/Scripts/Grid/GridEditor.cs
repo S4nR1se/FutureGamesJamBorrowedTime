@@ -31,18 +31,14 @@ public class GridEditor : Editor
             {
                 Vector3 worldPos = gridManager.gridOrigin + new Vector3(x * gridManager.CellSize, 0, y * gridManager.CellSize);
 
-                GameObject prefabToUse = (x == 0 && y == 0 && gridManager.StartingTilePrefab != null)
-                    ? gridManager.StartingTilePrefab
-                    : gridManager.TilePrefab;
-
-                GameObject tile = (GameObject)PrefabUtility.InstantiatePrefab(prefabToUse, gridParent.transform);
+                GameObject tile = (GameObject)PrefabUtility.InstantiatePrefab(gridManager.TilePrefab, gridParent.transform);
                 tile.transform.position = worldPos;
 
                 Tile tileComponent = tile.GetComponent<Tile>();
                 if (tileComponent == null)
                     tileComponent = tile.AddComponent<Tile>();
 
-                if (!(x == 0 && y == 0)) tileComponent.tileType = TileType.BaseTile;
+                tileComponent.tileType = TileType.BaseTile;
             }
         }
         EditorUtility.SetDirty(gridManager);

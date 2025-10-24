@@ -38,6 +38,8 @@ public class NPCManager : Manager
             _scheduler.Initialize(this, timeManager);
         }
 
+        InitializingState.OnEnterInitializingState += SpawnInitialPeasants;
+
         _peasantPool = GetComponent<PeasantPool>();
         _undeadPool = GetComponent<UndeadPool>();
 
@@ -53,7 +55,14 @@ public class NPCManager : Manager
             }
         }
     }
-
+    private void SpawnInitialPeasants()
+    {
+        InitializingState.OnEnterInitializingState -= SpawnInitialPeasants;
+        for(int i = 0; i < 8; i++)
+        {
+            SpawnPeasant();
+        }
+    }
     public void RegisterNPC(NPC npc)
     {
         if (npc == null || _activeNPCs.Contains(npc))

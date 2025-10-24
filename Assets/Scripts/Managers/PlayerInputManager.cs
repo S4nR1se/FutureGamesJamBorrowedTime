@@ -23,6 +23,7 @@ public class PlayerInputManager : Manager
     private TilePlacementManager _buildingManager;
     private UIManager _UIManager;
     private GridManager _gridManager;
+    private TimeManager _timeManager;
 
     public GameObject CurrentSelection => _currentSelection.Component;
     public IWorker PreviousWorkerSelection
@@ -38,6 +39,7 @@ public class PlayerInputManager : Manager
         _gridManager = GameManager.Instance.GetManager<GridManager>();
         _buildingManager = GameManager.Instance.GetManager<TilePlacementManager>();
         _UIManager = GameManager.Instance.GetManager<UIManager>();
+        _timeManager = GameManager.Instance.GetManager<TimeManager>();
     }
 
     private void Update()
@@ -225,8 +227,8 @@ public class PlayerInputManager : Manager
             case "BuildingOption#4":
                 _buildingManager.SelectBuilding(TileType.Temple);
                 break;
-            case "BuildingOption#5":
-                _buildingManager.SelectBuilding(TileType.Graveyard);
+            case "PassTime":
+                _timeManager.PassTime();
                 break;
             default:
                 Debug.LogWarning($"Unhandled action: {action}");

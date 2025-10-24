@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Castle : Building
 {
-    protected override Occupation AssociatedOccupation => throw new System.NotImplementedException();
+    protected override Occupation AssociatedOccupation => new UnemployedOccupation();
 
     public override void Initialize()
     {
@@ -19,5 +19,9 @@ public class Castle : Building
 
     protected override void OnNPCExit(NPC npc)
     {
+    }
+    public override void OnSelect(PlayerInputManager playerInputManager)
+    {
+        
     }
 }

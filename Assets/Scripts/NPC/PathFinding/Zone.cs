@@ -137,5 +137,6 @@ public enum ZoneType
     ConstructionSite,
     Road,
     Workshop,
-    Graveyard
+    Graveyard,
+    Castle,
 }

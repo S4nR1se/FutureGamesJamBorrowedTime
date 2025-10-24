@@ -35,4 +35,5 @@ public enum TileType
     Temple,
     Graveyard,
     ConstructionSite,
+    Castle
 }

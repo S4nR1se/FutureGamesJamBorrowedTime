@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: castle
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8d1040f96462a5a4bb8b79c6578691e9, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -137,7 +141,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 1833810152192036645, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
+      objectReference: {fileID: 2100000, guid: be1f106301931604db89a48f365c4cba, type: 2}
     - target: {fileID: -7511558181221131132, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
@@ -167,6 +171,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
       insertIndex: -1
       addedObject: {fileID: -549595026689875747}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3337805109804068317}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -1939848884220471295}
   m_SourcePrefab: {fileID: 100100000, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}
 --- !u!1 &8295179934970264446 stripped
 GameObject:
@@ -185,7 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ab16ae254c72bd43b56ed2f61e6128c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  tileType: 0
+  tileType: 7
 --- !u!65 &-549595026689875747
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -207,6 +217,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.2, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3337805109804068317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8295179934970264446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a21ace9e781c6246844911327e9b30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Castle
+  _buildingData: {fileID: 11400000, guid: a51adb5094baec048bfc2f03aa584b80, type: 2}
+--- !u!114 &-1939848884220471295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8295179934970264446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98767d1ca9d043d4b995ad0ffeb2b94c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZoneMarker
+  zoneName: Castle
+  zoneType: 8
 --- !u!4 &8671037455369626052 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2fe919c6ef155fb40a1f1f40686e37e4, type: 3}

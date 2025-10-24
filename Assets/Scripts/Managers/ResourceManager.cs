@@ -6,6 +6,8 @@ public class ResourceManager : Manager
 {
     public event Action<Dictionary<Resources, int>> OnResourceChange;
 
+    [SerializeField] private StartingMaterials _startingMaterials;
+
     [System.Serializable]
     public class ResourceEntry
     {
@@ -20,6 +22,8 @@ public class ResourceManager : Manager
 
     public override void Initialize()
     {
+        InitializingState.OnEnterInitializingState += InitializationFinish;
+
         if (_resources == null)
             _resources = new Dictionary<Resources, int>();
 
@@ -44,12 +48,33 @@ public class ResourceManager : Manager
 
         InitializeResources();
     }
+    private void InitializationFinish()
+    {
+        InitializingState.OnEnterInitializingState -= InitializationFinish;
+        OnResourceChange?.Invoke(_resources);
+    }
     private void InitializeResources()
     {
-        foreach (Resources resource in Enum.GetValues(typeof(Resources)))
+        if (_startingMaterials == null)
         {
-            UpdateValue(resource, 100);
+            Debug.LogWarning("StartingMaterials asset not assigned to ResourceManager!");
+            return;
         }
+
+        _resources[Resources.Materials] = _startingMaterials.Materials;
+        _resources[Resources.FoodStock] = _startingMaterials.FoodStock;
+        _resources[Resources.Graves] = _startingMaterials.Graves;
+        _resources[Resources.Purr] = _startingMaterials.Purr;
+        _resources[Resources.Dread] = _startingMaterials.Dread;
+
+        foreach (var entry in _resourceList)
+        {
+            if (_resources.ContainsKey(entry.ResourceType))
+            {
+                entry.Amount = _resources[entry.ResourceType];
+            }
+        }
+
         OnResourceChange?.Invoke(_resources);
     }
     public void UpdateValue(Resources resource, int amount)
@@ -95,6 +120,10 @@ public class ResourceManager : Manager
         {
             _resources[entry.ResourceType] = entry.Amount;
         }
+    }
+    public Dictionary<Resources, int> GetAllResources()
+    {
+        return new Dictionary<Resources, int>(_resources);
     }
 }
 

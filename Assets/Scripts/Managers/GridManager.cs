@@ -7,7 +7,9 @@ public class GridManager : Manager
 {
     [Header("Tile Prefabs")]
     [SerializeField] private GameObject _tilePrefab;
-    [SerializeField] private GameObject _startingTilePrefab;
+    [SerializeField] private GameObject _houseTilePrefab;
+    [SerializeField] private GameObject _castleTilePrefab;
+    [SerializeField] private GameObject _graveyardTilePrefab;
 
     [Header("Grid Settings")]
     public int GridSize { get; private set; } = 16;
@@ -21,7 +23,7 @@ public class GridManager : Manager
     private NavMeshSurface _navMeshSurface;
 
     public GameObject TilePrefab => _tilePrefab;
-    public GameObject StartingTilePrefab => _startingTilePrefab;
+    public GameObject HouseTilePrefab => _houseTilePrefab;
 
     public override void Initialize()
     {
@@ -30,9 +32,11 @@ public class GridManager : Manager
         _occupancyGrid = new bool[GridSize, GridSize];
 
         InitializeGridFromScene();
+        PlaceSpecialTiles();
         SetupNavMeshSurface();
         BakeNavMesh();
     }
+
     private void InitializeGridFromScene()
     {
         foreach (Tile tile in GetComponentsInChildren<Tile>())
@@ -53,9 +57,8 @@ public class GridManager : Manager
                 if (_tileObjects[x, y] == null)
                 {
                     Vector3 worldPos = GridToWorld(new Vector2Int(x, y));
-                    GameObject prefabToUse = (x == 0 && y == 0 && _startingTilePrefab != null) ? _startingTilePrefab : _tilePrefab;
+                    GameObject tileObj = Instantiate(_tilePrefab, worldPos, Quaternion.identity, transform);
 
-                    GameObject tileObj = Instantiate(prefabToUse, worldPos, Quaternion.identity, transform);
                     Tile tileComponent = tileObj.GetComponent<Tile>();
                     if (tileComponent == null)
                         tileComponent = tileObj.AddComponent<Tile>();
@@ -87,10 +90,9 @@ public class GridManager : Manager
         _navMeshSurface.layerMask = ~(1 << LayerMask.NameToLayer("NavMeshIgnore"));
         _navMeshSurface?.BuildNavMesh();
     }
-    public Vector3 GridToWorld(Vector2Int gridPos)
-    {
-        return gridOrigin + new Vector3(gridPos.x * CellSize, 0, gridPos.y * CellSize);
-    }
+
+    public Vector3 GridToWorld(Vector2Int gridPos) =>
+        gridOrigin + new Vector3(gridPos.x * CellSize, 0, gridPos.y * CellSize);
 
     public Vector2Int WorldToGrid(Vector3 worldPos)
     {
@@ -100,15 +102,11 @@ public class GridManager : Manager
         return new Vector2Int(x, y);
     }
 
-    private bool IsValidGridPos(Vector2Int pos)
-    {
-        return pos.x >= 0 && pos.x < GridSize && pos.y >= 0 && pos.y < GridSize;
-    }
-    public Tile GetTileAt(Vector2Int gridPos)
-    {
-        if (!IsValidGridPos(gridPos)) return null;
-        return _tileObjects[gridPos.x, gridPos.y];
-    }
+    private bool IsValidGridPos(Vector2Int pos) =>
+        pos.x >= 0 && pos.x < GridSize && pos.y >= 0 && pos.y < GridSize;
+
+    public Tile GetTileAt(Vector2Int gridPos) =>
+        IsValidGridPos(gridPos) ? _tileObjects[gridPos.x, gridPos.y] : null;
 
     public bool IsAreaFree(Vector2Int startPos, Vector2Int size)
     {
@@ -122,6 +120,7 @@ public class GridManager : Manager
         }
         return true;
     }
+
     public void ReplaceTile(Vector2Int gridPos, TileType newTileType, GameObject tilePrefab = null)
     {
         if (!IsValidGridPos(gridPos)) return;
@@ -154,9 +153,40 @@ public class GridManager : Manager
             }
         }
     }
+
     public void SetTileOccupied(Vector2Int pos, bool occupied)
     {
         if (!IsValidGridPos(pos)) return;
         _occupancyGrid[pos.x, pos.y] = occupied;
+    }
+
+    public void PlaceSpecialTiles()
+    {
+        Vector2Int center = new Vector2Int(GridSize / 2, GridSize / 2);
+        int radius = GridSize / 8;
+
+        Vector2Int castlePos = GetRandomPositionNear(center, radius);
+        ReplaceTile(castlePos, TileType.Castle, _castleTilePrefab);
+
+        Vector2Int graveyardPos;
+        do
+        {
+            graveyardPos = GetRandomPositionNear(center, radius);
+        } while (graveyardPos == castlePos);
+        ReplaceTile(graveyardPos, TileType.Graveyard, _graveyardTilePrefab);
+
+        Vector2Int housePos;
+        do
+        {
+            housePos = GetRandomPositionNear(center, radius);
+        } while (housePos == castlePos || housePos == graveyardPos);
+        ReplaceTile(housePos, TileType.House, _houseTilePrefab);
+    }
+
+    private Vector2Int GetRandomPositionNear(Vector2Int center, int radius)
+    {
+        int x = Mathf.Clamp(center.x + Random.Range(-radius, radius + 1), 0, GridSize - 1);
+        int y = Mathf.Clamp(center.y + Random.Range(-radius, radius + 1), 0, GridSize - 1);
+        return new Vector2Int(x, y);
     }
 }
