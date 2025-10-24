@@ -158,6 +158,7 @@ public class UIManager : Manager
         };
 
         InitializeHudComponentsCounter();
+        _eventUIPrefab.SetActive(false);
     }
 
     private void InitializeHudComponentsCounter()
@@ -621,6 +622,7 @@ public class UIManager : Manager
     private void OnNewEvent(Event_SO newEvent)
     {
         _eventToSolve = newEvent;
+        _eventUIPrefab.SetActive(true);
         var textElements = _eventUIPrefab.GetComponentsInChildren<TextMeshProUGUI>();
         foreach (var text in textElements)
         {
