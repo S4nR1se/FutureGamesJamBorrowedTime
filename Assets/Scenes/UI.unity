@@ -9581,7 +9581,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &919943882
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21911,7 +21911,7 @@ MonoBehaviour:
   _buildingNPCInfoPrefab: {fileID: 2654107268212800875, guid: 65d993030ad3c2f45b6e87b8e9dc667e, type: 3}
   _buildingWindow: {fileID: 749277274}
   posP: {fileID: 738344388}
-  _eventUIPrefab: {fileID: 919943881}
+  _eventUIPrefab: {fileID: 1725584499}
   _gameEnderUIPrefab: {fileID: 447261023}
   _gameOver: {fileID: 360427153}
 --- !u!1001 &2089034291
