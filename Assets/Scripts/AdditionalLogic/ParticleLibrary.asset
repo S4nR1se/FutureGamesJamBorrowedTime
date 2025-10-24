@@ -13,6 +13,27 @@ MonoBehaviour:
   m_Name: ParticleLibrary
   m_EditorClassIdentifier: Assembly-CSharp::ParticleLibrary
   particles:
-  - name: 
-    prefab: {fileID: 0}
+  - name: CatDie
+    prefab: {fileID: 5514371977058573103, guid: d54010b538b6ebf48966da3dca01d697, type: 3}
+    lifetimeOverride: 0
+  - name: Wind
+    prefab: {fileID: 8835682342375118763, guid: 003ba85afbcc2e44588a409e2853656b, type: 3}
+    lifetimeOverride: 0
+  - name: DroppingLeaves
+    prefab: {fileID: 5969985653657274662, guid: 317be0755433d074a9322a6d77e91c0a, type: 3}
+    lifetimeOverride: 0
+  - name: Fireflies
+    prefab: {fileID: 2940996257711519455, guid: b7debe72ab6381e4484d9219dc8d0524, type: 3}
+    lifetimeOverride: 0
+  - name: Light
+    prefab: {fileID: 2940996257711519455, guid: e6726a9bb0748fd47b2ef581a8b00336, type: 3}
+    lifetimeOverride: 0
+  - name: NewCats
+    prefab: {fileID: 359223362558284189, guid: b940cc33876b5c342b3a6f3438251d5d, type: 3}
+    lifetimeOverride: 0
+  - name: Construction
+    prefab: {fileID: 8154585820054933749, guid: 532ba604309a5cd448c149410310191d, type: 3}
+    lifetimeOverride: 0
+  - name: SpawnUndead
+    prefab: {fileID: 884606632092640990, guid: d73398884f3614444aa490fbc0dcef6f, type: 3}
     lifetimeOverride: 0

@@ -158,6 +158,7 @@ public class NPCManager : Manager
         IPoolable poolable = _peasantPool.Get();
 
         Peasant peasant = poolable.PoolableComponent.GetComponent<Peasant>();
+        ParticleSystemManager.Instance.Spawn("NewCats", transform.position);
         if (peasant != null)
         {
             Vector3 position = correctZone.GetRandomPointInZone();
@@ -185,6 +186,7 @@ public class NPCManager : Manager
         IPoolable poolable = _undeadPool.Get(undeadType);
 
         Undead undead = poolable.PoolableComponent.GetComponent<Undead>();
+        ParticleSystemManager.Instance.Spawn("summoning", transform.position);
         if (undead != null)
         {
             Vector3 position = correctZone.GetRandomPointInZone();

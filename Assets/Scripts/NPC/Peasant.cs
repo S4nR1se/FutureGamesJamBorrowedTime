@@ -343,6 +343,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         if (resourceManager == null) return;
         resourceManager.UpdateValue(Resources.Purr, 9);
         DecreaseLifeSpan(1);
+        ParticleSystemManager.Instance.Spawn("GetPurr", transform.position);
     }
     private void OnArrivedAtDestination(Zone zone)
     {
