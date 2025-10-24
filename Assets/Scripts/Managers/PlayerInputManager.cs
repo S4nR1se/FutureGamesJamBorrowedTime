@@ -75,17 +75,27 @@ public class PlayerInputManager : Manager
     {
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _interactableLayer))
         {
-            IInteractable interactable = hit.collider.GetComponent<IInteractable>();
-            if (interactable != null && interactable != _currentHover)
+            IInteractable interactable = hit.collider.GetComponentInParent<IInteractable>();
+
+            if (interactable != null)
             {
-                _currentHover?.OnHoverExit();
-                _currentHover = interactable;
-                _currentHover.OnHover();
+                if (interactable != _currentHover)
+                {
+                    _currentHover?.OnHoverExit();
+                    _currentHover = interactable;
+                    _currentHover.OnHover();
+                }
+
+                if (interactable is ConstructionSite constructionSite)
+                {
+                    _buildingManager.UpdateConstructionPreview(constructionSite);
+                }
             }
         }
         else
         {
             _currentHover?.OnHoverExit();
+            _buildingManager.ClearConstructionPreview();
             _currentHover = null;
         }
     }

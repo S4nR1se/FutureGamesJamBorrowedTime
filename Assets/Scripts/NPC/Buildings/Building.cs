@@ -86,7 +86,6 @@ public abstract class Building : MonoBehaviour, IInteractable
 
     public virtual void OnHover()
     {
-
     }
 
     public virtual void OnHoverExit()

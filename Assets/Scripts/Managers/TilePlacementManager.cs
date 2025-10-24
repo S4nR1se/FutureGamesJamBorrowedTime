@@ -5,6 +5,9 @@ public class TilePlacementManager : Manager
 {
     [SerializeField] private TileDatabase_SO tileDatabase;
 
+    [SerializeField] private ConstructionPopupUI _constructionPopupUI;
+    private CanvasGroup _constructionPopupCanvas;
+
     private TilePreviewHelper _previewHelper;
 
     private GridManager _gridManager;
@@ -16,6 +19,7 @@ public class TilePlacementManager : Manager
 
     public override void Initialize()
     {
+        _constructionPopupCanvas = _constructionPopupUI.GetComponent<CanvasGroup>();
         _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
         _gridManager = GameManager.Instance.GetManager<GridManager>();
 
@@ -58,6 +62,17 @@ public class TilePlacementManager : Manager
                 _previewHelper.ClearPreview();
             }
         }
+    }
+    public void UpdateConstructionPreview(ConstructionSite site)
+    {
+        Debug.Log("flag1");
+        _constructionPopupCanvas.alpha = 1;
+        _constructionPopupUI.Initialize(site.BuildData, site.RemainingBuildTime);
+        _constructionPopupUI.FollowMouse();
+    }
+    public void ClearConstructionPreview()
+    {
+        _constructionPopupCanvas.alpha = 0;
     }
     public void SelectBuilding(TileType tileType)
     {

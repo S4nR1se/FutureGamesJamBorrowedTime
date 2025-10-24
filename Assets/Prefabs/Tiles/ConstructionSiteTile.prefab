@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: construction
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 183b2d43e03ed9f46a5d1c26b3c00e98, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -225,8 +229,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.2, z: 1}
-  m_Center: {x: 0, y: 0.2, z: 0}
+  m_Size: {x: 1, y: 2, z: 1}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &5485010315145276769
 MonoBehaviour:
   m_ObjectHideFlags: 0

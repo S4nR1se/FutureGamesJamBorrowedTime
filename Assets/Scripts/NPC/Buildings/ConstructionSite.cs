@@ -5,9 +5,13 @@ public class ConstructionSite : Building
     protected override Occupation AssociatedOccupation => new BuilderOccupation();
 
     private Tile _targetTile;
+    public int RemainingBuildTime => _buildTime;
     private int _buildTime;
+
     private TileType _finalTileType;
     private TileDatabase_SO _tileDatabase;
+
+    private TilePlacementManager _tileManager;
 
     private const int DECREASEPERPEASANT = 1;
 
@@ -21,6 +25,7 @@ public class ConstructionSite : Building
 
     public override void Initialize()
     {
+        _tileManager = GameManager.Instance.GetManager<TilePlacementManager>(); 
         TimeManager timeManager = GameManager.Instance.GetManager<TimeManager>();
         if (timeManager != null)
             timeManager.OnCycleCalculation += UpdateConstruction;
@@ -74,5 +79,12 @@ public class ConstructionSite : Building
             prevWorker.TravelToZone(AssociatedZone);
             return;
         }
+    }
+    public override void OnHover()
+    {
+    }
+    public override void OnHoverExit()
+    {
+        _tileManager.ClearConstructionPreview();
     }
 }
