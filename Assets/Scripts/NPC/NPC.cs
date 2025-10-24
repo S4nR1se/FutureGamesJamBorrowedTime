@@ -16,15 +16,12 @@ public abstract class NPC : MonoBehaviour
 
     protected DayCycle _activeCycle;
 
-    [SerializeField] private ParticleSystem fillPurrParticle;
-
     public abstract void Initialize(Zone startingZone,string name, int lifeSpan, float movementSpeed, Occupation occupation = null, ZoneType restZoneType = ZoneType.House, DayCycle activeCycle = DayCycle.Day);
     public void DecreaseLifeSpan(int amount)
     {
         if (LifeSpan <= 0) return;
 
         LifeSpan -= amount;
-        fillPurrParticle.Play();
         if (LifeSpan <= 0)
         {
             MarkedForDeath = true;
