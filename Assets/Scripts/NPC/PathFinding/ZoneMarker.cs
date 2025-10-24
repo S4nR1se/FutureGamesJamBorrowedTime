@@ -18,16 +18,9 @@ public class ZoneMarker : MonoBehaviour
     private NavMeshSurface _parentSurface;
     private bool _isZoneRegistered; // Track registration state
 
-    private void Start()
-    {
-        if (_zone == null && !_isZoneRegistered)
-        {
-            InitializeZone();
-        }
-    }
-
     public void InitializeZone()
     {
+        if (_zone != null && _isZoneRegistered) return;
         if (_isZoneRegistered)
         {
             Debug.LogWarning($"Zone {zoneName} is already registered!", this);
@@ -43,6 +36,7 @@ public class ZoneMarker : MonoBehaviour
 
         _parentSurface = zoneManager.ParentSurface;
         string uniqueZoneName = $"{zoneName}_{GetInstanceID()}";
+
         _zone = new Zone(uniqueZoneName, zoneType, transform.position, CalculateRadius(), _parentSurface, GetCapacityForType(zoneType));
 
         zoneManager.RegisterZone(_zone);
@@ -57,13 +51,51 @@ public class ZoneMarker : MonoBehaviour
             Destroy(ParticlesSpawned);
         }
 
-            Building associatedBuilding = GetComponent<Building>();
+        Building associatedBuilding = GetComponent<Building>();
         if (associatedBuilding != null)
         {
             associatedBuilding.Initialize();
         }
     }
+    public void InitializeZone(BuildingData_SO data)
+    {
+        if (_zone != null && _isZoneRegistered) return;
+        if (_isZoneRegistered)
+        {
+            Debug.LogWarning($"Zone {zoneName} is already registered!", this);
+            return;
+        }
 
+        ZoneManager zoneManager = GameManager.Instance.GetManager<ZoneManager>();
+        if (zoneManager == null)
+        {
+            Debug.LogError("ZoneManager not found!", this);
+            return;
+        }
+
+        _parentSurface = zoneManager.ParentSurface;
+        string uniqueZoneName = $"{zoneName}_{GetInstanceID()}";
+
+        _zone = new Zone(uniqueZoneName, zoneType, transform.position, CalculateRadius(), _parentSurface, data.BuildTime);
+
+        zoneManager.RegisterZone(_zone);
+        _isZoneRegistered = true;
+
+        if (zoneType == ZoneType.ConstructionSite)
+        {
+            ParticlesSpawned = ParticleSystemManager.Instance.Spawn("Construction", transform.position);
+        }
+        else
+        {
+            Destroy(ParticlesSpawned);
+        }
+
+        Building associatedBuilding = GetComponent<Building>();
+        if (associatedBuilding != null)
+        {
+            associatedBuilding.Initialize();
+        }
+    }
     public Zone CreateZone()
     {
         Vector3 center = transform.position;

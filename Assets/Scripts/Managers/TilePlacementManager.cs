@@ -120,6 +120,8 @@ public class TilePlacementManager : Manager
             _gridManager.transform
         );
 
+        constructionGO.GetComponent<ZoneMarker>().InitializeZone(data);
+
         ConstructionSite constructionSite = constructionGO.GetComponent<ConstructionSite>();
         if (constructionSite != null)
         {
