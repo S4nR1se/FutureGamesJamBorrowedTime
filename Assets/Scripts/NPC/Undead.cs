@@ -20,6 +20,9 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
 
     internal const int ZERO = 0;
 
+    private float _timeSinceLastZoneCheck = 0f;
+    private const float ZONE_CHECK_INTERVAL = 2f;
+
     private bool _isTraveling = false;
     public bool IsTraveling() => _isTraveling;
 
@@ -106,43 +109,36 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
     private void Loiter()
     {
         _loiteringBehaviour?.Loiter();
+        CheckForAvailableWorkZone();
     }
 
     public void Travel()
     {
         _goToZoneBehaviour?.GoToZone();
     }
-    private void GoToZone(ZoneType zoneType)
+    private void CheckForAvailableWorkZone()
     {
-        CancelTravel();
-        Zone travelZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(zoneType);
+        if (_timeManager.CurrentDayCycle != _activeCycle) return;
 
-        if (travelZone == null)
+        _timeSinceLastZoneCheck += Time.deltaTime;
+        if (_timeSinceLastZoneCheck < ZONE_CHECK_INTERVAL) return;
+
+        _timeSinceLastZoneCheck = 0f;
+
+        if (_isTraveling || _occupiedZone != null) return;
+
+        Zone availableWorkZone = _zoneManager.GetRandomAvailableZone(_occupation.WorkZoneType);
+        if (availableWorkZone != null)
         {
-            return;
-        }
-
-        if (travelZone.TryEnter(this))
-        {
-            _reservedZone = travelZone;
-
-            SetGoToZoneBehaviour(travelZone);
-
-            _isTraveling = true;
+            GoToZone(availableWorkZone);
         }
     }
+
     private void GoToZone(Zone travelZone)
     {
-        if (_isTraveling)
-        {
-            return;
-        }
+        if (_isTraveling || travelZone == null) return;
 
-        if (_occupiedZone != null)
-        {
-            _occupiedZone.Exit(this);
-            _occupiedZone = null;
-        }
+        LeaveCurrentZone();
 
         if (travelZone.TryEnter(this))
         {
@@ -153,53 +149,48 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
         else
         {
             ZoneType zoneType = travelZone.Type;
-            travelZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(zoneType);
+            Zone fallbackZone = _zoneManager.GetRandomAvailableZone(zoneType);
 
-            if (travelZone == null)
+            if (fallbackZone != null && (zoneType != _restZoneType || _timeManager.CurrentDayCycle != DayCycle.Day))
             {
-                return;
+                if (fallbackZone.TryEnter(this))
+                {
+                    _reservedZone = fallbackZone;
+                    SetGoToZoneBehaviour(fallbackZone);
+                    _isTraveling = true;
+                }
             }
-
-            if (travelZone.TryEnter(this))
-            {
-                _reservedZone = travelZone;
-                SetGoToZoneBehaviour(travelZone);
-                _isTraveling = true;
-            }
+        }
+    }
+    private void LeaveCurrentZone()
+    {
+        if (_occupiedZone != null)
+        {
+            _occupiedZone.Exit(this);
+            _occupiedZone = null;
         }
     }
     private void SetGoToZoneBehaviour(Zone targetZone)
     {
         if (_goToZoneBehaviour != null)
-        {
             _goToZoneBehaviour.OnArrived -= OnArrivedAtDestination;
-        }
 
         _goToZoneBehaviour = new GoToZoneBehaviour(this, MovementSpeed, targetZone);
         _goToZoneBehaviour.OnArrived += OnArrivedAtDestination;
     }
 
+
     public void GoToWork(DayCycle currentCycle)
     {
         if (currentCycle == DayCycle.Day) Age++;
-        //Ignores Daycycle Simply works
+
         ValidatePreferredZone();
 
-        Zone targetZone = _preferredZone;
-
-        if (targetZone == null || targetZone.IsFull() || targetZone.Type != Occupation.WorkZoneType)
-        {
-            targetZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(Occupation.WorkZoneType);
-        }
+        Zone targetZone = _preferredZone ?? _zoneManager.GetRandomAvailableZone(Occupation.WorkZoneType);
 
         if (targetZone != null)
         {
             GoToZone(targetZone);
-        }
-        else
-        {
-            _occupiedZone = null;
-            Loiter();
         }
     }
     private void ValidatePreferredZone()
@@ -209,34 +200,37 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
     }
     public void TravelToZone(Zone travelZone)
     {
-        if (_timeManager.CurrentDayCycle != _activeCycle)
-        {
-            return;
-        }
+        if (_timeManager.CurrentDayCycle != _activeCycle) return;
 
         if (_isTraveling) CancelTravel();
 
         _preferredZone = travelZone;
-
         GoToZone(travelZone);
     }
     private void OnArrivedAtDestination(Zone zone)
     {
-        if (_occupiedZone != null && _occupiedZone != zone)
+        if (zone == null)
         {
-            if (_occupiedZone.GetNPCsInZone().Contains(this))
-            {
-                _occupiedZone.Exit(this);
-            }
-            _occupiedZone = null;
+            CancelTravel();
+            return;
+        }
+
+        if (_occupiedZone != null && _occupiedZone != zone)
+            LeaveCurrentZone();
+
+        if (_reservedZone != zone)
+        {
+            CancelTravel();
+            return;
         }
 
         _occupiedZone = _reservedZone;
         _reservedZone = null;
-
         _isTraveling = false;
         _roamingBehaviour.SetTargetZone(zone);
-        _goToZoneBehaviour.OnArrived -= OnArrivedAtDestination;
+
+        if (_goToZoneBehaviour != null)
+            _goToZoneBehaviour.OnArrived -= OnArrivedAtDestination;
     }
     private void ReleaseReservation()
     {
@@ -251,50 +245,36 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
         if (_isTraveling)
         {
             _isTraveling = false;
-
             if (_goToZoneBehaviour != null)
             {
                 _goToZoneBehaviour.OnArrived -= OnArrivedAtDestination;
                 _goToZoneBehaviour = null;
             }
-        }
 
-        ReleaseReservation();
+            ReleaseReservation();
+        }
     }
 
     private void OnDestroy()
     {
         ReleaseReservation();
-
-        if (_occupiedZone != null)
-        {
-            _occupiedZone.Exit(this);
-        }
+        LeaveCurrentZone();
 
         if (_goToZoneBehaviour != null)
-        {
             _goToZoneBehaviour.OnArrived -= OnArrivedAtDestination;
-        }
     }
     public void ReturnToPool(ObjectPool pool)
     {
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         if (agent != null)
-        {
             agent.enabled = false;
-        }
 
         ReleaseReservation();
-
-        if (_occupiedZone != null)
-        {
-            _occupiedZone.Exit(this);
-            _occupiedZone = null;
-        }
+        LeaveCurrentZone();
 
         ClearCurrentZone();
-
         _isTraveling = false;
+
         if (_goToZoneBehaviour != null)
         {
             _goToZoneBehaviour.OnArrived -= OnArrivedAtDestination;
@@ -304,35 +284,10 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
         pool.Release(this);
     }
 
-    public void OnSelect(PlayerInputManager playerInputManager)
-    {
-        _playerInteractionBehaviour.OnSelect(playerInputManager);
-    }
-
-    public void OnDeselect()
-    {
-        _playerInteractionBehaviour.OnDeselect();
-    }
-
-    public void OnHover()
-    {
-        _playerInteractionBehaviour.OnHover();
-    }
-
-    public void OnHoverExit()
-    {
-        _playerInteractionBehaviour?.OnHoverExit();
-    }
-    public override void ResetOccupiedZone()
-    {
-        if (_occupiedZone != null)
-        {
-            _occupiedZone.Exit(this);
-            _occupiedZone = null;
-        }
-    }
-    public override Zone GetOccupiedZone()
-    {
-        return _occupiedZone;
-    }
+    public void OnSelect(PlayerInputManager playerInputManager) => _playerInteractionBehaviour.OnSelect(playerInputManager);
+    public void OnDeselect() => _playerInteractionBehaviour.OnDeselect();
+    public void OnHover() => _playerInteractionBehaviour.OnHover();
+    public void OnHoverExit() => _playerInteractionBehaviour?.OnHoverExit();
+    public override void ResetOccupiedZone() => LeaveCurrentZone();
+    public override Zone GetOccupiedZone() => _occupiedZone;
 }

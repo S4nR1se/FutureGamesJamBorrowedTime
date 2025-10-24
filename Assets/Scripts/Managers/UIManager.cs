@@ -44,6 +44,8 @@ public class UIManager : Manager
     [SerializeField] private GameObject _graveYardWindow;
     [SerializeField] private TextMeshProUGUI _graveYardTitle;
     [SerializeField] private TextMeshProUGUI _graveyardTier;
+    [SerializeField] private Button _skeletonButton;
+    [SerializeField] private Button _zombieButton;
 
     [SerializeField] private GameObject _castleWindow;
     [SerializeField] private TextMeshProUGUI _castleTier;
@@ -453,6 +455,20 @@ public class UIManager : Manager
             }
         }
     }
+    private void OnSpawnSkeleton(Building building)
+    {
+        if (building is Graveyard graveyard)
+        {
+            graveyard.SpawnSkeleton();
+        }
+    }
+    private void OnSpawnZombie(Building building)
+    {
+        if (building is Graveyard graveyard)
+        {
+            graveyard.SpawnSkeleton();
+        }
+    }
     public void DisplayGraveyardInfo(Building building)
     {
         HideAllInfo();
@@ -462,6 +478,10 @@ public class UIManager : Manager
 
         _graveYardTitle.text = $"Graveyard";
         _graveyardTier.text = $"Tier {building.BuildData.BuildingTier}";
+
+
+        _skeletonButton.onClick.AddListener(() => OnSpawnSkeleton(building));
+        _zombieButton.onClick.AddListener(() => OnSpawnZombie(building));
     }
     public void HideGraveyardInfo()
     {

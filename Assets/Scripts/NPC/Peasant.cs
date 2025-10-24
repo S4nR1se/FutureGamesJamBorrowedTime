@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
@@ -156,24 +157,19 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
 
     private void HandleCyclePassage(DayCycle newCycle)
     {
-        if (_timeManager.IsCalculatingCycle())
-            return;
+        if (_timeManager.IsCalculatingCycle()) return;
 
-        if (_preferredZone != null && _preferredZone.Type == _restZoneType && _timeManager.CurrentDayCycle == _activeCycle)
-            _preferredZone = null;
-
-        if (_isTraveling && _reservedZone != null && _reservedZone.Type == _restZoneType && newCycle == _activeCycle)
+        StartCoroutine(WaitForCalculation(newCycle));
+    }
+    private void AssignRestZoneIfAvailable()
+    {
+        if (_occupiedZone == null && !_isTraveling)
         {
-            CancelTravel();
-        }
-
-        if (newCycle == _activeCycle)
-        {
-            GoToWork(newCycle);
-        }
-        else
-        {
-            GoToRest();
+            Zone restZone = _zoneManager.GetRandomAvailableZone(_restZoneType);
+            if (restZone != null)
+            {
+                GoToZone(restZone);
+            }
         }
     }
 
@@ -190,9 +186,20 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     private void Loiter()
     {
         _loiteringBehaviour?.Loiter();
-        CheckForAvailableWorkZone();
-    }
 
+        CheckForAvailableWorkZone();
+        CheckForAvailableRestZone();
+    }
+    private void CheckForAvailableRestZone()
+    {
+        if (_timeManager.CurrentDayCycle == _activeCycle) return;
+
+        Zone restZone = _zoneManager.GetRandomAvailableZone(_restZoneType);
+        if (restZone != null && _occupiedZone != restZone)
+        {
+            TravelToZone(restZone);
+        }
+    }
     private void CheckForAvailableWorkZone()
     {
         if (_timeManager.CurrentDayCycle != _activeCycle) return;
@@ -463,5 +470,19 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         DecreaseLifeSpan(1);
         ParticleSystemManager.Instance.Spawn("GetPurr", transform.position);
         if (LifeSpan == 0) NPCScheduler.Instance.ScheduleDeath(this);
+    }
+    private IEnumerator WaitForCalculation(DayCycle newCycle)
+    {
+        yield return new WaitForEndOfFrame();
+
+        if (newCycle == _activeCycle)
+        {
+            GoToWork(newCycle);
+        }
+        else
+        {
+            AssignRestZoneIfAvailable();
+            GoToRest();
+        }
     }
 }

@@ -10,9 +10,7 @@ public class LoiteringBehaviour : Behaviour
     private TimeManager _timeManager;
 
     public float MovementSpeed { get; }
-    private float _timeSinceLastDestination;
 
-    private const float DESTINATIONTIMEOUT = 0.5f;
     private const float MINVELOCITYTHRESHOLD = 0.2f;
     private const int MAX_RANDOM_POINT_ATTEMPTS = 20;
     private const float ROAM_RADIUS = 20f;
@@ -28,46 +26,30 @@ public class LoiteringBehaviour : Behaviour
         _agent.speed = movementSpeed;
         _agent.acceleration = 10f;
         _agent.angularSpeed = 360f;
-
-        _timeSinceLastDestination = 0f;
     }
 
     public void Loiter()
     {
-        if (_npc is Peasant && _timeManager != null && _timeManager.CurrentDayCycle != _npc.GetActiveCycle())
+        if (_npc is Peasant peasant && _timeManager != null && _timeManager.CurrentDayCycle != _npc.GetActiveCycle())
         {
-            Zone currentZone = _npc.GetCurrentZone();
-            ZoneType restType = _npc.GetRestZoneType();
+            Zone currentZone = peasant.GetOccupiedZone();
+            ZoneType restType = peasant.GetRestZoneType();
+            Zone restZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(restType);
 
-            if ((currentZone == null || currentZone.Type != restType) && _npc is IWorker worker)
+            if (restZone != null && currentZone != restZone)
             {
-                if (!worker.IsTraveling())
-                {
-                    Zone restZone = GameManager.Instance.GetManager<ZoneManager>()
-                                        .GetRandomAvailableZone(restType);
+                peasant.TravelToZone(restZone);
 
-                    if (restZone != null)
-                    {
-                        worker.TravelToZone(restZone);
-                        return;
-                    }
-                }
+                if (_agent.hasPath)
+                    _agent.ResetPath();
+                return;
             }
         }
 
-        if (_agent.pathStatus == NavMeshPathStatus.PathInvalid)
+        if (_agent.pathStatus == NavMeshPathStatus.PathInvalid ||
+            (!_agent.pathPending && (_agent.remainingDistance <= _agent.stoppingDistance || _agent.velocity.magnitude < MINVELOCITYTHRESHOLD)))
         {
             HandleStuckNPC();
-            return;
-        }
-
-        if (!_agent.pathPending && (_agent.remainingDistance <= _agent.stoppingDistance || _agent.velocity.magnitude < MINVELOCITYTHRESHOLD))
-        {
-            _timeSinceLastDestination += Time.deltaTime;
-            if (_timeSinceLastDestination > DESTINATIONTIMEOUT)
-            {
-                HandleStuckNPC();
-            }
         }
     }
 
@@ -78,8 +60,6 @@ public class LoiteringBehaviour : Behaviour
         _agent.SetDestination(randomPoint);
 
         _agent.speed = MovementSpeed * Random.Range(0.7f, 1.2f);
-
-        _timeSinceLastDestination = 0f;
     }
 
     private Vector3 GetRandomPoint()
