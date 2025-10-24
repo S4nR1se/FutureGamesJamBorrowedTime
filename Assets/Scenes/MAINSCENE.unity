@@ -15773,6 +15773,8 @@ Transform:
   - {fileID: 1589511083}
   - {fileID: 1199606788}
   - {fileID: 1887005043}
+  - {fileID: 1153279536}
+  - {fileID: 1481576408}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &951026498 stripped
@@ -18682,6 +18684,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8671037455369626052, guid: bbb58a9a1996bf041bc34b0bf1d03315, type: 3}
   m_PrefabInstance: {fileID: 936492917}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1153279535
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1153279536}
+  - component: {fileID: 1153279537}
+  m_Layer: 0
+  m_Name: EventManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1153279536
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153279535}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 949334137}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1153279537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153279535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a682ffeb09e036a4c909b3abdc7b04d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EventManager
+  EventCatalog: {fileID: 11400000, guid: 9e36253f56be04f4ebf38e113fc3612c, type: 2}
 --- !u!4 &1155184963 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8671037455369626052, guid: bbb58a9a1996bf041bc34b0bf1d03315, type: 3}
@@ -19011,6 +19058,9 @@ MonoBehaviour:
   _castleUpgradeButton: {fileID: 935600823}
   _parentTransform: {fileID: 7296726111262792524}
   PURRmat: {fileID: 2100000, guid: ab937989f7339c6468bf37e799fb6662, type: 2}
+  _eventUIPrefab: {fileID: 0}
+  _gameEnderUIPrefab: {fileID: 0}
+  _gameOver: {fileID: 0}
 --- !u!4 &1202281555 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8671037455369626052, guid: bbb58a9a1996bf041bc34b0bf1d03315, type: 3}
@@ -24423,6 +24473,50 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bbb58a9a1996bf041bc34b0bf1d03315, type: 3}
+--- !u!1 &1481576407
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1481576408}
+  - component: {fileID: 1481576409}
+  m_Layer: 0
+  m_Name: GameEnderManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1481576408
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1481576407}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 949334137}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1481576409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1481576407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ccda59c9d72ff841bc24eaa830d968f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Managers.GameEnderManager
 --- !u!4 &1481857541 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8671037455369626052, guid: bbb58a9a1996bf041bc34b0bf1d03315, type: 3}
@@ -28222,7 +28316,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1848753815}
   m_HandleRect: {fileID: 1848753814}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

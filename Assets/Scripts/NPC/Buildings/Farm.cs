@@ -11,6 +11,8 @@ public class Farm : Building
     {
         _foodStockGenerated = 0;
 
+        TileType = TileType.Farm;
+
         TimeManager timeManager = GameManager.Instance.GetManager<TimeManager>();
         if (timeManager != null)
         {

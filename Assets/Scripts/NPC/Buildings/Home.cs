@@ -11,6 +11,8 @@ public class Home : Building
 
     public override void Initialize()
     {
+        TileType = TileType.House;
+
         _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
         _npcManager = GameManager.Instance.GetManager<NPCManager>();
         _timeManager = GameManager.Instance.GetManager<TimeManager>();

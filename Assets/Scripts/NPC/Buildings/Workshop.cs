@@ -9,6 +9,8 @@ public class Workshop : Building
     {
         _materialGenerated = 0;
 
+        TileType = TileType.Workshop;
+
         TimeManager timeManager = GameManager.Instance.GetManager<TimeManager>();
         if (timeManager != null)
         {
