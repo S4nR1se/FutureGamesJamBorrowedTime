@@ -22,6 +22,6 @@ public class Castle : Building
     }
     public override void OnSelect(PlayerInputManager playerInputManager)
     {
-        
+        UIManager.DisplayCastleInfo(this);
     }
 }

@@ -45,11 +45,16 @@ public class UIManager : Manager
     [SerializeField] private TextMeshProUGUI _graveYardTitle;
     [SerializeField] private TextMeshProUGUI _graveyardTier;
 
+    [SerializeField] private GameObject _castleWindow;
+    [SerializeField] private TextMeshProUGUI _castleTier;
+    [SerializeField] private TextMeshProUGUI _castleRequirements;
+
     [SerializeField] private Transform _parentTransform;
 
     private CanvasGroup _npcInfoCanvasGroup;
     private CanvasGroup _buildingInfoCanvasGroup;
     private CanvasGroup _graveYardCanvasGroup;
+    private CanvasGroup _castleCanvasGroup;
 
     private Dictionary<string, HudComponent> _hudComponentsDic;
     private List<NPCEntryData> _npcEntries = new();
@@ -83,6 +88,7 @@ public class UIManager : Manager
         _npcInfoCanvasGroup = _npcInfo.GetComponent<CanvasGroup>();
         _buildingInfoCanvasGroup = _buildingWindowParent.GetComponent<CanvasGroup>();
         _graveYardCanvasGroup = _graveYardWindow.GetComponent<CanvasGroup>();
+        _castleCanvasGroup = _castleWindow.GetComponent<CanvasGroup>();
 
         _hudComponentsDic = new();
         _npcEntries = new();
@@ -247,6 +253,7 @@ public class UIManager : Manager
 
     public void DisplayBuildingInfo(Building building = null, IEnumerable<NPC> npcs = null)
     {
+        HideAllInfo();
         if (npcs == null)
         {
             Debug.LogWarning("No NPCs provided for DisplayBuildingInfo");
@@ -436,6 +443,7 @@ public class UIManager : Manager
     }
     public void DisplayGraveyardInfo(Building building)
     {
+        HideAllInfo();
         _graveYardCanvasGroup.alpha = 1;
         _graveYardCanvasGroup.interactable = true;
         _graveYardCanvasGroup.blocksRaycasts = true;
@@ -449,9 +457,25 @@ public class UIManager : Manager
         _graveYardCanvasGroup.interactable = false;
         _graveYardCanvasGroup.blocksRaycasts = false;
     }
+    public void DisplayCastleInfo(Building building)
+    {
+        HideAllInfo();
+        _castleCanvasGroup.alpha = 1;
+        _castleCanvasGroup.interactable = true;
+        _castleCanvasGroup.blocksRaycasts = true;
+
+        _castleTier.text = $"Tier {building.BuildData.BuildingTier}";
+    }
+    public void HideCastleInfo()
+    {
+        _castleCanvasGroup.alpha = 0;
+        _castleCanvasGroup.interactable = false;
+        _castleCanvasGroup.blocksRaycasts = false;
+    }
     public void HideAllInfo()
     {
         HideGraveyardInfo();
         HideBuildingInfo();
+        HideCastleInfo();
     }
 }
