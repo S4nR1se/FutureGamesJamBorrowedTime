@@ -10,8 +10,8 @@ namespace Assets.Scripts.Managers
 {
     internal class GameEnderManager : Manager
     {
-        public AudioClip GameWonSFX;
-        public AudioClip GameLostSFX;
+        //public AudioClip GameWonSFX;
+        //public AudioClip GameLostSFX;
 
         internal const int INQUISITIONDAY = 51;
         private const int ZERO = 0;
@@ -20,7 +20,7 @@ namespace Assets.Scripts.Managers
 
         private TimeManager _timeManager;
         private NPCManager _npcManager; 
-        private SoundManager _soundManager;
+       // private SoundManager _soundManager;
 
         public delegate void GameOverHandler(GameResult resut, string message);
         public event GameOverHandler GameOver;
@@ -29,7 +29,7 @@ namespace Assets.Scripts.Managers
         {
             _timeManager = GameManager.Instance.GetManager<TimeManager>();
             _npcManager = GameManager.Instance.GetManager<NPCManager>();
-            _soundManager = GameManager.Instance.GetManager<SoundManager>();
+           // _soundManager = GameManager.Instance.GetManager<SoundManager>();
 
             if (_timeManager != null)
             {
@@ -46,7 +46,8 @@ namespace Assets.Scripts.Managers
 
         public void GameWon()
         {
-            _soundManager.PlaySoundEffect(GameWonSFX, this.transform.position);
+            //_soundManager.PlaySoundEffect(GameWonSFX, this.transform.position);
+            SoundManager.Instance.PlaySound("WinScreen", transform.position);
             GameOver?.Invoke(GameResult.GameWon, "You managed to build the portal just in time... The traitor will suffer!");
         }
 
@@ -54,7 +55,7 @@ namespace Assets.Scripts.Managers
         {
             bool gameOver = false;
             string message = string.Empty;
-
+                                                //Mateusz Note: there is no gameOver condition logic like in below each if/elses should be: gameOver = true; ???
             // Inquisition comes on day 51
             if (INQUISITIONDAY == _timeManager.DayNumber)
                 message = "You took too long to have you vengeance... The inquisition has found you!";
@@ -70,7 +71,8 @@ namespace Assets.Scripts.Managers
 
             if (gameOver)
             {
-                _soundManager.PlaySoundEffect(GameLostSFX, this.transform.position);
+                //_soundManager.PlaySoundEffect(GameLostSFX, this.transform.position);
+                SoundManager.Instance.PlaySound("GameOverScreen", transform.position);
                 GameOver?.Invoke(GameResult.GameLost, message);
             }
             

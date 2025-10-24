@@ -29,8 +29,6 @@ public class ConstructionSite : Building
             timeManager.OnCycleCalculation += UpdateConstruction;
 
         base.Initialize();
-
-        //SoundManager.PlaySoundEffect(ConstructionSFX, this.transform.position);
     }
 
     private void OnDisable()
@@ -58,8 +56,8 @@ public class ConstructionSite : Building
         GameObject finalPrefab = _tileDatabase.GetPrefab(_finalTileType);
         if (finalPrefab != null)
         {
-            //SoundManager.PlaySoundEffect(ConstructionSFX, this.transform.position);
             Instantiate(finalPrefab, transform.position, Quaternion.identity);
+            SoundManager.Instance.PlaySound("BuildingPlaced", transform.position);
             GameManager.Instance.GetManager<ZoneManager>().UnregisterZone(AssociatedZone);
             Destroy(gameObject);
         }

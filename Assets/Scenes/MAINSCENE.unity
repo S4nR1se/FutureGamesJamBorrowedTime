@@ -14206,6 +14206,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCManager
   _nPCNames: {fileID: 11400000, guid: c25562e9f881c374bacae64d1edffebc, type: 2}
+  SpawnPeasantSFX: {fileID: 0}
+  SpawnSkeletonSFX: {fileID: 0}
+  SpawnZombieSFX: {fileID: 0}
 --- !u!114 &1787544153
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,21 +4,19 @@ using UnityEngine.UIElements;
 
 public class NPCScheduler : MonoBehaviour
 {
-    public AudioClip DeathPeasantSFX;
-    public AudioClip DayAmbianceSFX;
-    public AudioClip NightAmbianceSFX;
 
     private AudioSource DayAmbianceSource;
     private AudioSource NightAmbianceSource;
 
+    private AudioSource DayMusicSource;
+    private AudioSource NightMusicSource;
+
     private TimeManager _timeManager;
     private NPCManager _npcManager;
-    private SoundManager _soundManager;
     public void Initialize(NPCManager npcManager, TimeManager timeManager)
     {
         _npcManager = npcManager;
         _timeManager = timeManager;
-        _soundManager = GameManager.Instance.GetManager<SoundManager>();
 
         _timeManager.OnCyclePassage += OnTimePassage;
     }
@@ -31,24 +29,41 @@ public class NPCScheduler : MonoBehaviour
     }
     private void OnTimePassage(DayCycle currentCycle)
     {
-        if(currentCycle == DayCycle.Day)
-        {
-            if (DayAmbianceSource == null)
-                DayAmbianceSource = _soundManager.PlayLoopingSound(DayAmbianceSFX, this.transform.position);
-            else
-                DayAmbianceSource.Play();
+        SoundManager.Instance.PlaySound("DayNightCycleTransition", transform.position);
 
-            _soundManager.StopSound(NightAmbianceSource, 1);
+        if (currentCycle == DayCycle.Day)
+        {
+            
+            if (DayAmbianceSource == null)
+                DayAmbianceSource = SoundManager.Instance.PlaySound("DayAmbience", transform.position);
+            else if (!DayAmbianceSource.isPlaying)
+                DayAmbianceSource.Play();
+            
+            if (DayMusicSource == null)
+                DayMusicSource = SoundManager.Instance.PlaySound("DayMusic", transform.position);
+            else if (!DayMusicSource.isPlaying)
+                DayMusicSource.Play();
+
+            SoundManager.Instance.StopSound(NightAmbianceSource, 2f);
+            SoundManager.Instance.StopSound(NightMusicSource, 2f);
+
             ScheduleNightTimeCalculations(); 
         }
         else
         {
             if (NightAmbianceSource == null)
-                NightAmbianceSource = _soundManager.PlaySoundEffect(NightAmbianceSFX, this.transform.position);
-            else
+                NightAmbianceSource = SoundManager.Instance.PlaySound("NightAmbience", transform.position);
+            else if (!NightAmbianceSource.isPlaying)
                 NightAmbianceSource.Play();
 
-            _soundManager.StopSound(DayAmbianceSource, 1);
+            if (NightMusicSource == null)
+                NightMusicSource = SoundManager.Instance.PlaySound("NightMusic", transform.position);
+            else if (!NightMusicSource.isPlaying)
+                NightMusicSource.Play();
+
+            SoundManager.Instance.StopSound(DayAmbianceSource, 2f);
+            SoundManager.Instance.StopSound(DayMusicSource, 2f);
+
             ScheduleRest();
         }
         ScheduleWorkers(currentCycle);
@@ -72,7 +87,7 @@ public class NPCScheduler : MonoBehaviour
         {
             if(npc is Peasant peasant)
             {
-                _soundManager.PlaySoundEffect(DeathPeasantSFX, peasant.transform.position);
+                SoundManager.Instance.PlaySound("VilligerDeath", peasant.transform.position);
                 _npcManager.DespawnPeasant(peasant);
             }
             else if(npc is Undead undead)
