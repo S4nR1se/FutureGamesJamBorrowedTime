@@ -1,5 +1,8 @@
+using Mono.Cecil;
+using System;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -69,6 +72,7 @@ public class UIManager : Manager
     private NPCManager _npcManager;
     private TilePlacementManager _buildingsManager;
     private ZoneManager _zoneManager;
+    private TimeManager _timeManager;
 
     private List<Occupation> _availableOccupations = new();
     private int _currentOccupationIndex = 0;
@@ -80,6 +84,7 @@ public class UIManager : Manager
         _npcManager = GameManager.Instance.GetManager<NPCManager>();
         _buildingsManager = GameManager.Instance.GetManager<TilePlacementManager>();
         _zoneManager = GameManager.Instance.GetManager<ZoneManager>();
+        _timeManager = GameManager.Instance.GetManager<TimeManager>();
 
         if (_resourceManager != null)
         {
@@ -89,6 +94,10 @@ public class UIManager : Manager
         if (_npcManager != null)
         {
             _npcManager.OnNPCAmountChange += OnNPCAmountChange;
+        }
+        if (_timeManager != null)
+        {
+            _timeManager.OnCyclePassage += OnTimePassage;
         }
 
         _npcInfoCanvasGroup = _npcInfo.GetComponent<CanvasGroup>();
@@ -166,6 +175,7 @@ public class UIManager : Manager
             else if (resource.Key == Resources.Graves)
             {
                 _hudComponentsDic["Graves"].Counter[0].text = resource.Value.ToString();
+                UpdateUndeadCost(resource.Value);
             }
             else if (resource.Key == Resources.FoodStock)
             {
@@ -180,6 +190,19 @@ public class UIManager : Manager
                 _hudComponentsDic["Dread"].Counter[0].text = resource.Value.ToString();
             }
         }
+    }
+
+    private void UpdateUndeadCost(int gravesRemaining)
+    {
+        if (gravesRemaining >= Graveyard.SKELETONGRAVECOST)
+            _hudComponentsDic["Summoning"].Counter[0].text = Graveyard.SKELETONPURRCOSTWITHGRAVE.ToString();
+        else
+            _hudComponentsDic["Summoning"].Counter[0].text = Graveyard.SKELETONPURRCOSTWITHOUTGRAVE.ToString();
+
+        if (gravesRemaining >= Graveyard.ZOMBIEGRAVECOST)
+            _hudComponentsDic["Summoning"].Counter[1].text = Graveyard.ZOMBIEPURRCOSTWITHGRAVE.ToString();
+        else
+            _hudComponentsDic["Summoning"].Counter[1].text = Graveyard.ZOMBIEPURRCOSTWITHOUTGRAVE.ToString();
     }
 
     private void OnNPCAmountChange(Dictionary<System.Type, List<NPC>> npcsByType)
@@ -231,6 +254,14 @@ public class UIManager : Manager
         else
         {
             _npcMoodText.text = " ";
+        }
+    }
+
+    private void OnTimePassage(DayCycle cycle)
+    {
+        if (cycle == DayCycle.Day)
+        {
+            _hudComponentsDic["Day"].Counter[0].text = _timeManager.DayNumber.ToString();
         }
     }
 
