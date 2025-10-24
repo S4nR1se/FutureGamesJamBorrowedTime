@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593887cc72610954e841a203855c24cf, type: 3}
   m_Name: TempleT1Data
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData_SO
-  BuildTime: 0
+  BuildTime: 12
   OutputPerWorker: 1
   Resource: 4
   MaterialCost: 25
