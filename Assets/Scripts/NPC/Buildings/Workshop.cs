@@ -4,6 +4,8 @@ public class Workshop : Building
 {
     protected override Occupation AssociatedOccupation => new LaborerOccupation();
     private int _materialGenerated = 0;
+
+    private TimeManager timeManager;
     //private const int MATERIALPERPEASANT = 3;
     public override void Initialize()
     {
@@ -11,7 +13,7 @@ public class Workshop : Building
 
         TileType = TileType.Workshop;
 
-        TimeManager timeManager = GameManager.Instance.GetManager<TimeManager>();
+        timeManager = GameManager.Instance.GetManager<TimeManager>();
         if (timeManager != null)
         {
             timeManager.OnCycleCalculation += UpdateProduction;
@@ -43,7 +45,8 @@ public class Workshop : Building
 
     private void UpdateProduction()
     {
-        ResourceManager.UpdateValue(Resources.Materials, _materialGenerated);
+        int generatedMaterials = OutputPerWorker * AssociatedZone.CurrentOccupancy;
+        ResourceManager.UpdateValue(Resources.Materials, generatedMaterials);
 
         _materialGenerated = 0;
     }

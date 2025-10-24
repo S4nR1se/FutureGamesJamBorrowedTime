@@ -307,18 +307,16 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     {
         if (_timeManager.CurrentDayCycle == _activeCycle) return;
 
+        LeaveCurrentZone();
+
         Zone restZone = _zoneManager.GetRandomAvailableZone(_restZoneType);
 
         if (restZone != null)
         {
-            if (restZone.TryEnter(this))
-                _occupiedZone = restZone;
-
             GoToZone(restZone);
         }
         else
         {
-            LeaveCurrentZone();
             _isTraveling = false;
             Loiter();
         }
@@ -475,6 +473,9 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     private IEnumerator WaitForCalculation(DayCycle newCycle)
     {
         yield return new WaitForEndOfFrame();
+
+        CancelTravel();
+        LeaveCurrentZone();
 
         if (newCycle == _activeCycle)
         {
