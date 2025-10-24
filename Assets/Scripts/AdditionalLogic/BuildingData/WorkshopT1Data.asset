@@ -24,4 +24,4 @@ MonoBehaviour:
   DefaultRotationY: -90
   PreviewPrefab: {fileID: 2502232621807567099, guid: 962bdb915adb01e478c4289d40c08410, type: 3}
   BuildingName: Workshop
-  Description: Building does stuff fr
+  Description: Master craftsmens can prepare anything you want. Produce materials.

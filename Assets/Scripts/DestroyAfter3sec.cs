@@ -10,7 +10,7 @@ public class DestroyAfter3sec : MonoBehaviour
 
     private IEnumerator DestroyAfterSeconds()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         Destroy(gameObject);
     }
 }

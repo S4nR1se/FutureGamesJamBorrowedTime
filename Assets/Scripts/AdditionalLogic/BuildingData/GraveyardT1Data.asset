@@ -23,3 +23,5 @@ MonoBehaviour:
   PlacementYOffset: 3
   DefaultRotationY: -90
   PreviewPrefab: {fileID: 1564977999483900876, guid: 94d4d39f8c27af84bbc2114330db2dad, type: 3}
+  BuildingName: Graveyard
+  Description: Scary place, where you can summon undead

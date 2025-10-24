@@ -20,3 +20,8 @@ MonoBehaviour:
   WorkerSize: 20
   Upgrade: {fileID: 0}
   BuildingTier: 1
+  PlacementYOffset: 2
+  DefaultRotationY: 0
+  PreviewPrefab: {fileID: 3869905220101840964, guid: c4f840112a9dc7d4689b64a24e6d7335, type: 3}
+  BuildingName: House T2
+  Description: Nice Cosy House , Produce new Peasants after 3 days
