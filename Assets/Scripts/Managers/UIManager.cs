@@ -77,7 +77,7 @@ public class UIManager : Manager
         _npcInfo.SetActive(false);
         _buildingWindow.SetActive(false);
         _borrowTimeText = new();
-
+        _eventUIPrefab.SetActive(false);
         _gameOver.onClick.AddListener(delegate { TestGameOver(GameResult.GameWon, 2); });
     }
 
@@ -310,22 +310,21 @@ public class UIManager : Manager
         }
 
         var chosenEvent = _eventToSolve.Choices[choice];
-        //var chosenEvent = _eventToSolve.GetChoices()[choice];
         Debug.Log($"{chosenEvent.Outcome} {chosenEvent.OutcomeValue}");
         chosenEvent.SolveEncounter();
-        //_event.SetActive(false);
         _eventUIPrefab.SetActive(false);
     }
 
     public void TestGameOver(GameResult result, int lostCondition = 0)
     {
-        Debug.Log("Hi");
         switch (result)
         {
             case GameResult.GameWon:
+                _gameEnderUIPrefab.SetActive(true);
                 _gameEnderManager.GameWon();
                 break;
             case GameResult.GameLost:
+                _gameEnderUIPrefab.SetActive(true);
                 _gameEnderManager.TestGameLost(lostCondition);
                 break;
         }
@@ -333,7 +332,6 @@ public class UIManager : Manager
 
     private void GameOver(GameResult result, string message)
     {
-        //_gameEnder = Instantiate(_gameEnderUIPrefab);
         _gameEnderUIPrefab.SetActive(true);
         var textElements = _gameEnderUIPrefab.GetComponentsInChildren<TextMeshProUGUI>();
         foreach (var text in textElements)
