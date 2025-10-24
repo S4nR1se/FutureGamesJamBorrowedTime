@@ -42,6 +42,8 @@ public abstract class NPC : MonoBehaviour
     public abstract void ResetOccupiedZone();
     public abstract Zone GetOccupiedZone();
     public Zone GetCurrentZone() => _currentZone;
+    public ZoneType GetRestZoneType() => _restZoneType;
+    public DayCycle GetActiveCycle() => _activeCycle;
 }
 public enum TravelPurpose
 {
@@ -56,6 +58,7 @@ public interface IWorker
     void AssignOccupation(Occupation occupation);
     void GoToWork(DayCycle currentCycle);
     void TravelToZone(Zone travelZone);
+    bool IsTraveling();
 }
 public interface IPeasant
 {
@@ -63,7 +66,6 @@ public interface IPeasant
     int DreadFactor { get; }
     void GoToRest();
     void GatherPurr();
-    
     Mood GetMood();
 }
 public enum Mood

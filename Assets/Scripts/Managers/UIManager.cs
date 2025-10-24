@@ -57,6 +57,9 @@ public class UIManager : Manager
     private CanvasGroup _graveYardCanvasGroup;
     private CanvasGroup _castleCanvasGroup;
 
+    private Building _currentBuilding;
+    private IEnumerable<NPC> _currentNpcs;
+
     private Dictionary<string, HudComponent> _hudComponentsDic;
     private List<NPCEntryData> _npcEntries = new();
 
@@ -258,6 +261,9 @@ public class UIManager : Manager
 
     public void DisplayBuildingInfo(Building building = null, IEnumerable<NPC> npcs = null)
     {
+        _currentBuilding = building;
+        _currentNpcs = npcs;
+
         HideAllInfo();
         if (npcs == null)
         {
@@ -391,6 +397,7 @@ public class UIManager : Manager
             }
         }
         entry.CounterValue = 0;
+        DisplayBuildingInfo(_currentBuilding, _currentBuilding.GetNPCsInBuilding());
     }
 
     private void OnAddButtonClicked(NPCEntryData entry)

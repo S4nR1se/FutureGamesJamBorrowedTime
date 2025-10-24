@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class NPCManager : Manager
 {
@@ -60,9 +61,29 @@ public class NPCManager : Manager
         InitializingState.OnEnterInitializingState -= SpawnInitialPeasants;
         for(int i = 0; i < 8; i++)
         {
-            SpawnPeasant();
+            SpawnInitialPeasantAnywhere();
         }
     }
+    private void SpawnInitialPeasantAnywhere()
+    {
+        IPoolable poolable = _peasantPool.Get();
+        Peasant peasant = poolable.PoolableComponent.GetComponent<Peasant>();
+        if (peasant == null) return;
+
+        Vector3 position = GetRandomPositionOnNavMesh();
+        peasant.transform.position = position;
+
+        var agent = peasant.GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent != null) agent.enabled = true;
+
+        string generatedName = GenerateName(peasant);
+        CatIdentity chosenIdentity = _identities[UnityEngine.Random.Range(0, _identities.Length)];
+
+        peasant.Initialize(null, chosenIdentity, generatedName);
+
+        RegisterNPC(peasant);
+    }
+
     public void RegisterNPC(NPC npc)
     {
         if (npc == null || _activeNPCs.Contains(npc))
@@ -85,6 +106,24 @@ public class NPCManager : Manager
         {
             _workers.Add(worker);
         }
+    }
+    private Vector3 GetRandomPositionOnNavMesh(float maxAttempts = 20)
+    {
+        for (int i = 0; i < maxAttempts; i++)
+        {
+            Vector3 randomPos = new Vector3(
+                UnityEngine.Random.Range(-50f, 50f),
+                0f,
+                UnityEngine.Random.Range(-50f, 50f)
+            );
+
+            if (NavMesh.SamplePosition(randomPos, out NavMeshHit hit, 5f, NavMesh.AllAreas))
+            {
+                return hit.position;
+            }
+        }
+
+        return Vector3.zero;
     }
 
     public void UnregisterNPC(NPC npc)

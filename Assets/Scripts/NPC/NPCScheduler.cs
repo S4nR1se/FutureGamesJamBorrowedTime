@@ -3,12 +3,24 @@ using UnityEngine;
 
 public class NPCScheduler : MonoBehaviour
 {
+    public static NPCScheduler Instance { get; private set; }
+
     private TimeManager _timeManager;
     private NPCManager _npcManager;
+    private ZoneManager _zoneManager;
     public void Initialize(NPCManager npcManager, TimeManager timeManager)
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         _npcManager = npcManager;
         _timeManager = timeManager;
+        _zoneManager = GameManager.Instance.GetManager<ZoneManager>();
 
         _timeManager.OnCyclePassage += OnTimePassage;
     }
@@ -44,11 +56,12 @@ public class NPCScheduler : MonoBehaviour
             ScheduleDeath(npc);
         }
     }
-    private void ScheduleDeath(NPC npc)
+    public void ScheduleDeath(NPC npc)
     {
         if (npc.MarkedForDeath)
         {
-            if(npc is Peasant peasant)
+            npc.ResetOccupiedZone();
+            if (npc is Peasant peasant)
             {
                 _npcManager.DespawnPeasant(peasant);
                 ParticleSystemManager.Instance.Spawn("CatDie", transform.position);

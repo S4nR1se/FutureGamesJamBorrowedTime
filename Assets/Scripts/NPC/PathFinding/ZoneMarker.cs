@@ -42,8 +42,9 @@ public class ZoneMarker : MonoBehaviour
         }
 
         _parentSurface = zoneManager.ParentSurface;
+        string uniqueZoneName = $"{zoneName}_{GetInstanceID()}";
+        _zone = new Zone(uniqueZoneName, zoneType, transform.position, CalculateRadius(), _parentSurface, GetCapacityForType(zoneType));
 
-        _zone = CreateZone();
         zoneManager.RegisterZone(_zone);
         _isZoneRegistered = true;
 
@@ -133,7 +134,7 @@ public class ZoneMarker : MonoBehaviour
     }
 
     private void OnDestroy()
-    {
+    {   
         if (_isZoneRegistered && _zone != null)
         {
             ZoneManager zoneManager = GameManager.Instance.GetManager<ZoneManager>();

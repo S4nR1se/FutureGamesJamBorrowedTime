@@ -21,6 +21,7 @@ public class GameManager : StateMachine
 
         RegisterState(new InitializingState());
         RegisterState(new PlayingState());
+        GetManager<GridManager>().PlaceSpecialTiles();
         StartCoroutine(InitializationRoutine());
     }
     private void Update()

@@ -59,7 +59,7 @@ public abstract class Building : MonoBehaviour, IInteractable
 
     protected abstract void OnNPCExit(NPC npc);
 
-    protected IEnumerable<NPC> GetNPCsInBuilding()
+    public IEnumerable<NPC> GetNPCsInBuilding()
     {
         return AssociatedZone?.GetNPCsInZone() ?? new List<NPC>();
     }

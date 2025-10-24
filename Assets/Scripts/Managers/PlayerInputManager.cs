@@ -213,7 +213,15 @@ public class PlayerInputManager : Manager
         previousWorker = _previousWorkerSelection;
         return previousWorker != null;
     }
-
+    public bool TryGetPreviousNPCSelection(out IPeasant peasant)
+    {
+        peasant = null;
+        if(_previousSelection is IPeasant peasantSelection)
+        {
+            peasant = peasantSelection;
+        }
+        return peasant != null;
+    }
     private void HandleAction(string action)
     {
         switch (action)

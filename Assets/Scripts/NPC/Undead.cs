@@ -21,6 +21,7 @@ public abstract class Undead : NPC, IWorker, IPoolable, IInteractable
     internal const int ZERO = 0;
 
     private bool _isTraveling = false;
+    public bool IsTraveling() => _isTraveling;
 
     private Zone _reservedZone;
     private Zone _occupiedZone;

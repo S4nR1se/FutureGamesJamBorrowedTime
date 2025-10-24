@@ -41,6 +41,8 @@ public class Home : Building
     {
         if (PlayerInputManager.TryGetPreviousWorkerSelection(out IWorker prevWorker))
         {
+            if (prevWorker is Undead) return;
+            prevWorker.TravelToZone(AssociatedZone);
             return;
         }
 

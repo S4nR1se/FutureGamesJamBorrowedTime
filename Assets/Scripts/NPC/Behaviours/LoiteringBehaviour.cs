@@ -7,6 +7,8 @@ public class LoiteringBehaviour : Behaviour
     private NPC _npc;
     private NavMeshAgent _agent;
 
+    private TimeManager _timeManager;
+
     public float MovementSpeed { get; }
     private float _timeSinceLastDestination;
 
@@ -20,6 +22,8 @@ public class LoiteringBehaviour : Behaviour
         _npc = npc;
         MovementSpeed = movementSpeed;
 
+        _timeManager = GameManager.Instance.GetManager<TimeManager>();
+
         _agent = npc.GetComponent<NavMeshAgent>();
         _agent.speed = movementSpeed;
         _agent.acceleration = 10f;
@@ -30,6 +34,27 @@ public class LoiteringBehaviour : Behaviour
 
     public void Loiter()
     {
+        if (_npc is Peasant && _timeManager != null && _timeManager.CurrentDayCycle != _npc.GetActiveCycle())
+        {
+            Zone currentZone = _npc.GetCurrentZone();
+            ZoneType restType = _npc.GetRestZoneType();
+
+            if ((currentZone == null || currentZone.Type != restType) && _npc is IWorker worker)
+            {
+                if (!worker.IsTraveling())
+                {
+                    Zone restZone = GameManager.Instance.GetManager<ZoneManager>()
+                                        .GetRandomAvailableZone(restType);
+
+                    if (restZone != null)
+                    {
+                        worker.TravelToZone(restZone);
+                        return;
+                    }
+                }
+            }
+        }
+
         if (_agent.pathStatus == NavMeshPathStatus.PathInvalid)
         {
             HandleStuckNPC();

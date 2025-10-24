@@ -32,7 +32,6 @@ public class GridManager : Manager
         _occupancyGrid = new bool[GridSize, GridSize];
 
         InitializeGridFromScene();
-        PlaceSpecialTiles();
         SetupNavMeshSurface();
         BakeNavMesh();
     }
@@ -162,6 +161,7 @@ public class GridManager : Manager
 
     public void PlaceSpecialTiles()
     {
+
         Vector2Int center = new Vector2Int(GridSize / 2, GridSize / 2);
         int radius = GridSize / 8;
         int minDistance = Mathf.Max(2, GridSize / 6); 
