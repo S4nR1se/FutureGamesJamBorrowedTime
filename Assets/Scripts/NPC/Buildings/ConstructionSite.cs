@@ -25,6 +25,8 @@ public class ConstructionSite : Building
 
     public override void Initialize()
     {
+        TileType = TileType.ConstructionSite;
+
         _tileManager = GameManager.Instance.GetManager<TilePlacementManager>(); 
         TimeManager timeManager = GameManager.Instance.GetManager<TimeManager>();
         if (timeManager != null)
@@ -59,6 +61,7 @@ public class ConstructionSite : Building
         if (finalPrefab != null)
         {
             Instantiate(finalPrefab, transform.position, Quaternion.identity);
+            finalPrefab.GetComponent<ZoneMarker>().InitializeZone();
             GameManager.Instance.GetManager<ZoneManager>().UnregisterZone(AssociatedZone);
             Destroy(gameObject);
         }

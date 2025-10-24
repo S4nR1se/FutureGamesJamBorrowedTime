@@ -120,6 +120,8 @@ public class TilePlacementManager : Manager
             _gridManager.transform
         );
 
+        constructionGO.GetComponent<ZoneMarker>().InitializeZone(data);
+
         ConstructionSite constructionSite = constructionGO.GetComponent<ConstructionSite>();
         if (constructionSite != null)
         {
@@ -134,21 +136,21 @@ public class TilePlacementManager : Manager
         Destroy(targetTile.gameObject);
     }
 
-    public void TryUpgradeBuilding(Tile buildingTile)
+    public void TryUpgradeBuilding(Building building)
     {
-        if (buildingTile == null || _selectedTileType == buildingTile.tileType)
-            return;
+        //if (building == null || _selectedTileType == building.TileType)
+        //    return;
 
-        Vector2Int gridPos = _gridManager.WorldToGrid(buildingTile.transform.position);
+        Vector2Int gridPos = _gridManager.WorldToGrid(building.transform.position);
         Tile existingTile = _gridManager.GetTileAt(gridPos);
 
         
-        if (existingTile?.tileType == TileType.BaseTile)
+        if (existingTile?.tileType == building.TileType)
         {
             return;
         }
 
-        BuildingData_SO data = tileDatabase.tiles.Find(x => x.tileType == _selectedTileType)?.buildingData.Upgrade;
+        BuildingData_SO data = tileDatabase.tiles.Find(x => x.tileType == building.TileType)?.buildingData.Upgrade;
         if (data == null)
         {
             return;
@@ -181,7 +183,7 @@ public class TilePlacementManager : Manager
 
         GameObject constructionGO = Instantiate(
             constructionPrefab,
-            buildingTile.transform.position,
+            building.transform.position,
             Quaternion.identity,
             _gridManager.transform
         );
@@ -191,13 +193,13 @@ public class TilePlacementManager : Manager
         {
             if (data != null)
             {
-                constructionSite.SetUpConstructionZone(buildingTile, data.BuildTime, _selectedTileType, tileDatabase);
+                constructionSite.SetUpConstructionZone(existingTile, data.BuildTime, building.TileType, tileDatabase);
             }
         }
 
         _gridManager.SetTileOccupied(gridPos, true);
 
-        Destroy(buildingTile.gameObject);
+        Destroy(building.gameObject);
     }
 
     public void ClearSelection()
