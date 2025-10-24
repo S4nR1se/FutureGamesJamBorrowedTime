@@ -17,7 +17,7 @@ public class ConstructionPopupUI : MonoBehaviour
     }
     public void Initialize(BuildingData_SO data, int remainingBuildTime)
     {
-        _buildingType.text = $"Type: {data.BuildingName}";
+        _buildingType.text = $"{data.BuildingName}";
         _buildingTime.text = $"Build Time: {remainingBuildTime}";
         _buildingDescription.text = $"{data.Description}";
     }
