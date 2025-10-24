@@ -197,7 +197,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         Zone restZone = _zoneManager.GetRandomAvailableZone(_restZoneType);
         if (restZone != null && _occupiedZone != restZone)
         {
-            TravelToZone(restZone);
+            GoToZone(restZone);
         }
     }
     private void CheckForAvailableWorkZone()
@@ -227,7 +227,7 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     {
         if (_isTraveling || travelZone == null) return;
 
-        if (_timeManager.CurrentDayCycle == DayCycle.Day && travelZone.Type == _restZoneType) return;
+        if (_timeManager.CurrentDayCycle == _activeCycle && travelZone.Type == _restZoneType) return;
 
         LeaveCurrentZone();
 

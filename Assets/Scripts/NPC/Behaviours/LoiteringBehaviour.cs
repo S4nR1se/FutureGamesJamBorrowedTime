@@ -35,11 +35,9 @@ public class LoiteringBehaviour : Behaviour
             Zone currentZone = peasant.GetOccupiedZone();
             ZoneType restType = peasant.GetRestZoneType();
             Zone restZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(restType);
-
             if (restZone != null && currentZone != restZone)
             {
                 peasant.TravelToZone(restZone);
-
                 if (_agent.hasPath)
                     _agent.ResetPath();
                 return;
