@@ -5,6 +5,7 @@ public abstract class Building : MonoBehaviour, IInteractable
 {
     [SerializeField] private BuildingData_SO _buildingData;
     public Vector2Int Size { get; private set; } = new Vector2Int(1, 1);
+    public BuildingData_SO BuildData {get; private set;}
     public int BuildTime { get; protected set; }
     public int MaterialCost { get; protected set; }
     public int PurrCost { get; protected set; }
@@ -21,6 +22,7 @@ public abstract class Building : MonoBehaviour, IInteractable
 
     public virtual void Initialize()
     {
+        BuildData = _buildingData;
         BuildTime = _buildingData.BuildTime;
         MaterialCost = _buildingData.MaterialCost;
         PurrCost = _buildingData.PurrCost;
@@ -73,7 +75,7 @@ public abstract class Building : MonoBehaviour, IInteractable
 
         if(UIManager != null)
         {
-            UIManager.DisplayBuildingInfo(AssociatedZone.GetNPCsInZone());
+            UIManager.DisplayBuildingInfo(this, AssociatedZone.GetNPCsInZone());
         }
     }
 
@@ -90,6 +92,10 @@ public abstract class Building : MonoBehaviour, IInteractable
     public virtual void OnHoverExit()
     {
 
+    }
+    public int GetOccupantsNumber()
+    {
+        return AssociatedZone.CurrentOccupancy;
     }
 }
 

@@ -61,6 +61,7 @@ public class PlayerInputManager : Manager
 
     private void MouseInput()
     {
+        HandleRightClick();
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             return;
 
@@ -171,7 +172,9 @@ public class PlayerInputManager : Manager
         {
             _previousWorkerSelection = null;
         }
-
+    }
+    private void HandleRightClick()
+    {
         if (Input.GetMouseButtonDown(1))
         {
             _buildingManager.ClearSelection();
@@ -183,7 +186,7 @@ public class PlayerInputManager : Manager
             _currentSelection = null;
             _previousWorkerSelection = null;
             _UIManager.HideNPCInfo();
-            _UIManager.HideBuildingInfo();
+            _UIManager.HideAllInfo();
         }
     }
     public GameObject GetPreviousSelection()

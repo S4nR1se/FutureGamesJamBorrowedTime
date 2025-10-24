@@ -38,10 +38,19 @@ public class UIManager : Manager
 
     [SerializeField] private GameObject _npcEntryTemplate;
     [SerializeField] private GameObject _buildingWindowParent;
+    [SerializeField] private TextMeshProUGUI _buildingTitle;
+    [SerializeField] private TextMeshProUGUI _buildingTier;
+
+    [SerializeField] private GameObject _graveYardWindow;
+    [SerializeField] private TextMeshProUGUI _graveYardTitle;
+    [SerializeField] private TextMeshProUGUI _graveyardTier;
+
     [SerializeField] private Transform _parentTransform;
 
     private CanvasGroup _npcInfoCanvasGroup;
     private CanvasGroup _buildingInfoCanvasGroup;
+    private CanvasGroup _graveYardCanvasGroup;
+
     private Dictionary<string, HudComponent> _hudComponentsDic;
     private List<NPCEntryData> _npcEntries = new();
 
@@ -73,10 +82,12 @@ public class UIManager : Manager
 
         _npcInfoCanvasGroup = _npcInfo.GetComponent<CanvasGroup>();
         _buildingInfoCanvasGroup = _buildingWindowParent.GetComponent<CanvasGroup>();
+        _graveYardCanvasGroup = _graveYardWindow.GetComponent<CanvasGroup>();
 
         _hudComponentsDic = new();
         _npcEntries = new();
 
+        HideGraveyardInfo();
         HideBuildingInfo();
         HideNPCInfo();
 
@@ -234,13 +245,16 @@ public class UIManager : Manager
         _buildingsManager.SelectBuilding(TileType.Workshop);
     }
 
-    public void DisplayBuildingInfo(IEnumerable<NPC> npcs = null)
+    public void DisplayBuildingInfo(Building building = null, IEnumerable<NPC> npcs = null)
     {
         if (npcs == null)
         {
             Debug.LogWarning("No NPCs provided for DisplayBuildingInfo");
             return;
         }
+
+        _buildingTitle.text = $"{building.BuildData.BuildingName} - Occupants: {building.GetOccupantsNumber()} - Tier {building.BuildData.BuildingTier}";
+        _buildingTier.text = $"Tier {building.BuildData.BuildingTier}";
 
         foreach (var entry in _npcEntries)
         {
@@ -419,5 +433,25 @@ public class UIManager : Manager
                 worker.TravelToZone(workZone);
             }
         }
+    }
+    public void DisplayGraveyardInfo(Building building)
+    {
+        _graveYardCanvasGroup.alpha = 1;
+        _graveYardCanvasGroup.interactable = true;
+        _graveYardCanvasGroup.blocksRaycasts = true;
+
+        _graveYardTitle.text = $"Graveyard";
+        _graveyardTier.text = $"Tier {building.BuildData.BuildingTier}";
+    }
+    public void HideGraveyardInfo()
+    {
+        _graveYardCanvasGroup.alpha = 0;
+        _graveYardCanvasGroup.interactable = false;
+        _graveYardCanvasGroup.blocksRaycasts = false;
+    }
+    public void HideAllInfo()
+    {
+        HideGraveyardInfo();
+        HideBuildingInfo();
     }
 }

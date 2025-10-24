@@ -32,8 +32,9 @@ public class Graveyard : Building
     }
     public override void OnSelect(PlayerInputManager playerInputManager)
     {
-
+        UIManager.DisplayGraveyardInfo(this);
     }
+
     [ContextMenu("SpawnSkeleton")]
     public  void SpawnSkeleton()
     {

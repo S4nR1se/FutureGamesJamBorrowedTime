@@ -164,22 +164,27 @@ public class GridManager : Manager
     {
         Vector2Int center = new Vector2Int(GridSize / 2, GridSize / 2);
         int radius = GridSize / 8;
+        int minDistance = Mathf.Max(2, GridSize / 6); 
 
         Vector2Int castlePos = GetRandomPositionNear(center, radius);
-        ReplaceTile(castlePos, TileType.Castle, _castleTilePrefab);
 
         Vector2Int graveyardPos;
         do
         {
             graveyardPos = GetRandomPositionNear(center, radius);
-        } while (graveyardPos == castlePos);
-        ReplaceTile(graveyardPos, TileType.Graveyard, _graveyardTilePrefab);
+        } while (Vector2Int.Distance(graveyardPos, castlePos) < minDistance);
 
         Vector2Int housePos;
         do
         {
             housePos = GetRandomPositionNear(center, radius);
-        } while (housePos == castlePos || housePos == graveyardPos);
+        } while (
+            Vector2Int.Distance(housePos, castlePos) < minDistance ||
+            Vector2Int.Distance(housePos, graveyardPos) < minDistance
+        );
+
+        ReplaceTile(castlePos, TileType.Castle, _castleTilePrefab);
+        ReplaceTile(graveyardPos, TileType.Graveyard, _graveyardTilePrefab);
         ReplaceTile(housePos, TileType.House, _houseTilePrefab);
     }
 

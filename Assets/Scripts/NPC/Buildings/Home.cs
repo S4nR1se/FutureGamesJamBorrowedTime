@@ -46,7 +46,7 @@ public class Home : Building
 
         if (UIManager != null)
         {
-            UIManager.DisplayBuildingInfo(AssociatedZone.GetNPCsInZone());
+            UIManager.DisplayBuildingInfo(this, AssociatedZone.GetNPCsInZone());
         }
     }
     private void UpdateProduction()

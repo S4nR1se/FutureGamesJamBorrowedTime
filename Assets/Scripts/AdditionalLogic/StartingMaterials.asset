@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82b4daaea62d94b498d64b9b8b43928e, type: 3}
   m_Name: StartingMaterials
   m_EditorClassIdentifier: Assembly-CSharp::StartingMaterials
-  Materials: 0
-  FoodStock: 0
-  Graves: 0
+  Materials: 40
+  FoodStock: 45
+  Graves: 10
   Purr: 0
   Dread: 0
