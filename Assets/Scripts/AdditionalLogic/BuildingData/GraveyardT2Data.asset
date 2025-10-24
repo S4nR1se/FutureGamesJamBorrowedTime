@@ -24,4 +24,4 @@ MonoBehaviour:
   DefaultRotationY: 0
   PreviewPrefab: {fileID: 1564977999483900876, guid: 94d4d39f8c27af84bbc2114330db2dad, type: 3}
   BuildingName: Graveyard T2
-  Description: Scary place, where you can summon undead
+  Description: Scary place, where you can summon skeletons and zombies

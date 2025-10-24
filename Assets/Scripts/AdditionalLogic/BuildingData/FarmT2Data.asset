@@ -24,4 +24,5 @@ MonoBehaviour:
   DefaultRotationY: 0
   PreviewPrefab: {fileID: 7669291683089598282, guid: 3db0d6f472cef0c4dae24499f86241bb, type: 3}
   BuildingName: Farm T2
-  Description: Place where your villagers are gathering food. Produce Food.
+  Description: Place where your villagers are gathering food. Produce Food 3 food
+    per farmer.
