@@ -11,6 +11,7 @@ public class BuildingData_SO : ScriptableObject
     public int WorkerSize;
     public BuildingData_SO Upgrade;
     public Tier BuildingTier;
+    public TileType type;
 
     public float PlacementYOffset = 2f;
     public float DefaultRotationY = 0f;

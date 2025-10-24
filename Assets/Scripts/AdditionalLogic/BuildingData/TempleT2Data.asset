@@ -20,6 +20,7 @@ MonoBehaviour:
   WorkerSize: 10
   Upgrade: {fileID: 0}
   BuildingTier: 1
+  type: 4
   PlacementYOffset: 2
   DefaultRotationY: 0
   PreviewPrefab: {fileID: 4575814731325688492, guid: 7ce5a6d195b003745a0c288aa52fa58c, type: 3}

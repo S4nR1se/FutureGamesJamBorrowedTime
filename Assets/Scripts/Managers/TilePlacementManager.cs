@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Resources;
 using UnityEngine;
 
@@ -16,6 +17,8 @@ public class TilePlacementManager : Manager
     private TileType _selectedTileType = TileType.BaseTile;
 
     public TileType SelectedTileType => _selectedTileType;
+
+    private HashSet<TileType> _builtTypes = new HashSet<TileType>();
 
     public override void Initialize()
     {
@@ -89,25 +92,24 @@ public class TilePlacementManager : Manager
         Tile existingTile = _gridManager.GetTileAt(gridPos);
 
         if (existingTile?.tileType != TileType.BaseTile)
-        {
             return;
-        }
 
         BuildingData_SO data = tileDatabase.tiles.Find(x => x.tileType == _selectedTileType)?.buildingData;
         if (data == null)
-        {
             return;
-        }
 
-        int materialCost = data.MaterialCost;
-        int currentMaterials = _resourceManager.GetValue(Resources.Materials);
+        bool isFirstOfType = !_builtTypes.Contains(_selectedTileType);
 
-        if (currentMaterials < materialCost)
+        if (!isFirstOfType)
         {
-            return;
-        }
+            int materialCost = data.MaterialCost;
+            int currentMaterials = _resourceManager.GetValue(Resources.Materials);
 
-        _resourceManager.UpdateValue(Resources.Materials, -materialCost);
+            if (currentMaterials < materialCost)
+                return;
+
+            _resourceManager.UpdateValue(Resources.Materials, -materialCost);
+        }
 
         GameObject constructionPrefab = tileDatabase.GetPrefab(TileType.ConstructionSite);
         if (constructionPrefab == null)
@@ -125,13 +127,12 @@ public class TilePlacementManager : Manager
         ConstructionSite constructionSite = constructionGO.GetComponent<ConstructionSite>();
         if (constructionSite != null)
         {
-            if (data != null)
-            {
-                constructionSite.SetUpConstructionZone(targetTile, data.BuildTime, _selectedTileType, tileDatabase);
-            }
+            constructionSite.SetUpConstructionZone(targetTile, data.BuildTime, _selectedTileType, tileDatabase);
         }
 
         _gridManager.SetTileOccupied(gridPos, true);
+
+        _builtTypes.Add(_selectedTileType);
 
         Destroy(targetTile.gameObject);
     }
@@ -206,5 +207,9 @@ public class TilePlacementManager : Manager
     {
         _selectedTileType = TileType.BaseTile;
         if (_previewHelper != null) _previewHelper.ClearPreview();
+    }
+    public bool HasBuiltType(TileType type)
+    {
+        return _builtTypes.Contains(type);
     }
 }

@@ -6,6 +6,7 @@ public class TilePreviewHelper : MonoBehaviour
 
     [SerializeField] private Material validMaterial;
     [SerializeField] private Material invalidMaterial;
+    [SerializeField] private Material FreebieMaterial;
 
     public GameObject CurrentPreview => currentPreview;
     private GameObject currentPreview;
@@ -71,14 +72,32 @@ public class TilePreviewHelper : MonoBehaviour
 
     private void ApplyMaterial(bool canPlace)
     {
-        int currentAvailable = _resourceManager.GetValue(Resources.Materials);
-        if (currentAvailable < _currentData.MaterialCost)
+        if (_currentData == null) return;
+
+        TilePlacementManager placementManager = GameManager.Instance.GetManager<TilePlacementManager>();
+        bool isFirstOfType = placementManager != null && !placementManager.HasBuiltType(_currentData.type);
+
+        bool hasEnoughMaterials = isFirstOfType ||
+                                  _resourceManager.GetValue(Resources.Materials) >= _currentData.MaterialCost;
+
+        Material mat;
+
+        if (!canPlace)
         {
-            foreach (Renderer r in currentPreview.GetComponentsInChildren<Renderer>())
-                r.material = invalidMaterial;
-            return;
+            mat = invalidMaterial;
         }
-        Material mat = canPlace ? validMaterial : invalidMaterial;
+        else if (isFirstOfType)
+        {
+            mat = FreebieMaterial;
+        }
+        else if (hasEnoughMaterials)
+        {
+            mat = validMaterial;
+        }
+        else
+        {
+            mat = invalidMaterial;
+        }
 
         foreach (Renderer r in currentPreview.GetComponentsInChildren<Renderer>())
             r.material = mat;
