@@ -9,8 +9,12 @@ public class Home : Building
     private NPCManager _npcManager;
     private TimeManager _timeManager;
 
+    private int currentDayInCycle =0;
+    private const int PROCREATIONDAY = 3;
+
     public override void Initialize()
     {
+        currentDayInCycle = 0;
         TileType = TileType.House;
 
         _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
@@ -57,11 +61,16 @@ public class Home : Building
     {
         if (_timeManager.GetCurrentCycle() != DayCycle.Night) return;
 
-        int npcProcreated = AssociatedZone.CurrentOccupancy;
-        for(int i = 0; i < npcProcreated; i++)
+        currentDayInCycle++;
+
+        if (currentDayInCycle == PROCREATIONDAY)
         {
-            _npcManager.SpawnPeasant(AssociatedZone);
-            
+            int npcProcreated = AssociatedZone.CurrentOccupancy;
+            for (int i = 0; i < npcProcreated; i++)
+            {
+                _npcManager.SpawnPeasant(AssociatedZone);
+            }
+            currentDayInCycle = 0;
         }
     }
     [ContextMenu("GatherPurr")]
