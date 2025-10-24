@@ -12,6 +12,9 @@ public abstract class Building : MonoBehaviour, IInteractable
     public int OutputPerWorker { get; protected set; }
     public int WorkerSize { get; protected set; }
     public Tier BuildingTier { get; protected set; }
+    public TileType TileType { get; protected set; }
+    public Tile Tile { get; protected set; }
+
     protected Zone AssociatedZone { get; private set; }
     protected ResourceManager ResourceManager { get; private set; }
     protected PlayerInputManager PlayerInputManager { get; private set; }

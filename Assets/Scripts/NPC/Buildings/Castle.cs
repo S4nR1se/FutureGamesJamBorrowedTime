@@ -7,6 +7,8 @@ public class Castle : Building
 
     public override void Initialize()
     {
+        TileType = TileType.Castle;
+
         if (BuildingTier == Tier.Three)
             GameManager.Instance.GetManager<GameEnderManager>().GameWon();
 

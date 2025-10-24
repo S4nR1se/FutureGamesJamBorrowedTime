@@ -25,6 +25,8 @@ public class ConstructionSite : Building
 
     public override void Initialize()
     {
+        TileType = TileType.ConstructionSite;
+
         _tileManager = GameManager.Instance.GetManager<TilePlacementManager>(); 
         TimeManager timeManager = GameManager.Instance.GetManager<TimeManager>();
         if (timeManager != null)

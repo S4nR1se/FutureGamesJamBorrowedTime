@@ -509,6 +509,8 @@ public class UIManager : Manager
         _graveYardCanvasGroup.interactable = true;
         _graveYardCanvasGroup.blocksRaycasts = true;
 
+        _graveYardCanvasGroup.onClick.AddListener(() => OnUpgradeButtonClick(building));
+
         _graveYardTitle.text = $"Graveyard";
         _graveyardTier.text = $"Tier {building.BuildData.BuildingTier}";
 
@@ -529,6 +531,8 @@ public class UIManager : Manager
         _castleCanvasGroup.interactable = true;
         _castleCanvasGroup.blocksRaycasts = true;
 
+        _castleCanvasGroup.onClick.AddListener(() => OnUpgradeButtonClick(building));
+
         _castleTier.text = $"Tier {building.BuildData.BuildingTier}";
     }
     public void HideCastleInfo()
@@ -545,6 +549,6 @@ public class UIManager : Manager
     }
     private void OnUpgradeButtonClick(Building building)
     {
-
+        _buildingsManager.TryUpgradeBuilding(building);
     }
 }

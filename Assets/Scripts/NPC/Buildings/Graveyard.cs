@@ -17,6 +17,8 @@ public class Graveyard : Building
 
     public override void Initialize()
     {
+        TileType = TileType.Graveyard;
+
         _npcManager = GameManager.Instance.GetManager<NPCManager>();
         _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
         base.Initialize();

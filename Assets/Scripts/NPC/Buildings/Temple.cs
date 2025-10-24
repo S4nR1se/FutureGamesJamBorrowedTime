@@ -9,6 +9,8 @@ public class Temple : Building
     {
         _dreadReduced = 0;
 
+        TileType = TileType.Temple;
+
         TimeManager timeManager = GameManager.Instance.GetManager<TimeManager>();
         if (timeManager != null)
         {
