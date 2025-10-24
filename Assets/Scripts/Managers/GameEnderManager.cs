@@ -4,6 +4,7 @@ using System.Linq;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Managers
 {
@@ -41,6 +42,7 @@ namespace Assets.Scripts.Managers
         public void GameWon()
         {
             GameOver?.Invoke(GameResult.GameWon, "You managed to build the portal just in time... The traitor will suffer!");
+            SceneManager.LoadScene("GameWin");
         }
 
         private void OnTimePassage(DayCycle currentCycle)
@@ -48,22 +50,26 @@ namespace Assets.Scripts.Managers
             // Inquisition comes on day 51
             if (INQUISITIONDAY == _timeManager.DayNumber)
             {
-                GameOver?.Invoke(GameResult.GameLost, "You took too long to have you vengeance... The inquisition has found you!");
+                // GameOver?.Invoke(GameResult.GameLost, "You took too long to have you vengeance... The inquisition has found you!");
+                SceneManager.LoadScene("GameOver");
             }
             // Peasant count reaches 0
             else if (_npcManager.GetActivePeasantCount() <= ZERO)
             {
-                GameOver?.Invoke(GameResult.GameLost, "There are no more peasants around to help you build the portal. In time, the inquisition will come and you won't have your vengeance...");
+               // GameOver?.Invoke(GameResult.GameLost, "There are no more peasants around to help you build the portal. In time, the inquisition will come and you won't have your vengeance...");
+                SceneManager.LoadScene("GameOver1");
             }
             // Peasants count is less than half since prior day
             else if (_npcManager.GetActivePeasantCount() < _yersterdaysPeasants/2)
             {
-                GameOver?.Invoke(GameResult.GameLost, "The peasants area leaving, as their families are perishing. In time, the inquisition will come and you won't have your vengeance...");
+               // GameOver?.Invoke(GameResult.GameLost, "The peasants area leaving, as their families are perishing. In time, the inquisition will come and you won't have your vengeance...");
+                SceneManager.LoadScene("GameOver2");
             }
             // Total dread count is twice as peasant count
             else if (_npcManager.GetNPCsOfType<Peasant>().Sum(peasant => peasant.DreadFactor) > _npcManager.GetActivePeasantCount())
             {
-                GameOver?.Invoke(GameResult.GameLost, "The peasants are scared of you, they will leave your town. In time, the inquisition will come and won't have your vengeance...");
+                // GameOver?.Invoke(GameResult.GameLost, "The peasants are scared of you, they will leave your town. In time, the inquisition will come and won't have your vengeance...");
+                SceneManager.LoadScene("GameOver3");
             }
             _yersterdaysPeasants = _npcManager.GetActivePeasantCount();
         }
