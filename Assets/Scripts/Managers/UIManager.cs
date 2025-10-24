@@ -47,6 +47,7 @@ public class UIManager : Manager
     [SerializeField] private Button _buildingUpgradeButton;
 
     [SerializeField] private GameObject _graveYardWindow;
+    [SerializeField] private TextMeshProUGUI _graveYardUpgradeText;
     [SerializeField] private TextMeshProUGUI _graveYardTitle;
     [SerializeField] private TextMeshProUGUI _graveyardTier;
     [SerializeField] private Button _skeletonButton;
@@ -513,6 +514,7 @@ public class UIManager : Manager
 
         _graveYardTitle.text = $"Graveyard";
         _graveyardTier.text = $"Tier {building.BuildData.BuildingTier}";
+        _graveYardUpgradeText.text = $"Upgrade? Requirements: {building.BuildData.MaterialCost} Materials & {building.BuildData.PurrCost} Purr";
         _graveyardUpgradeButton.onClick.AddListener(() => OnUpgradeButtonClick(building));
 
 
