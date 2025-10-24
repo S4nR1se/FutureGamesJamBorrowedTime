@@ -19974,6 +19974,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a682ffeb09e036a4c909b3abdc7b04d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EventManager
+  _eventUI: {fileID: 0}
   EventCatalog: {fileID: 11400000, guid: 9e36253f56be04f4ebf38e113fc3612c, type: 2}
 --- !u!4 &1155184963 stripped
 Transform:
@@ -31785,7 +31786,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1788224605
 RectTransform:
   m_ObjectHideFlags: 0
