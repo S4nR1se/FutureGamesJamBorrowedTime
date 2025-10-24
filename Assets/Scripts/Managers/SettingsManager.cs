@@ -1,10 +1,24 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SettingsManager : Manager
 {
     public static SettingsManager Instance {get; private set;}
+    [SerializeField] private Slider _masterVolumeSlider = null;
+    [SerializeField] private Slider _musicVolumeSlider = null;
+    [SerializeField] private Slider _soundEffectsVolumeSlider = null;
+
+    [SerializeField] private GameObject _audioCanvas = null;
+    [SerializeField] private GameObject _controlsCanvas = null;
+    [SerializeField] private GameObject _resolutionsCanvas = null;
+
+    [SerializeField] private List<Vector2> _resolutions = new List<Vector2>();
+    [SerializeField] private TMP_Text _resolutionsText = null;
+
+    private int _selectedResolution = 0;
+    public Vector2 _resolution = new();
 
     private void Awake()
     {
@@ -23,17 +37,12 @@ public class SettingsManager : Manager
     public void Start()
     {
         this.gameObject.SetActive(false);
-        //fullscreen.isOn = Screen.fullScreen;
-        //sound_volume.value = audio.volume;
-
-        //if (QualitySettings.vSyncCount == 0)
-        //{
-        //    VSync.isOn = false;
-        //}
-        //else
-        //{
-        //    VSync.isOn = true;
-        //}
+       
+        Screen.fullScreen = true;
+        _resolutionsCanvas.SetActive(false);
+        _audioCanvas.SetActive(true);
+        //_cameraCanvas.SetActive(false);
+        _controlsCanvas.SetActive(false);
     }
 
     public void Close_Settings()
@@ -44,94 +53,114 @@ public class SettingsManager : Manager
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F11))
+        {
+            Screen.fullScreen = true;
+        }
 
-    //public class SettingsMenu : MonoBehaviour
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            Screen.fullScreen = false;
+        }
+    }
+
+    public void UpdateMasterAudioVolume()
+    {
+        SoundManager.Instance.SetMasterVolume(_masterVolumeSlider.value);
+    }
+
+    public void UpdateMusicAudioVolume()
+    {
+        SoundManager.Instance.SetMusicVolume(_musicVolumeSlider.value);
+    }
+
+    public void UpdateSoundEffectsAudioVolume()
+    {
+        //SoundManager.Instance.SetSFXVolume(_soundEffectsVolumeSlider.value);
+    }
+
+    public void OpenAudioPanel()
+    {
+        _audioCanvas.SetActive(true);
+
+        _controlsCanvas.SetActive(false);
+        _resolutionsCanvas.SetActive(false);
+    }
+
+    public void OpenResolutionsPanel()
+    {
+        _resolutionsCanvas.SetActive(true);
+
+        _audioCanvas.SetActive(false);
+        _controlsCanvas.SetActive(false);
+    }
+
+    public void OpenControlsPanel()
+    {
+        _controlsCanvas.SetActive(true);
+
+        _resolutionsCanvas.SetActive(false);
+        _audioCanvas.SetActive(false);
+    }
+
+    //public void OpenUIPanel()
     //{
-    //    public static SettingsMenu sm_instance = null;
-
-    //    [SerializeField] Slider sound_volume = null;
-    //    [SerializeField] AudioSource audio = null;
-    //    [SerializeField] Toggle fullscreen = null;
-    //    [SerializeField] Toggle VSync = null;
-    //    [SerializeField] List<Vector2> resolutions = new List<Vector2>();
-    //    [SerializeField] TMP_Text resolutions_text = null;
-
-    //    int selected_resolution = 0;
-    //    public Vector2 resolution = new();
-
-    //    private void Awake()
-    //    {
-    //        if (sm_instance == null)
-    //        {
-    //            sm_instance = this;
-    //        }
-    //        else if (sm_instance != this)
-    //        {
-    //            Destroy(this.gameObject);
-    //        }
-
-    //        DontDestroyOnLoad(this.gameObject);
-    //    }
-
-    //    
-
-    //    public float Get_Audio_Value()
-    //    {
-    //        return sound_volume.value;
-    //    }
-
-    //    public void Set_Audio_Source(AudioSource new_audio)
-    //    {
-    //        audio = new_audio;
-    //    }
-
-    //   
-
-    //    public void Update_Sound_Volume()
-    //    {
-    //        audio.volume = sound_volume.value;
-    //    }
-
-    //    public void Res_Left_Arrow()
-    //    {
-    //        selected_resolution--;
-    //        if (selected_resolution < 0)
-    //        {
-    //            selected_resolution = 0;
-    //        }
-
-    //        Update_Resolutions_Text();
-    //    }
-
-    //    public void Res_Right_Arrow()
-    //    {
-    //        selected_resolution++;
-    //        if (selected_resolution > resolutions.Count - 1)
-    //        {
-    //            selected_resolution = resolutions.Count - 1;
-    //        }
-
-    //        Update_Resolutions_Text();
-    //    }
-
-    //    public void Update_Resolutions_Text()
-    //    {
-    //        resolutions_text.text = resolutions[selected_resolution].x.ToString() + " x " + resolutions[selected_resolution].y.ToString();
-    //    }
-
-    //    public void Apply_Changes()
-    //    {
-    //        if (VSync.isOn)
-    //        {
-    //            QualitySettings.vSyncCount = 1;
-    //        }
-    //        else
-    //        {
-    //            QualitySettings.vSyncCount = 0;
-    //        }
-
-    //        Screen.SetResolution((int)resolutions[selected_resolution].x, (int)resolutions[selected_resolution].y, fullscreen.isOn);
-    //    }
+    //    _uiCanvas.SetActive(true);
+    //    _cameraCanvas.SetActive(false);
     //}
 
+    //public void OpenCameraPanel()
+    //{
+    //    _uiCanvas.SetActive(false);
+    //    _cameraCanvas.SetActive(true);
+    //}
+
+    public void Res_Left_Arrow()
+    {
+        _selectedResolution--;
+        if (_selectedResolution < 0)
+        {
+            _selectedResolution = 0;
+        }
+
+        Update_Resolutions_Text();
+    }
+
+    public void Res_Right_Arrow()
+    {
+        _selectedResolution++;
+        if (_selectedResolution > _resolutions.Count - 1)
+        {
+            _selectedResolution = _resolutions.Count - 1;
+        }
+
+        Update_Resolutions_Text();
+    }
+
+    public void Update_Resolutions_Text()
+    {
+        _resolutionsText.text = _resolutions[_selectedResolution].x.ToString() + " x " + _resolutions[_selectedResolution].y.ToString();
+    }
+
+    public void Apply_Changes()
+    {
+        Screen.SetResolution((int)_resolutions[_selectedResolution].x, (int)_resolutions[_selectedResolution].y, true);
+    }
+
+    public float GetMasterAudioSliderVolume()
+    {
+        return _masterVolumeSlider.value;
+    }
+
+    public float GetMusicAudioSliderVolume()
+    {
+        return _musicVolumeSlider.value;
+    }
+
+    public float GetSoundEffectsAudioSliderVolume()
+    {
+        return _soundEffectsVolumeSlider.value;
+    }
 }

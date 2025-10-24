@@ -1656,6 +1656,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74186729efbd58441be402cdc503c3f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SettingsManager
+  _masterVolumeSlider: {fileID: 1719260953}
+  _musicVolumeSlider: {fileID: 764101142}
+  _soundEffectsVolumeSlider: {fileID: 1528371752}
+  _audioCanvas: {fileID: 477879183}
+  _controlsCanvas: {fileID: 1562004892}
+  _resolutionsCanvas: {fileID: 1584399825}
+  _resolutions:
+  - {x: 1920, y: 1080}
+  - {x: 800, y: 600}
+  _resolutionsText: {fileID: 1065162644}
+  _resolution: {x: 0, y: 0}
 --- !u!114 &260778127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3650,7 +3661,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 260778126}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
         m_MethodName: OpenAudioPanel
         m_Mode: 1
@@ -4482,7 +4493,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 260778126}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
         m_MethodName: Res_Left_Arrow
         m_Mode: 1
@@ -4615,7 +4626,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 260778126}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
         m_MethodName: Res_Right_Arrow
         m_Mode: 1
@@ -5445,7 +5456,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 260778126}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
         m_MethodName: OpenResolutionsPanel
         m_Mode: 1
@@ -6103,7 +6114,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 260778126}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
         m_MethodName: OpenControlsPanel
         m_Mode: 1
@@ -8783,7 +8794,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1936201131
 MonoBehaviour:
   m_ObjectHideFlags: 0
