@@ -70,6 +70,7 @@ public class Home : Building
             {
                 _npcManager.SpawnPeasant(AssociatedZone);
             }
+            SoundManager.Instance.PlaySound("BuildingPlaced", transform.position);
             currentDayInCycle = 0;
         }
     }

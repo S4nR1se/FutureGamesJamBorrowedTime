@@ -61,7 +61,7 @@ public class ConstructionSite : Building
         if (finalPrefab != null)
         {
             Instantiate(finalPrefab, transform.position, Quaternion.identity);
-
+            SoundManager.Instance.PlaySound("BuildingPlaced", transform.position);
             GameManager.Instance.GetManager<ZoneManager>().UnregisterZone(AssociatedZone);
             Destroy(gameObject);
         }

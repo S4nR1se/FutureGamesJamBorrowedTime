@@ -43,6 +43,7 @@ namespace Assets.Scripts.Managers
         public void GameWon()
         {
             SceneManager.LoadScene("GameWin");
+            SoundManager.Instance.PlaySound("WinScreen", transform.position);
         }
 
         private void OnTimePassage(DayCycle currentCycle)

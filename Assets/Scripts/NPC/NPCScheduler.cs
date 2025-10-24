@@ -5,6 +5,12 @@ public class NPCScheduler : MonoBehaviour
 {
     public static NPCScheduler Instance { get; private set; }
 
+    private AudioSource DayAmbianceSource;
+    private AudioSource NightAmbianceSource;
+
+    private AudioSource DayMusicSource;
+    private AudioSource NightMusicSource;
+
     private TimeManager _timeManager;
     private NPCManager _npcManager;
     private ZoneManager _zoneManager;
@@ -35,10 +41,13 @@ public class NPCScheduler : MonoBehaviour
     {
         if(currentCycle == DayCycle.Day)
         {
+            SoundManager.Instance.PlaySound("DayNightCycleTransition", transform.position);
             ScheduleNightTimeCalculations(); 
         }
         else
         {
+            SoundManager.Instance.StopSound(NightAmbianceSource, 2f);
+            SoundManager.Instance.StopSound(NightMusicSource, 2f);
             ScheduleRest();
         }
         ScheduleWorkers(currentCycle);
