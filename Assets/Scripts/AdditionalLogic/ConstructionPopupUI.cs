@@ -7,7 +7,7 @@ public class ConstructionPopupUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _buildingTime;
     [SerializeField] private TextMeshProUGUI _buildingDescription;
 
-    private Vector3 offset = new Vector3(0, 10f, 20f);
+    [SerializeField] private Vector3 offset = new Vector3(0, 5f, 10f);
 
     private Camera _mainCam;
 

@@ -29674,6 +29674,7 @@ MonoBehaviour:
   _buildingType: {fileID: 595443673}
   _buildingTime: {fileID: 2020208875}
   _buildingDescription: {fileID: 1138443563}
+  offset: {x: 0, y: 0, z: 20}
 --- !u!225 &1779830534
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -38028,7 +38029,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 69
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 974d692bebeecfd418399884b3ffed1b, type: 2}
   m_sharedMaterial: {fileID: -3434873975106548468, guid: 974d692bebeecfd418399884b3ffed1b, type: 2}
@@ -42771,7 +42772,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 69
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 974d692bebeecfd418399884b3ffed1b, type: 2}
   m_sharedMaterial: {fileID: -3434873975106548468, guid: 974d692bebeecfd418399884b3ffed1b, type: 2}
