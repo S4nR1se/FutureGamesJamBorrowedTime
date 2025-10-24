@@ -18,6 +18,13 @@ public class ZoneMarker : MonoBehaviour
     private NavMeshSurface _parentSurface;
     private bool _isZoneRegistered; // Track registration state
 
+    private void Start()
+    {
+        if (_zone == null && !_isZoneRegistered)
+        {
+            InitializeZone();
+        }
+    }
     public void InitializeZone()
     {
         if (_zone != null && _isZoneRegistered) return;
@@ -59,11 +66,14 @@ public class ZoneMarker : MonoBehaviour
     }
     public void InitializeZone(BuildingData_SO data)
     {
-        if (_zone != null && _isZoneRegistered) return;
-        if (_isZoneRegistered)
+        if (_zone != null && _isZoneRegistered)
         {
-            Debug.LogWarning($"Zone {zoneName} is already registered!", this);
-            return;
+            ZoneManager azoneManager = GameManager.Instance.GetManager<ZoneManager>();
+            if (azoneManager != null)
+            {
+                azoneManager.UnregisterZone(_zone);
+                _isZoneRegistered = false;
+            }
         }
 
         ZoneManager zoneManager = GameManager.Instance.GetManager<ZoneManager>();

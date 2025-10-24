@@ -221,7 +221,6 @@ public class GridManager : Manager
             prefabToUse = GetRandomBaseTilePrefab();
 
         GameObject newTileObj = Instantiate(prefabToUse, GridToWorld(gridPos), Quaternion.identity, transform);
-        newTileObj.GetComponent<ZoneMarker>().InitializeZone();
 
         Tile newTile = newTileObj.GetComponent<Tile>();
         if (newTile == null)
