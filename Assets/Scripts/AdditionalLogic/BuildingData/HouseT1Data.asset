@@ -23,5 +23,5 @@ MonoBehaviour:
   PlacementYOffset: 3
   DefaultRotationY: -90
   PreviewPrefab: {fileID: 3869905220101840964, guid: c4f840112a9dc7d4689b64a24e6d7335, type: 3}
-  BuildingName: Home
-  Description: Building does stuff fr
+  BuildingName: House
+  Description: Nice Cosy House , Produce new Peasants after 3 days
