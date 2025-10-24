@@ -5,7 +5,7 @@ public class TimeManager : Manager
 {
     public event Action OnCycleCalculation;
     public event Action<DayCycle> OnCyclePassage;
-    public DayCycle CurrentDayCycle { get; private set; } = DayCycle.Night;
+    public DayCycle CurrentDayCycle { get; private set; } = DayCycle.Day;
 
     private SunTransitioner _sunTransitioner;
 
@@ -22,7 +22,7 @@ public class TimeManager : Manager
         _cycleTimer = 0;
         LevelTime = 0;
         DayNumber = 0;
-        CurrentDayCycle = DayCycle.Night;
+        CurrentDayCycle = DayCycle.Day;
 
         _sunTransitioner = GetComponent<SunTransitioner>();
         if(_sunTransitioner != null)

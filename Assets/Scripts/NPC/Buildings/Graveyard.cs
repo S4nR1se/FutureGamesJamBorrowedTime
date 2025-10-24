@@ -2,18 +2,18 @@ using UnityEngine;
 
 public class Graveyard : Building
 {
-    protected override Occupation AssociatedOccupation => new BuilderOccupation(); //PlaceHolder
+    protected override Occupation AssociatedOccupation => new UnemployedOccupation(); //PlaceHolder
 
     private NPCManager _npcManager;
     private ResourceManager _resourceManager;
 
-    private const int SKELETONGRAVECOST = 1;
-    private const int SKELETONPURRCOSTWITHGRAVE = 20;
-    private const int SKELETONPURRCOSTWITHOUTGRAVE = 60;
+    internal const int SKELETONGRAVECOST = 1;
+    internal const int SKELETONPURRCOSTWITHGRAVE = 20;
+    internal const int SKELETONPURRCOSTWITHOUTGRAVE = 60;
 
-    private const int ZOMBIEGRAVECOST = 3;
-    private const int ZOMBIEPURRCOSTWITHGRAVE = 70;
-    private const int ZOMBIEPURRCOSTWITHOUTGRAVE = 210;
+    internal const int ZOMBIEGRAVECOST = 3;
+    internal const int ZOMBIEPURRCOSTWITHGRAVE = 70;
+    internal const int ZOMBIEPURRCOSTWITHOUTGRAVE = 210;
 
     public override void Initialize()
     {
@@ -32,8 +32,13 @@ public class Graveyard : Building
     }
     public override void OnSelect(PlayerInputManager playerInputManager)
     {
-
+        if (PlayerInputManager.TryGetPreviousWorkerSelection(out IWorker prevWorker))
+        {
+            return;
+        }
+        UIManager.DisplayGraveyardInfo(this);
     }
+
     [ContextMenu("SpawnSkeleton")]
     public  void SpawnSkeleton()
     {

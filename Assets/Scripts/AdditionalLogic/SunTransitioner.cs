@@ -1,9 +1,14 @@
 using System.Collections;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class SunTransitioner : MonoBehaviour
 {
     private Light sunLight;
+
+    [SerializeField] private Texture2D daySprite;
+    [SerializeField] private Texture2D nightSprite;
+    [SerializeField] private RawImage dayUI;
 
     private Vector3 dayRotation = new Vector3(30f, 70f, 0f);
     private Vector3 nightRotation = new Vector3(-10f, 70f, 0f);
@@ -36,6 +41,14 @@ public class SunTransitioner : MonoBehaviour
 
     public void TransitionToCycle(DayCycle targetCycle)
     {
+        if(targetCycle  == DayCycle.Day)
+        {
+            dayUI.texture = daySprite;
+        }
+        else
+        {
+            dayUI.texture = nightSprite;
+        }
         if (_transitionCoroutine != null)
             StopCoroutine(_transitionCoroutine);
 

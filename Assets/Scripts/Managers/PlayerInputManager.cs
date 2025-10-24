@@ -23,6 +23,7 @@ public class PlayerInputManager : Manager
     private TilePlacementManager _buildingManager;
     private UIManager _UIManager;
     private GridManager _gridManager;
+    private TimeManager _timeManager;
 
     public GameObject CurrentSelection => _currentSelection.Component;
     public IWorker PreviousWorkerSelection
@@ -38,6 +39,7 @@ public class PlayerInputManager : Manager
         _gridManager = GameManager.Instance.GetManager<GridManager>();
         _buildingManager = GameManager.Instance.GetManager<TilePlacementManager>();
         _UIManager = GameManager.Instance.GetManager<UIManager>();
+        _timeManager = GameManager.Instance.GetManager<TimeManager>();
     }
 
     private void Update()
@@ -59,6 +61,7 @@ public class PlayerInputManager : Manager
 
     private void MouseInput()
     {
+        HandleRightClick();
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             return;
 
@@ -72,24 +75,38 @@ public class PlayerInputManager : Manager
     {
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _interactableLayer))
         {
-            IInteractable interactable = hit.collider.GetComponent<IInteractable>();
-            if (interactable != null && interactable != _currentHover)
+            IInteractable interactable = hit.collider.GetComponentInParent<IInteractable>();
+
+            if (interactable != null)
             {
-                _currentHover?.OnHoverExit();
-                _currentHover = interactable;
-                _currentHover.OnHover();
+                if (interactable != _currentHover)
+                {
+                    _currentHover?.OnHoverExit();
+                    _currentHover = interactable;
+                    _currentHover.OnHover();
+                }
+
+                if (_currentHover.Component.GetComponent<ConstructionSite>() != null)
+                {
+                    _buildingManager.UpdateConstructionPreview(interactable.Component.GetComponent<ConstructionSite>());
+                }
+                else
+                {
+                    _buildingManager.ClearConstructionPreview();
+                }
             }
         }
         else
         {
             _currentHover?.OnHoverExit();
+            _buildingManager.ClearConstructionPreview();
             _currentHover = null;
         }
     }
 
     private void HandleClick(Ray ray)
     {
-        if (!Input.GetMouseButtonDown(0) && !Input.GetMouseButtonDown(1))
+        if (!Input.GetMouseButtonDown(0))
             return;
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _interactableLayer | LayerMask.GetMask("Ground")))
@@ -100,7 +117,15 @@ public class PlayerInputManager : Manager
 
             foreach (var i in interactables)
             {
-                if (i is Building)
+                if (i is NPC npc)
+                {
+                    if (npc.GetOccupiedZone() != null && npc.GetOccupiedZone().Type != ZoneType.ConstructionSite)
+                    {
+                        continue;
+                    }
+                    interactable = i;
+                }
+                else if (i is Building)
                 {
                     interactable = i;
                     break;
@@ -110,10 +135,6 @@ public class PlayerInputManager : Manager
                     interactable = i;
                 }
                 else if (i is IWorker)
-                {
-                    interactable = i;
-                }
-                else if (i is NPC)
                 {
                     interactable = i;
                 }
@@ -165,7 +186,9 @@ public class PlayerInputManager : Manager
         {
             _previousWorkerSelection = null;
         }
-
+    }
+    private void HandleRightClick()
+    {
         if (Input.GetMouseButtonDown(1))
         {
             _buildingManager.ClearSelection();
@@ -177,6 +200,7 @@ public class PlayerInputManager : Manager
             _currentSelection = null;
             _previousWorkerSelection = null;
             _UIManager.HideNPCInfo();
+            _UIManager.HideAllInfo();
         }
     }
     public GameObject GetPreviousSelection()
@@ -203,7 +227,15 @@ public class PlayerInputManager : Manager
         previousWorker = _previousWorkerSelection;
         return previousWorker != null;
     }
-
+    public bool TryGetPreviousNPCSelection(out IPeasant peasant)
+    {
+        peasant = null;
+        if(_previousSelection is IPeasant peasantSelection)
+        {
+            peasant = peasantSelection;
+        }
+        return peasant != null;
+    }
     private void HandleAction(string action)
     {
         switch (action)
@@ -220,8 +252,8 @@ public class PlayerInputManager : Manager
             case "BuildingOption#4":
                 _buildingManager.SelectBuilding(TileType.Temple);
                 break;
-            case "BuildingOption#5":
-                _buildingManager.SelectBuilding(TileType.Graveyard);
+            case "PassTime":
+                _timeManager.PassTime();
                 break;
             default:
                 Debug.LogWarning($"Unhandled action: {action}");

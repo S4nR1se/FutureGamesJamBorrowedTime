@@ -20,3 +20,8 @@ MonoBehaviour:
   WorkerSize: 0
   Upgrade: {fileID: 0}
   BuildingTier: 2
+  PlacementYOffset: 2
+  DefaultRotationY: 0
+  PreviewPrefab: {fileID: 919132149155446097, guid: 8d1040f96462a5a4bb8b79c6578691e9, type: 3}
+  BuildingName: Castle
+  Description: Main Building, Upgrade to win

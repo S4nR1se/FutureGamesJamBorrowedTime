@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Home : Building
 {
-    protected override Occupation AssociatedOccupation => new BuilderOccupation();
+    protected override Occupation AssociatedOccupation => new UnemployedOccupation();
 
     private ResourceManager _resourceManager;
     private NPCManager _npcManager;
@@ -41,7 +41,14 @@ public class Home : Building
     {
         if (PlayerInputManager.TryGetPreviousWorkerSelection(out IWorker prevWorker))
         {
+            if (prevWorker is Undead) return;
             prevWorker.TravelToZone(AssociatedZone);
+            return;
+        }
+
+        if (UIManager != null)
+        {
+            UIManager.DisplayBuildingInfo(this, AssociatedZone.GetNPCsInZone());
         }
     }
     private void UpdateProduction()
@@ -52,6 +59,7 @@ public class Home : Building
         for(int i = 0; i < npcProcreated; i++)
         {
             _npcManager.SpawnPeasant(AssociatedZone);
+            
         }
     }
     [ContextMenu("GatherPurr")]

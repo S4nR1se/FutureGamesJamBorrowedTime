@@ -20,3 +20,9 @@ MonoBehaviour:
   WorkerSize: 5
   Upgrade: {fileID: 0}
   BuildingTier: 1
+  PlacementYOffset: 2
+  DefaultRotationY: 0
+  PreviewPrefab: {fileID: 2502232621807567099, guid: 962bdb915adb01e478c4289d40c08410, type: 3}
+  BuildingName: Workshop T2
+  Description: Master craftsmens can prepare anything you want. Produce 5 materials
+    per Worker.

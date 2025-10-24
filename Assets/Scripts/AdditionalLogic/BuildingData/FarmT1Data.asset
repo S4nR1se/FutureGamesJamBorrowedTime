@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593887cc72610954e841a203855c24cf, type: 3}
   m_Name: FarmT1Data
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData_SO
-  BuildTime: 4
+  BuildTime: 0
   OutputPerWorker: 2
   Resource: 1
   MaterialCost: 15
@@ -23,3 +23,6 @@ MonoBehaviour:
   PlacementYOffset: 3
   DefaultRotationY: -90
   PreviewPrefab: {fileID: 7669291683089598282, guid: 3db0d6f472cef0c4dae24499f86241bb, type: 3}
+  BuildingName: Farm
+  Description: Place where your villagers are gathering food. Produce Food 2 food
+    per farmer.

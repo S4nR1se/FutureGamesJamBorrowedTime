@@ -15,4 +15,7 @@ public class BuildingData_SO : ScriptableObject
     public float PlacementYOffset = 2f;
     public float DefaultRotationY = 0f;
     public GameObject PreviewPrefab;
+
+    public string BuildingName = "";
+    public string Description = "Building does stuff fr";
 }

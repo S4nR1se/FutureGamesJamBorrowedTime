@@ -5,6 +5,9 @@ public class TilePlacementManager : Manager
 {
     [SerializeField] private TileDatabase_SO tileDatabase;
 
+    [SerializeField] private ConstructionPopupUI _constructionPopupUI;
+    private CanvasGroup _constructionPopupCanvas;
+
     private TilePreviewHelper _previewHelper;
 
     private GridManager _gridManager;
@@ -16,6 +19,7 @@ public class TilePlacementManager : Manager
 
     public override void Initialize()
     {
+        _constructionPopupCanvas = _constructionPopupUI.GetComponent<CanvasGroup>();
         _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
         _gridManager = GameManager.Instance.GetManager<GridManager>();
 
@@ -47,7 +51,7 @@ public class TilePlacementManager : Manager
                     if (_previewHelper.CurrentPreview == null ||
                         !_previewHelper.CurrentPreview.name.StartsWith(data.PreviewPrefab.name))
                     {
-                        _previewHelper.ShowPreview(data.PreviewPrefab, data.PlacementYOffset, data.DefaultRotationY);
+                        _previewHelper.ShowPreview(data);
                     }
 
                     _previewHelper.UpdatePreview();
@@ -58,6 +62,17 @@ public class TilePlacementManager : Manager
                 _previewHelper.ClearPreview();
             }
         }
+    }
+    public void UpdateConstructionPreview(ConstructionSite site)
+    {
+        if (_selectedTileType != TileType.BaseTile) return;
+        _constructionPopupCanvas.alpha = 1;
+        _constructionPopupUI.Initialize(site.BuildData, site.RemainingBuildTime);
+        _constructionPopupUI.FollowMouse();
+    }
+    public void ClearConstructionPreview()
+    {
+        _constructionPopupCanvas.alpha = 0;
     }
     public void SelectBuilding(TileType tileType)
     {
@@ -117,6 +132,72 @@ public class TilePlacementManager : Manager
         _gridManager.SetTileOccupied(gridPos, true);
 
         Destroy(targetTile.gameObject);
+    }
+
+    public void TryUpgradeBuilding(Tile buildingTile)
+    {
+        if (buildingTile == null || _selectedTileType == buildingTile.tileType)
+            return;
+
+        Vector2Int gridPos = _gridManager.WorldToGrid(buildingTile.transform.position);
+        Tile existingTile = _gridManager.GetTileAt(gridPos);
+
+        
+        if (existingTile?.tileType == TileType.BaseTile)
+        {
+            return;
+        }
+
+        BuildingData_SO data = tileDatabase.tiles.Find(x => x.tileType == _selectedTileType)?.buildingData.Upgrade;
+        if (data == null)
+        {
+            return;
+        }
+
+        int materialCost = data.MaterialCost;
+        int currentMaterials = _resourceManager.GetValue(Resources.Materials);
+
+        if (currentMaterials < materialCost)
+        {
+            return;
+        }
+
+        if (data.PurrCost > 0)
+        {
+            int purrCost = data.PurrCost;
+            int currentPurr = _resourceManager.GetValue(Resources.Purr);
+            if (purrCost < currentPurr)
+            {
+                return;
+            }
+            _resourceManager.UpdateValue(Resources.Purr, -purrCost);
+        }        
+
+        _resourceManager.UpdateValue(Resources.Materials, -materialCost);
+
+        GameObject constructionPrefab = tileDatabase.GetPrefab(TileType.ConstructionSite);
+        if (constructionPrefab == null)
+            return;
+
+        GameObject constructionGO = Instantiate(
+            constructionPrefab,
+            buildingTile.transform.position,
+            Quaternion.identity,
+            _gridManager.transform
+        );
+
+        ConstructionSite constructionSite = constructionGO.GetComponent<ConstructionSite>();
+        if (constructionSite != null)
+        {
+            if (data != null)
+            {
+                constructionSite.SetUpConstructionZone(buildingTile, data.BuildTime, _selectedTileType, tileDatabase);
+            }
+        }
+
+        _gridManager.SetTileOccupied(gridPos, true);
+
+        Destroy(buildingTile.gameObject);
     }
 
     public void ClearSelection()

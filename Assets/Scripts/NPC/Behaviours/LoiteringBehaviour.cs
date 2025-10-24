@@ -7,10 +7,10 @@ public class LoiteringBehaviour : Behaviour
     private NPC _npc;
     private NavMeshAgent _agent;
 
-    public float MovementSpeed { get; }
-    private float _timeSinceLastDestination;
+    private TimeManager _timeManager;
 
-    private const float DESTINATIONTIMEOUT = 0.5f;
+    public float MovementSpeed { get; }
+
     private const float MINVELOCITYTHRESHOLD = 0.2f;
     private const int MAX_RANDOM_POINT_ATTEMPTS = 20;
     private const float ROAM_RADIUS = 20f;
@@ -20,29 +20,34 @@ public class LoiteringBehaviour : Behaviour
         _npc = npc;
         MovementSpeed = movementSpeed;
 
+        _timeManager = GameManager.Instance.GetManager<TimeManager>();
+
         _agent = npc.GetComponent<NavMeshAgent>();
         _agent.speed = movementSpeed;
         _agent.acceleration = 10f;
         _agent.angularSpeed = 360f;
-
-        _timeSinceLastDestination = 0f;
     }
 
     public void Loiter()
     {
-        if (_agent.pathStatus == NavMeshPathStatus.PathInvalid)
+        if (_npc is Peasant peasant && _timeManager != null && _timeManager.CurrentDayCycle != _npc.GetActiveCycle())
         {
-            HandleStuckNPC();
-            return;
+            Zone currentZone = peasant.GetOccupiedZone();
+            ZoneType restType = peasant.GetRestZoneType();
+            Zone restZone = GameManager.Instance.GetManager<ZoneManager>().GetRandomAvailableZone(restType);
+            if (restZone != null && currentZone != restZone)
+            {
+                peasant.TravelToZone(restZone);
+                if (_agent.hasPath)
+                    _agent.ResetPath();
+                return;
+            }
         }
 
-        if (!_agent.pathPending && (_agent.remainingDistance <= _agent.stoppingDistance || _agent.velocity.magnitude < MINVELOCITYTHRESHOLD))
+        if (_agent.pathStatus == NavMeshPathStatus.PathInvalid ||
+            (!_agent.pathPending && (_agent.remainingDistance <= _agent.stoppingDistance || _agent.velocity.magnitude < MINVELOCITYTHRESHOLD)))
         {
-            _timeSinceLastDestination += Time.deltaTime;
-            if (_timeSinceLastDestination > DESTINATIONTIMEOUT)
-            {
-                HandleStuckNPC();
-            }
+            HandleStuckNPC();
         }
     }
 
@@ -53,8 +58,6 @@ public class LoiteringBehaviour : Behaviour
         _agent.SetDestination(randomPoint);
 
         _agent.speed = MovementSpeed * Random.Range(0.7f, 1.2f);
-
-        _timeSinceLastDestination = 0f;
     }
 
     private Vector3 GetRandomPoint()

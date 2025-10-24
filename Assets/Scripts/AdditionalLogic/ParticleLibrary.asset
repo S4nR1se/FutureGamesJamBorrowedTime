@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34f1ef45be5bf5b409b1d470986d3e8c, type: 3}
+  m_Name: ParticleLibrary
+  m_EditorClassIdentifier: Assembly-CSharp::ParticleLibrary
+  particles:
+  - name: CatDie
+    prefab: {fileID: 5514371977058573103, guid: d54010b538b6ebf48966da3dca01d697, type: 3}
+    lifetimeOverride: 0
+  - name: Wind
+    prefab: {fileID: 8835682342375118763, guid: 003ba85afbcc2e44588a409e2853656b, type: 3}
+    lifetimeOverride: 0
+  - name: DroppingLeaves
+    prefab: {fileID: 5969985653657274662, guid: 317be0755433d074a9322a6d77e91c0a, type: 3}
+    lifetimeOverride: 0
+  - name: Fireflies
+    prefab: {fileID: 2940996257711519455, guid: b7debe72ab6381e4484d9219dc8d0524, type: 3}
+    lifetimeOverride: 0
+  - name: Light
+    prefab: {fileID: 2940996257711519455, guid: e6726a9bb0748fd47b2ef581a8b00336, type: 3}
+    lifetimeOverride: 0
+  - name: NewCats
+    prefab: {fileID: 359223362558284189, guid: b940cc33876b5c342b3a6f3438251d5d, type: 3}
+    lifetimeOverride: 0
+  - name: Construction
+    prefab: {fileID: 8154585820054933749, guid: 532ba604309a5cd448c149410310191d, type: 3}
+    lifetimeOverride: 0
+  - name: SpawnUndead
+    prefab: {fileID: 884606632092640990, guid: d73398884f3614444aa490fbc0dcef6f, type: 3}
+    lifetimeOverride: 0
+  - name: FillPurr
+    prefab: {fileID: 4482411960733345381, guid: f93a1692de2418b4e871de7eed2340f4, type: 3}
+    lifetimeOverride: 0
+  - name: LosePurr
+    prefab: {fileID: 488658410065859104, guid: 9a07725cf7f74da4e8cc736dead32bc2, type: 3}
+    lifetimeOverride: 0

@@ -44,13 +44,11 @@ public class Zone
     {
         if (npc == null)
         {
-            Debug.LogWarning($"[Zone] {Name} cannot register null NPC");
             return false;
         }
 
         if (IsFull())
         {
-            Debug.LogWarning($"[Zone] {Name} is full (Occupancy: {CurrentOccupancy}/{Capacity})");
             return false;
         }
 
@@ -58,12 +56,10 @@ public class Zone
         {
             CurrentOccupancy++;
             NPCEntered?.Invoke(npc);
-            Debug.Log($"[Zone] {Name} registered NPC {npc.Name}, Occupancy: {CurrentOccupancy}/{Capacity}");
             ValidateState();
             return true;
         }
 
-        Debug.LogWarning($"[Zone] {Name} failed to register NPC {npc.Name}: already in zone");
         return false;
     }
 
@@ -71,7 +67,6 @@ public class Zone
     {
         if (npc == null)
         {
-            Debug.LogWarning($"[Zone] {Name} cannot remove null NPC");
             return;
         }
 
@@ -79,12 +74,7 @@ public class Zone
         {
             CurrentOccupancy = Mathf.Max(0, CurrentOccupancy - 1);
             NPCExited?.Invoke(npc);
-            Debug.Log($"[Zone] {Name} removed NPC {npc.Name}, Occupancy: {CurrentOccupancy}/{Capacity}");
             ValidateState();
-        }
-        else
-        {
-            Debug.LogWarning($"[Zone] {Name} could not remove NPC {npc.Name}: not in zone");
         }
     }
 
@@ -137,5 +127,6 @@ public enum ZoneType
     ConstructionSite,
     Road,
     Workshop,
-    Graveyard
+    Graveyard,
+    Castle,
 }

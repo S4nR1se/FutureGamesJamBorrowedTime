@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class TilePreviewHelper : MonoBehaviour
 {
+    [SerializeField] private PlacementPopupUI popupUI;
+
     [SerializeField] private Material validMaterial;
     [SerializeField] private Material invalidMaterial;
 
@@ -9,27 +11,42 @@ public class TilePreviewHelper : MonoBehaviour
     private GameObject currentPreview;
 
     private GridManager _gridManager;
+    private ResourceManager _resourceManager;
+
     private Camera _mainCam;
+
+    private CanvasGroup _popUpCanvasGroup;
+
+    private BuildingData_SO _currentData;
 
     private float _yOffset;
     private float _rotationY;
 
     public void Initialize(GridManager gridManager)
     {
+        _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
         _gridManager = gridManager;
         _mainCam = Camera.main;
+
+        _popUpCanvasGroup = popupUI.GetComponent<CanvasGroup>();
+        _popUpCanvasGroup.alpha = 0f;
     }
 
-    public void ShowPreview(GameObject prefab, float yOffset, float rotationY)
+    public void ShowPreview(BuildingData_SO buildData)
     {
         ClearPreview();
-        _yOffset = yOffset;
-        _rotationY = rotationY;
+        _currentData = buildData;
+        _yOffset = buildData.PlacementYOffset;
+        _rotationY = buildData.DefaultRotationY;
+        GameObject prefab = buildData.PreviewPrefab;
 
         currentPreview = Instantiate(prefab, new Vector3(0, 100000, 0), Quaternion.Euler(0, _rotationY, 0), transform);
 
         foreach (var col in currentPreview.GetComponentsInChildren<Collider>())
             col.enabled = false;
+
+        popupUI.Initialize(buildData);
+        _popUpCanvasGroup.alpha = 1f;
     }
 
     public void UpdatePreview()
@@ -47,11 +64,20 @@ public class TilePreviewHelper : MonoBehaviour
 
             bool canPlace = _gridManager.IsAreaFree(gridPos, Vector2Int.one);
             ApplyMaterial(canPlace);
+
+            popupUI.FollowMouse();
         }
     }
 
     private void ApplyMaterial(bool canPlace)
     {
+        int currentAvailable = _resourceManager.GetValue(Resources.Materials);
+        if (currentAvailable < _currentData.MaterialCost)
+        {
+            foreach (Renderer r in currentPreview.GetComponentsInChildren<Renderer>())
+                r.material = invalidMaterial;
+            return;
+        }
         Material mat = canPlace ? validMaterial : invalidMaterial;
 
         foreach (Renderer r in currentPreview.GetComponentsInChildren<Renderer>())
@@ -61,5 +87,6 @@ public class TilePreviewHelper : MonoBehaviour
     {
         if (currentPreview != null)
             Destroy(currentPreview);
+        _popUpCanvasGroup.alpha = 0f;
     }
 }

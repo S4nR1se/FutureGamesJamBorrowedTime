@@ -23,3 +23,5 @@ MonoBehaviour:
   PlacementYOffset: 5.6
   DefaultRotationY: -90
   PreviewPrefab: {fileID: 4575814731325688492, guid: 7ce5a6d195b003745a0c288aa52fa58c, type: 3}
+  BuildingName: Temple
+  Description: Place of Faith

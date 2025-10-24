@@ -1,11 +1,10 @@
+using Mono.Cecil;
 using System;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
-using static Unity.Collections.AllocatorManager;
-using static UnityEngine.UI.Image;
 
 public class UIManager : Manager
 {
@@ -18,65 +17,128 @@ public class UIManager : Manager
         public TextMeshProUGUI[] Counter;
     }
 
+    [System.Serializable]
+    private class NPCEntryData
+    {
+        public NPC NPC;
+        public GameObject GameObject;
+        public TextMeshProUGUI CounterText;
+        public int CounterValue;
+    }
+
     [SerializeField] private HudComponent[] _hudComponents;
     [SerializeField] private Dictionary<string, GameObject> _buildingPrefab;
     [SerializeField] private GameObject _npcInfo;
+
     [SerializeField] private TextMeshProUGUI _npcNameText;
     [SerializeField] private TextMeshProUGUI _npcOccupationText;
     [SerializeField] private TextMeshProUGUI _npcLifeSpanText;
     [SerializeField] private TextMeshProUGUI _npcMoodText;
-    [SerializeField] private GameObject      _buildingNPCInfoPrefab;
-    [SerializeField] private GameObject      _buildingWindow;
-    [SerializeField] private Transform posP;
-    [SerializeField] private GameObject EvenUI;
+    [SerializeField] private Image _npcPhoto;
+
+    [SerializeField] private Button _npcArrowForward;
+    [SerializeField] private Button _npcArrowBackward;
+
+    [SerializeField] private GameObject _npcEntryTemplate;
+    [SerializeField] private GameObject _buildingWindowParent;
+    [SerializeField] private TextMeshProUGUI _buildingTitle;
+    [SerializeField] private TextMeshProUGUI _buildingTier;
+    [SerializeField] private TextMeshProUGUI _buildingUpgradeText;
+    [SerializeField] private Button _buildingUpgradeButton;
+
+    [SerializeField] private GameObject _graveYardWindow;
+    [SerializeField] private TextMeshProUGUI _graveYardUpgradeText;
+    [SerializeField] private TextMeshProUGUI _graveYardTitle;
+    [SerializeField] private TextMeshProUGUI _graveyardTier;
+    [SerializeField] private Button _skeletonButton;
+    [SerializeField] private Button _zombieButton;
+    [SerializeField] private Button _graveyardUpgradeButton;
+
+    [SerializeField] private GameObject _castleWindow;
+    [SerializeField] private TextMeshProUGUI _castleTier;
+    [SerializeField] private TextMeshProUGUI _castleRequirements;
+    [SerializeField] private Button _castleUpgradeButton;
+
+    [SerializeField] private Transform _parentTransform;
+    [SerializeField] private Material PURRmat;
+
+    private CanvasGroup _npcInfoCanvasGroup;
+    private CanvasGroup _buildingInfoCanvasGroup;
+    private CanvasGroup _graveYardCanvasGroup;
+    private CanvasGroup _castleCanvasGroup;
+
+    private Building _currentBuilding;
+    private IEnumerable<NPC> _currentNpcs;
 
     private Dictionary<string, HudComponent> _hudComponentsDic;
-    private List<GameObject> _buildingNPCInfoList = new();
-    private List<TextMeshProUGUI> _borrowTimeText;
-    private int _borrowCount = 5;
-    private Event_SO eventToSolve;
+    private List<NPCEntryData> _npcEntries = new();
 
     private ResourceManager _resourceManager;
     private NPCManager _npcManager;
     private TilePlacementManager _buildingsManager;
-    private EventManager _eventManager;
+    private ZoneManager _zoneManager;
+    private TimeManager _timeManager;
+
+    private List<Occupation> _availableOccupations = new();
+    private int _currentOccupationIndex = 0;
+    private NPC _currentNPC;
 
     public override void Initialize()
     {
         _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
         _npcManager = GameManager.Instance.GetManager<NPCManager>();
         _buildingsManager = GameManager.Instance.GetManager<TilePlacementManager>();
-        _eventManager = GameManager.Instance.GetManager<EventManager>();
+        _zoneManager = GameManager.Instance.GetManager<ZoneManager>();
+        _timeManager = GameManager.Instance.GetManager<TimeManager>();
 
-        //EvenUI.SetActive(false);
-
-        if ( _resourceManager != null)
+        if (_resourceManager != null)
         {
             _resourceManager.OnResourceChange += OnResourceChange;
+            OnResourceChange(_resourceManager.GetAllResources());
         }
-        if(_npcManager != null)
+        if (_npcManager != null)
         {
             _npcManager.OnNPCAmountChange += OnNPCAmountChange;
         }
-        if(_npcManager != null)
+        if (_timeManager != null)
         {
-            _eventManager.OnNewEvent += OnNewEvent;
+            _timeManager.OnCyclePassage += OnTimePassage;
         }
 
+        _npcInfoCanvasGroup = _npcInfo.GetComponent<CanvasGroup>();
+        _buildingInfoCanvasGroup = _buildingWindowParent.GetComponent<CanvasGroup>();
+        _graveYardCanvasGroup = _graveYardWindow.GetComponent<CanvasGroup>();
+        _castleCanvasGroup = _castleWindow.GetComponent<CanvasGroup>();
+
         _hudComponentsDic = new();
+        _npcEntries = new();
+
+        HideGraveyardInfo();
+        HideBuildingInfo();
+        HideNPCInfo();
+
+        _npcArrowForward.onClick.AddListener(OnArrowForwardClicked);
+        _npcArrowBackward.onClick.AddListener(OnArrowBackClicked);
+
+        if (_npcEntryTemplate != null)
+        {
+            _npcEntryTemplate.SetActive(false);
+        }
+
+        _availableOccupations = new List<Occupation>()
+        {
+            new FarmerOccupation(),
+            new BuilderOccupation(),
+            new LaborerOccupation(),
+            new ChurchOccupation(),
+        };
+
         InitializeHudComponentsCounter();
-        _npcInfo.SetActive(false);
-        _buildingWindow.SetActive(false);
-        _borrowTimeText = new();
     }
 
-    private void InitializeHudComponentsIcon()
-    {
-
-    }
     private void InitializeHudComponentsCounter()
     {
-        for(int i = 0; i < _hudComponents.Length; i++)
+        for (int i = 0; i < _hudComponents.Length; i++)
         {
             for (int j = 0; j < _hudComponents[i].Counter.Length; j++)
             {
@@ -85,6 +147,7 @@ public class UIManager : Manager
             _hudComponentsDic.Add(_hudComponents[i].Title, _hudComponents[i]);
         }
     }
+
     private void OnDisable()
     {
         if (_resourceManager != null)
@@ -96,6 +159,7 @@ public class UIManager : Manager
             _npcManager.OnNPCAmountChange -= OnNPCAmountChange;
         }
     }
+
     private void OnResourceChange(Dictionary<Resources, int> resources)
     {
         if (resources == null || _hudComponentsDic == null)
@@ -105,13 +169,18 @@ public class UIManager : Manager
 
         foreach (var resource in resources)
         {
-            if(resource.Key == Resources.Purr)
+            if (resource.Key == Resources.Purr)
             {
                 _hudComponentsDic["Purr"].Counter[0].text = resource.Value.ToString();
+                if (PURRmat != null)
+                {
+                    PURRmat.SetFloat("_Fill",resource.Value);
+                }
             }
             else if (resource.Key == Resources.Graves)
             {
                 _hudComponentsDic["Graves"].Counter[0].text = resource.Value.ToString();
+                UpdateUndeadCost(resource.Value);
             }
             else if (resource.Key == Resources.FoodStock)
             {
@@ -124,37 +193,84 @@ public class UIManager : Manager
         }
     }
 
+    private void UpdateUndeadCost(int gravesRemaining)
+    {
+        if (gravesRemaining >= Graveyard.SKELETONGRAVECOST)
+            _hudComponentsDic["Summoning"].Counter[0].text = Graveyard.SKELETONPURRCOSTWITHGRAVE.ToString();
+        else
+            _hudComponentsDic["Summoning"].Counter[0].text = Graveyard.SKELETONPURRCOSTWITHOUTGRAVE.ToString();
+
+        if (gravesRemaining >= Graveyard.ZOMBIEGRAVECOST)
+            _hudComponentsDic["Summoning"].Counter[1].text = Graveyard.ZOMBIEPURRCOSTWITHGRAVE.ToString();
+        else
+            _hudComponentsDic["Summoning"].Counter[1].text = Graveyard.ZOMBIEPURRCOSTWITHOUTGRAVE.ToString();
+    }
+
     private void OnNPCAmountChange(Dictionary<System.Type, List<NPC>> npcsByType)
     {
         if (npcsByType == null || _hudComponentsDic == null)
-        {
             return;
-        }
 
-        int NPCS = 0;
-        foreach (var npc in npcsByType)
+        int peasants = 0;
+        int skeletons = 0;
+        int zombies = 0;
+
+        foreach (var kvp in npcsByType)
         {
-            NPCS += npc.Value.Count;
+            Type npcType = kvp.Key;
+            List<NPC> npcList = kvp.Value;
+
+            if (typeof(Peasant).IsAssignableFrom(npcType))
+            {
+                peasants += npcList.Count;
+            }
+            else if (typeof(Skeleton).IsAssignableFrom(npcType))
+            {
+                skeletons += npcList.Count;
+            }
+            else if (typeof(Zombie).IsAssignableFrom(npcType))
+            {
+                zombies += npcList.Count;
+            }
         }
 
-        _hudComponentsDic["Peasants"].Counter[0].text = NPCS.ToString();
+        if (_hudComponentsDic.ContainsKey("Peasants"))
+            _hudComponentsDic["Peasants"].Counter[0].text = peasants.ToString();
+
+        if (_hudComponentsDic.ContainsKey("Summoning"))
+        {
+            _hudComponentsDic["Summoning"].Counter[0].text = skeletons.ToString();
+            _hudComponentsDic["Summoning"].Counter[1].text = zombies.ToString();
+        }
     }
 
     public void DisplayNPCInfo(NPC npc)
     {
-        _npcInfo.SetActive(true);
+        _currentNPC = npc;
+
+        _npcInfoCanvasGroup.alpha = 1;
+        _npcInfoCanvasGroup.interactable = true;
+        _npcInfoCanvasGroup.blocksRaycasts = true;
+
+        _npcPhoto.sprite = npc.PassportPhoto;
+
         _npcNameText.text = "Name: " + npc.Name;
-        if (npc is IWorker worker)
+
+        _npcLifeSpanText.text = "LifeSpan: " + npc.LifeSpan.ToString();
+
+        if (npc is IWorker worker && worker.Occupation != null)
         {
-            _npcOccupationText.text = "Occupation: " + worker.Occupation.Title;
+            _npcOccupationText.text = worker.Occupation.Title;
+            _currentOccupationIndex = _availableOccupations.FindIndex(o => o.Title == worker.Occupation.Title);
+            if (_currentOccupationIndex < 0) _currentOccupationIndex = 0;
         }
         else
         {
-            _npcOccupationText.text = "None";
+            _npcOccupationText.text = "Unemployed";
+            _currentOccupationIndex = 0;
         }
-        _npcLifeSpanText.text = "LifeSpan: " + npc.LifeSpan.ToString();
 
-        if(npc is Peasant peasant)
+        if (npc is Peasant peasant)
         {
             _npcMoodText.text = "Mood: " + peasant.GetMood();
         }
@@ -162,12 +278,21 @@ public class UIManager : Manager
         {
             _npcMoodText.text = " ";
         }
+    }
 
+    private void OnTimePassage(DayCycle cycle)
+    {
+        if (cycle == DayCycle.Day)
+        {
+            _hudComponentsDic["Day"].Counter[0].text = _timeManager.DayNumber.ToString();
+        }
     }
 
     public void HideNPCInfo()
     {
-        _npcInfo.SetActive(false);
+        _npcInfoCanvasGroup.alpha = 0;
+        _npcInfoCanvasGroup.interactable = false;
+        _npcInfoCanvasGroup.blocksRaycasts = false;
     }
 
     public void PickHouse()
@@ -190,127 +315,269 @@ public class UIManager : Manager
         _buildingsManager.SelectBuilding(TileType.Workshop);
     }
 
-    public void DisplayBuildingInfo()//IEnumerable<NPC> enumerable)
+    public void DisplayBuildingInfo(Building building = null, IEnumerable<NPC> npcs = null)
     {
-        _buildingWindow.SetActive(true);
-        //foreach (NPC npc in enumerable)
-        //{
-        //    GameObject _buildingNPCInfo = Instantiate(_buildingNPCInfoPrefab);
-        //    _buildingNPCInfo.transform.SetParent(posP);
-        //    Vector3 NewPos = new Vector3(pos.transform.position.x, pos.transform.position.y + new_height, pos.transform.position.z);
-        //    _buildingNPCInfo.transform.position = NewPos;
-        //    new_height -= 30;
-        //    for (int j = 0; j < _buildingNPCInfo.transform.childCount; ++j)
-        //    {
-        //        Transform child = _buildingNPCInfo.transform.GetChild(j);
-        //        if(child.name == "Name")
-        //        {
-        //            child.gameObject.GetComponent<TextMeshProUGUI>().text = npc.name;
-        //        }
-        //        else if(child.name == "BTCounter")
-        //        {
-        //            child.gameObject.GetComponent<TextMeshProUGUI>().text = npc.LifeSpan.ToString();
-        //        }
-        //    }
+        _currentBuilding = building;
+        _currentNpcs = npcs;
 
-        //    _buildingNPCInfoList.Add(_buildingNPCInfo);
-        //}
-
-        for(int i = 0; i < 20; ++i)
+        HideAllInfo();
+        if (npcs == null)
         {
-            GameObject _buildingNPCInfo = Instantiate(_buildingNPCInfoPrefab);
-            _buildingNPCInfo.transform.SetParent(posP);
-            for (int j = 0; j < _buildingNPCInfo.transform.childCount; ++j)
+            Debug.LogWarning("No NPCs provided for DisplayBuildingInfo");
+            return;
+        }
+
+        _buildingTitle.text = $"{building.BuildData.BuildingName} - Occupants: {building.GetOccupantsNumber()} - Tier {building.BuildData.BuildingTier}";
+        _buildingTier.text = $"Tier {building.BuildData.BuildingTier}";
+        _buildingUpgradeText.text = $"Upgrade? Cost: {building.BuildData.MaterialCost} Materials & {building.BuildData.PurrCost} Purr";
+        _buildingUpgradeButton.onClick.AddListener(() => OnUpgradeButtonClick(building));
+
+        foreach (var entry in _npcEntries)
+        {
+            Destroy(entry.GameObject);
+        }
+        _npcEntries.Clear();
+
+        _buildingInfoCanvasGroup.alpha = 1f;
+        _buildingInfoCanvasGroup.interactable = true;
+        _buildingInfoCanvasGroup.blocksRaycasts = true;
+
+        List<NPC> npcList = new List<NPC>(npcs);
+        int counter = 0;
+
+        foreach (NPC npc in npcList)
+        {
+            counter++;
+
+            if (_npcEntryTemplate == null)
             {
-                Transform child = _buildingNPCInfo.transform.GetChild(j);
-                if (child.name == "Name")
+                Debug.LogError("NPCEntryTemplate is not assigned!");
+                return;
+            }
+
+            GameObject buildingNPCInfo = Instantiate(_npcEntryTemplate, _parentTransform);
+            buildingNPCInfo.GetComponent<RectTransform>().localScale = Vector3.one;
+            buildingNPCInfo.SetActive(true);
+
+            TextMeshProUGUI nameText = null;
+            TextMeshProUGUI counterText = null;
+            Button button1 = null, button2 = null, button3 = null, button4 = null;
+
+            foreach (Transform child in buildingNPCInfo.transform)
+            {
+                if (child.name == "Info")
                 {
-                    child.gameObject.GetComponent<TextMeshProUGUI>().text = "Hi";
+                    button1 = child.GetComponentInChildren<Button>();
+                    nameText = child.GetComponent<TextMeshProUGUI>();
+                    nameText.text = $"{counter}. {npc.Name} {npc.Age}";
                 }
-                else if (child.name == "BTCounter")
+                else if (child.name == "Purr")
                 {
-                    child.gameObject.GetComponent<TextMeshProUGUI>().text = _borrowCount.ToString();
-                    _borrowTimeText.Add(child.gameObject.GetComponent<TextMeshProUGUI>());
+                    button2 = child.GetComponentInChildren<Button>();
+                }
+                else if (child.name == "Add")
+                {
+                    button3 = child.GetComponentInChildren<Button>();
+                }
+                else if (child.name == "Counter")
+                {
+                    counterText = child.GetComponent<TextMeshProUGUI>();
+                    counterText.text = "0";
+                }
+                else if (child.name == "Detract")
+                {
+                    button4 = child.GetComponentInChildren<Button>();
                 }
             }
 
-            _buildingNPCInfoList.Add(_buildingNPCInfo);
+            NPCEntryData entryData = new NPCEntryData
+            {
+                NPC = npc,
+                GameObject = buildingNPCInfo,
+                CounterText = counterText,
+                CounterValue = 0 
+            };
+
+            if (button1 != null)
+            {
+                button1.onClick.AddListener(() => OnButton1Clicked(npc));
+            }
+            if (button2 != null)
+            {
+                button2.onClick.AddListener(() => OnButton2Clicked(npc, entryData));
+            }
+            if (button3 != null)
+            {
+                button3.onClick.AddListener(() => OnAddButtonClicked(entryData));
+            }
+            if (button4 != null)
+            {
+                button4.onClick.AddListener(() => OnDetractButtonClicked(entryData));
+            }
+
+            _npcEntries.Add(entryData);
+        }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_parentTransform.GetComponent<RectTransform>());
+
+        ScrollRect scrollRect = _parentTransform.GetComponentInParent<ScrollRect>();
+        if (scrollRect != null)
+        {
+            scrollRect.normalizedPosition = new Vector2(0, 1);
         }
     }
 
     public void HideBuildingInfo()
     {
-        _buildingWindow.SetActive(false);
-        for(int i = 0; i < _buildingNPCInfoList.Count; ++i)
+        _buildingInfoCanvasGroup.alpha = 0f;
+        _buildingInfoCanvasGroup.interactable = false;
+        _buildingInfoCanvasGroup.blocksRaycasts = false;
+
+        _buildingUpgradeButton.onClick.RemoveAllListeners();
+
+        foreach (var entry in _npcEntries)
         {
-            Destroy(_buildingNPCInfoList[i]);
+            Destroy(entry.GameObject);
+        }
+        _npcEntries.Clear();
+    }
+
+    private void OnButton1Clicked(NPC npc)
+    {
+        DisplayNPCInfo(npc);
+    }
+
+    private void OnButton2Clicked(NPC npc, NPCEntryData entry)
+    {
+        if(npc is Peasant peasant)
+        {
+            for (int i = 0; i < entry.CounterValue; i++)
+            {
+                peasant.GatherPurr();
+            }
+        }
+        entry.CounterValue = 0;
+        DisplayBuildingInfo(_currentBuilding, _currentBuilding.GetNPCsInBuilding());
+    }
+
+    private void OnAddButtonClicked(NPCEntryData entry)
+    {
+        entry.CounterValue = Mathf.Min(entry.CounterValue + 1, entry.NPC.LifeSpan);
+        if (entry.CounterText != null)
+        {
+            entry.CounterText.text = entry.CounterValue.ToString();
         }
     }
 
-    public void BorrowDayPlusButton()
+    private void OnDetractButtonClicked(NPCEntryData entry)
     {
-        _borrowCount++;
-        UpdateBorrowTimeText();
-    }
-
-    public void BorrowDayMinusButton()
-    {
-        _borrowCount--;
-        UpdateBorrowTimeText();
-    }
-
-    public void UpdateBorrowTimeText()
-    {
-        for(int i = 0; i < _borrowTimeText.Count; ++i)
+        entry.CounterValue = Mathf.Max(0, entry.CounterValue - 1);
+        if (entry.CounterText != null)
         {
-            Debug.Log("hi");
-            _borrowTimeText[i].text = _borrowCount.ToString();
+            entry.CounterText.text = entry.CounterValue.ToString();
         }
-
     }
-
-    public void OpenEventUI()
+    private void OnArrowForwardClicked()
     {
-        EvenUI.SetActive(!EvenUI.activeInHierarchy);
+        if (_availableOccupations.Count == 0) return;
+
+        _currentOccupationIndex = (_currentOccupationIndex + 1) % _availableOccupations.Count;
+        UpdateOccupationDisplay();
     }
-
-    public void NewEvent()
+    private void OnArrowBackClicked()
     {
-        _eventManager.TestNextEvent();
+        if (_availableOccupations.Count == 0) return;
+
+        _currentOccupationIndex = (_currentOccupationIndex - 1 + _availableOccupations.Count) % _availableOccupations.Count;
+        UpdateOccupationDisplay();
     }
-
-    private void OnNewEvent(Event_SO newEvent)
+    private void UpdateOccupationDisplay()
     {
-        eventToSolve = newEvent;
-        var textElements = EvenUI.GetComponentsInChildren<TextMeshProUGUI>();
-        foreach (var text in textElements)
+        _npcArrowForward.interactable = _currentNPC != null;
+        _npcArrowBackward.interactable = _currentNPC != null;
+
+        if (_currentNPC == null) return;
+        if (_availableOccupations.Count == 0) return;
+
+        var occupation = _availableOccupations[_currentOccupationIndex];
+        _npcOccupationText.text = occupation.Title;
+
+        if (_currentNPC is IWorker worker)
         {
-            if (text.name == "Title")
+            worker.AssignOccupation(occupation);
+
+            Zone workZone = _zoneManager.GetRandomAvailableZone(occupation.WorkZoneType);
+            if(workZone != null)
             {
-                text.text = newEvent.Title;
-            }
-            else if (text.name == "Description")
-            {
-                text.text = newEvent.Description;
-            }
-            else if (text.name == "ChoiceText0")
-            {
-                text.text = newEvent.Choices[0].Description;
-            }
-            else if (text.name == "ChoiceText1")
-            {
-                text.text = newEvent.Choices[1].Description;
-            }
-            else if (text.name == "ChoiceText2")
-            {
-                text.text = newEvent.Choices[2].Description;
+                worker.TravelToZone(workZone);
             }
         }
     }
-
-    public void SolveEventOutcome(int choice)
+    private void OnSpawnSkeleton(Building building)
     {
-        var asd = eventToSolve.Choices[choice];
-        Debug.Log($"{asd.Outcome} {asd.OutcomeValue}");
+        if (building is Graveyard graveyard)
+        {
+            graveyard.SpawnSkeleton();
+        }
+    }
+    private void OnSpawnZombie(Building building)
+    {
+        if (building is Graveyard graveyard)
+        {
+            graveyard.SpawnZombie();
+        }
+    }
+    public void DisplayGraveyardInfo(Building building)
+    {
+        HideAllInfo();
+        _graveYardCanvasGroup.alpha = 1;
+        _graveYardCanvasGroup.interactable = true;
+        _graveYardCanvasGroup.blocksRaycasts = true;
+
+        _graveYardTitle.text = $"Graveyard";
+        _graveyardTier.text = $"Tier {building.BuildData.BuildingTier}";
+        _graveYardUpgradeText.text = $"Upgrade? Requirements: {building.BuildData.MaterialCost} Materials & {building.BuildData.PurrCost} Purr";
+        _graveyardUpgradeButton.onClick.AddListener(() => OnUpgradeButtonClick(building));
+
+
+        _skeletonButton.onClick.AddListener(() => OnSpawnSkeleton(building));
+        _zombieButton.onClick.AddListener(() => OnSpawnZombie(building));
+    }
+    public void HideGraveyardInfo()
+    {
+        _graveYardCanvasGroup.alpha = 0;
+        _graveYardCanvasGroup.interactable = false;
+        _graveYardCanvasGroup.blocksRaycasts = false;
+
+        _graveyardUpgradeButton.onClick.RemoveAllListeners();
+    }
+    public void DisplayCastleInfo(Building building)
+    {
+        HideAllInfo();
+        _castleCanvasGroup.alpha = 1;
+        _castleCanvasGroup.interactable = true;
+        _castleCanvasGroup.blocksRaycasts = true;
+
+        _castleTier.text = $"Tier {building.BuildData.BuildingTier}";
+        _castleRequirements.text = $"Requirements {building.BuildData.MaterialCost} Materials & {building.BuildData.PurrCost} Purr";
+        _castleUpgradeButton.onClick.AddListener(() => OnUpgradeButtonClick(building));
+    }
+    public void HideCastleInfo()
+    {
+        _castleCanvasGroup.alpha = 0;
+        _castleCanvasGroup.interactable = false;
+        _castleCanvasGroup.blocksRaycasts = false;
+
+        _castleUpgradeButton.onClick.RemoveAllListeners();
+    }
+    public void HideAllInfo()
+    {
+        HideGraveyardInfo();
+        HideBuildingInfo();
+        HideCastleInfo();
+    }
+    private void OnUpgradeButtonClick(Building building)
+    {
+
     }
 }

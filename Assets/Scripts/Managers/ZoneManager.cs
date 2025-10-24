@@ -20,13 +20,6 @@ public class ZoneManager : Manager
         {
             _zonesByType[type] = new List<Zone>();
         }
-
-        ZoneMarker[] markers = FindObjectsByType<ZoneMarker>(FindObjectsSortMode.None);
-        foreach (ZoneMarker marker in markers)
-        {
-            Zone zone = marker.CreateZone();
-            RegisterZone(zone);
-        }
     }
     public void RegisterZone(Zone zone)
     {
@@ -34,7 +27,7 @@ public class ZoneManager : Manager
         {
             return;
         }
-
+        Debug.Log("registered zone" + zone);
         if (!_allZones.Contains(zone))
         {
             _allZones.Add(zone);

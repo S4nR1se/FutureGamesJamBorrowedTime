@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593887cc72610954e841a203855c24cf, type: 3}
   m_Name: WorkshopT1Data
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData_SO
-  BuildTime: 4
+  BuildTime: 0
   OutputPerWorker: 3
   Resource: 0
   MaterialCost: 20
@@ -23,3 +23,6 @@ MonoBehaviour:
   PlacementYOffset: 3
   DefaultRotationY: -90
   PreviewPrefab: {fileID: 2502232621807567099, guid: 962bdb915adb01e478c4289d40c08410, type: 3}
+  BuildingName: Workshop
+  Description: Master craftsmens can prepare anything you want. Produce 3 materials
+    per Worker.
