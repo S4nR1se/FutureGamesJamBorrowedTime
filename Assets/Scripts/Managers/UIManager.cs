@@ -209,17 +209,39 @@ public class UIManager : Manager
     private void OnNPCAmountChange(Dictionary<System.Type, List<NPC>> npcsByType)
     {
         if (npcsByType == null || _hudComponentsDic == null)
-        {
             return;
-        }
 
-        int NPCS = 0;
-        foreach (var npc in npcsByType)
+        int peasants = 0;
+        int skeletons = 0;
+        int zombies = 0;
+
+        foreach (var kvp in npcsByType)
         {
-            NPCS += npc.Value.Count;
+            Type npcType = kvp.Key;
+            List<NPC> npcList = kvp.Value;
+
+            if (typeof(Peasant).IsAssignableFrom(npcType))
+            {
+                peasants += npcList.Count;
+            }
+            else if (typeof(Skeleton).IsAssignableFrom(npcType))
+            {
+                skeletons += npcList.Count;
+            }
+            else if (typeof(Zombie).IsAssignableFrom(npcType))
+            {
+                zombies += npcList.Count;
+            }
         }
 
-        _hudComponentsDic["Peasants"].Counter[0].text = NPCS.ToString();
+        if (_hudComponentsDic.ContainsKey("Peasants"))
+            _hudComponentsDic["Peasants"].Counter[0].text = peasants.ToString();
+
+        if (_hudComponentsDic.ContainsKey("Summoning"))
+        {
+            _hudComponentsDic["Summoning"].Counter[0].text = skeletons.ToString();
+            _hudComponentsDic["Summoning"].Counter[1].text = zombies.ToString();
+        }
     }
 
     public void DisplayNPCInfo(NPC npc)
@@ -502,7 +524,7 @@ public class UIManager : Manager
     {
         if (building is Graveyard graveyard)
         {
-            graveyard.SpawnSkeleton();
+            graveyard.SpawnZombie();
         }
     }
     public void DisplayGraveyardInfo(Building building)
