@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public abstract class NPC : MonoBehaviour
 {
@@ -15,13 +16,21 @@ public abstract class NPC : MonoBehaviour
 
     protected DayCycle _activeCycle;
 
+    [SerializeField] private ParticleSystem fillPurrParticle;
+
     public abstract void Initialize(Zone startingZone,string name, int lifeSpan, float movementSpeed, Occupation occupation = null, ZoneType restZoneType = ZoneType.House, DayCycle activeCycle = DayCycle.Day);
     public void DecreaseLifeSpan(int amount)
     {
         if (LifeSpan <= 0) return;
 
         LifeSpan -= amount;
-        if (LifeSpan <= 0) MarkedForDeath = true;
+        fillPurrParticle.Play();
+        if (LifeSpan <= 0)
+        {
+            MarkedForDeath = true;
+            ParticleSystemManager.Instance.Spawn("CatDie", transform.position);
+        }
+        
     }
     protected Occupation CreateDefaultOccupation()
     {

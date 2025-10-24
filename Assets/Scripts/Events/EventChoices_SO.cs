@@ -26,7 +26,7 @@ public class EventChoices_SO : ScriptableObject
                 break;
             case OutcomeElement.Building:
                 //Except Castle and Graveyard
-                GameManager.Instance?.GetManager<BuildingsManagers>().DestroyBuildsAtRandom(OutcomeValue); //<----
+                GameManager.Instance?.GetManager<BuildingsManagers>().DestroyBuildsAtRandom(OutcomeValue);
                 break;
             case OutcomeElement.Materials:
                 GameManager.Instance?.GetManager<ResourceManager>().UpdateValue(Resources.Materials , -OutcomeValue);

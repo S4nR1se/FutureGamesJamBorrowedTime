@@ -61,6 +61,7 @@ public class Home : Building
         for(int i = 0; i < npcProcreated; i++)
         {
             _npcManager.SpawnPeasant(AssociatedZone);
+            
         }
     }
     [ContextMenu("GatherPurr")]
