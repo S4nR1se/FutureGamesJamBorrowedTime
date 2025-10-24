@@ -86,9 +86,13 @@ public class PlayerInputManager : Manager
                     _currentHover.OnHover();
                 }
 
-                if (interactable is ConstructionSite constructionSite)
+                if (_currentHover.Component.GetComponent<ConstructionSite>() != null)
                 {
-                    _buildingManager.UpdateConstructionPreview(constructionSite);
+                    _buildingManager.UpdateConstructionPreview(interactable.Component.GetComponent<ConstructionSite>());
+                }
+                else
+                {
+                    _buildingManager.ClearConstructionPreview();
                 }
             }
         }
