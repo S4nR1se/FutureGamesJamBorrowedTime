@@ -11,15 +11,20 @@ public class TilePreviewHelper : MonoBehaviour
     private GameObject currentPreview;
 
     private GridManager _gridManager;
+    private ResourceManager _resourceManager;
+
     private Camera _mainCam;
 
     private CanvasGroup _popUpCanvasGroup;
+
+    private BuildingData_SO _currentData;
 
     private float _yOffset;
     private float _rotationY;
 
     public void Initialize(GridManager gridManager)
     {
+        _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
         _gridManager = gridManager;
         _mainCam = Camera.main;
 
@@ -30,6 +35,7 @@ public class TilePreviewHelper : MonoBehaviour
     public void ShowPreview(BuildingData_SO buildData)
     {
         ClearPreview();
+        _currentData = buildData;
         _yOffset = buildData.PlacementYOffset;
         _rotationY = buildData.DefaultRotationY;
         GameObject prefab = buildData.PreviewPrefab;
@@ -65,6 +71,13 @@ public class TilePreviewHelper : MonoBehaviour
 
     private void ApplyMaterial(bool canPlace)
     {
+        int currentAvailable = _resourceManager.GetValue(Resources.Materials);
+        if (currentAvailable < _currentData.MaterialCost)
+        {
+            foreach (Renderer r in currentPreview.GetComponentsInChildren<Renderer>())
+                r.material = invalidMaterial;
+            return;
+        }
         Material mat = canPlace ? validMaterial : invalidMaterial;
 
         foreach (Renderer r in currentPreview.GetComponentsInChildren<Renderer>())
