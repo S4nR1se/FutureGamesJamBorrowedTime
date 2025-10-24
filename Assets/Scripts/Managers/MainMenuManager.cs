@@ -20,7 +20,7 @@ public class MainMenuManager : MonoBehaviour
 
         SoundManager.Instance.SetMasterVolume(SettingsManager.Instance.GetMasterAudioSliderVolume());
         SoundManager.Instance.SetMusicVolume(SettingsManager.Instance.GetMusicAudioSliderVolume());
-        //SoundManager.Instance.SetSFXVolume(SettingsManager.Instance.GetSoundEffectsAudioSliderVolume());
+        SoundManager.Instance.SetSFXVolume(SettingsManager.Instance.GetSoundEffectsAudioSliderVolume());
 
         SoundManager.Instance.PlayLoopingSound(_mainMenuAudioSource.clip, Vector3.one);
     }

@@ -78,7 +78,7 @@ public class SettingsManager : Manager
 
     public void UpdateSoundEffectsAudioVolume()
     {
-        //SoundManager.Instance.SetSFXVolume(_soundEffectsVolumeSlider.value);
+        SoundManager.Instance.SetSFXVolume(_soundEffectsVolumeSlider.value);
     }
 
     public void OpenAudioPanel()
