@@ -20,7 +20,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void Open_Settings_Menu()
     {
-        //SettingsMenu.sm_instance.gameObject.SetActive(true);
+        SettingsManager.Instance.gameObject.SetActive(true);
     }
 
     public void Open_Credits_Menu()
