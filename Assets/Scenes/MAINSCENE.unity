@@ -9785,7 +9785,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7725789439133699267, guid: 8f90087ac7d689a4bae8271079816a6b, type: 3}
+      - m_Target: {fileID: 1199606789}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: SolveEventOutcome
         m_Mode: 3
@@ -27602,7 +27602,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1199606789}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: SolveEventOutcome
         m_Mode: 3
@@ -34370,7 +34370,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1848753815}
   m_HandleRect: {fileID: 1848753814}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -37901,7 +37901,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1199606789}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: SolveEventOutcome
         m_Mode: 3

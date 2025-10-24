@@ -660,7 +660,7 @@ public class UIManager : Manager
         }
 
         var chosenEvent = _eventToSolve.GetChoices()[choice];
-        Debug.Log($"{chosenEvent.Outcome} {chosenEvent.OutcomeValue}");
+        Debug.Log($"{chosenEvent.Description} {chosenEvent.Outcome} {chosenEvent.OutcomeValue}");
         chosenEvent.SolveEncounter();
         _eventUIPrefab.SetActive(false);
     }
