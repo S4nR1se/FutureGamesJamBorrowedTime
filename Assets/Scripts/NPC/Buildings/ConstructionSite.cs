@@ -61,7 +61,7 @@ public class ConstructionSite : Building
         if (finalPrefab != null)
         {
             Instantiate(finalPrefab, transform.position, Quaternion.identity);
-            finalPrefab.GetComponent<ZoneMarker>().InitializeZone();
+
             GameManager.Instance.GetManager<ZoneManager>().UnregisterZone(AssociatedZone);
             Destroy(gameObject);
         }

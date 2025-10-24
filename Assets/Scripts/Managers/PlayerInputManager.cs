@@ -12,6 +12,8 @@ public class PlayerInputManager : Manager
 {
     [SerializeField] private KeyMappings_SO keyMappingConfig;
 
+    public bool IsInputBlocked = true;
+
     private Camera _mainCam;
     private LayerMask _interactableLayer;
 
@@ -33,6 +35,7 @@ public class PlayerInputManager : Manager
 
     public override void Initialize()
     {
+        IsInputBlocked = true;
         _mainCam = Camera.main;
         _interactableLayer = LayerMask.GetMask("Interactable");
 
@@ -50,6 +53,8 @@ public class PlayerInputManager : Manager
 
     private void KeyboardInput()
     {
+        if (IsInputBlocked == true) return;
+
         foreach (var mapping in keyMappingConfig.keyMappings)
         {
             if (Input.GetKeyDown(mapping.key))
@@ -61,6 +66,7 @@ public class PlayerInputManager : Manager
 
     private void MouseInput()
     {
+        if (IsInputBlocked == true) return;
         HandleRightClick();
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             return;
