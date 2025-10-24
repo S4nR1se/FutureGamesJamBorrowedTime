@@ -657,7 +657,7 @@ public class UIManager : Manager
             return;
         }
 
-        var chosenEvent = _eventToSolve.Choices[choice];
+        var chosenEvent = _eventToSolve.GetChoices()[choice];
         Debug.Log($"{chosenEvent.Outcome} {chosenEvent.OutcomeValue}");
         chosenEvent.SolveEncounter();
         _eventUIPrefab.SetActive(false);
