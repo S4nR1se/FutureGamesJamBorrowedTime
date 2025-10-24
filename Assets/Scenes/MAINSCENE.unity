@@ -19000,9 +19000,11 @@ MonoBehaviour:
   _graveyardTier: {fileID: 697836510}
   _skeletonButton: {fileID: 1359200163}
   _zombieButton: {fileID: 99096089}
+  _graveyardUpgradeButton: {fileID: 2028913674}
   _castleWindow: {fileID: 1796385698}
   _castleTier: {fileID: 419525738}
   _castleRequirements: {fileID: 893408660}
+  _castleUpgradeButton: {fileID: 935600823}
   _parentTransform: {fileID: 7296726111262792524}
   PURRmat: {fileID: 2100000, guid: ab937989f7339c6468bf37e799fb6662, type: 2}
 --- !u!4 &1202281555 stripped
@@ -25218,7 +25220,7 @@ GameObject:
   - component: {fileID: 1540611018}
   - component: {fileID: 1540611017}
   m_Layer: 0
-  m_Name: Spawn
+  m_Name: Upgrade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -51,10 +51,12 @@ public class UIManager : Manager
     [SerializeField] private TextMeshProUGUI _graveyardTier;
     [SerializeField] private Button _skeletonButton;
     [SerializeField] private Button _zombieButton;
+    [SerializeField] private Button _graveyardUpgradeButton;
 
     [SerializeField] private GameObject _castleWindow;
     [SerializeField] private TextMeshProUGUI _castleTier;
     [SerializeField] private TextMeshProUGUI _castleRequirements;
+    [SerializeField] private Button _castleUpgradeButton;
 
     [SerializeField] private Transform _parentTransform;
     [SerializeField] private Material PURRmat;
@@ -511,6 +513,7 @@ public class UIManager : Manager
 
         _graveYardTitle.text = $"Graveyard";
         _graveyardTier.text = $"Tier {building.BuildData.BuildingTier}";
+        _graveyardUpgradeButton.onClick.AddListener(() => OnUpgradeButtonClick(building));
 
 
         _skeletonButton.onClick.AddListener(() => OnSpawnSkeleton(building));
@@ -521,6 +524,8 @@ public class UIManager : Manager
         _graveYardCanvasGroup.alpha = 0;
         _graveYardCanvasGroup.interactable = false;
         _graveYardCanvasGroup.blocksRaycasts = false;
+
+        _graveyardUpgradeButton.onClick.RemoveAllListeners();
     }
     public void DisplayCastleInfo(Building building)
     {
@@ -530,12 +535,16 @@ public class UIManager : Manager
         _castleCanvasGroup.blocksRaycasts = true;
 
         _castleTier.text = $"Tier {building.BuildData.BuildingTier}";
+        _castleRequirements.text = $"Requirements {building.BuildData.MaterialCost} Materials & {building.BuildData.PurrCost} Purr";
+        _castleUpgradeButton.onClick.AddListener(() => OnUpgradeButtonClick(building));
     }
     public void HideCastleInfo()
     {
         _castleCanvasGroup.alpha = 0;
         _castleCanvasGroup.interactable = false;
         _castleCanvasGroup.blocksRaycasts = false;
+
+        _castleUpgradeButton.onClick.RemoveAllListeners();
     }
     public void HideAllInfo()
     {
