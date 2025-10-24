@@ -15,7 +15,7 @@ MonoBehaviour:
   BuildTime: 12
   OutputPerWorker: 0
   Resource: 0
-  MaterialCost: 40
+  MaterialCost: 25
   PurrCost: 0
   WorkerSize: 20
   Upgrade: {fileID: 0}
