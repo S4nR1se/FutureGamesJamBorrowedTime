@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bda2fc378349e64794446f94bc1598d, type: 3}
+  m_Name: SevereEvent2
+  m_EditorClassIdentifier: Assembly-CSharp::Event_SO
+  Title: The zombies have found out that your peasants taste good
+  Description: Your Meow-ness! There are dead bodies everywhere! Your undead servants
+    are eating the citizens!
+  Tier: 2
+  Choices:
+  - {fileID: 11400000, guid: 510e462e97f11844f99cdf7f9976116f, type: 2}
+  - {fileID: 11400000, guid: 77b03a4c2296d2943949fd36d2a8a3c9, type: 2}
+  - {fileID: 11400000, guid: 72a52ac1c2625874199148460e19cfa9, type: 2}

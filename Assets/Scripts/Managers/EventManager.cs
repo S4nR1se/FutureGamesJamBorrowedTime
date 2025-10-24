@@ -1,0 +1,114 @@
+using System;
+using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
+
+public class EventManager : Manager
+{
+    public EventCatalog_SO EventCatalog;
+
+    private TimeManager _timeManager;
+
+    private bool _firstEvent;
+    private int _currentDay = 0;
+    private int _tierOfGame = 1;
+
+    public delegate void GetNewEventHandler(Event_SO newEvent);
+    public event GetNewEventHandler OnNewEvent;
+
+    //Initialize gets called by GameManager on Awake
+    public override void Initialize()
+    {
+        _currentDay = 0;
+        _firstEvent = true;
+
+        _timeManager = GameManager.Instance.GetManager<TimeManager>();
+        if (_timeManager != null)
+        {
+            _timeManager.OnCyclePassage += OnCyclePassed;
+        }
+        //Event to update whenever player upgrades castle to lvl2;
+        //_tierOfGame = GameManager.Instance.    ;
+        //if (_tierOfGame != null)
+        //{
+        //    _tierOfGame.OnTierUpgrade += OnTierUpgrade;
+        //}
+    }
+    private void OnDisable()
+    {
+        if (_timeManager != null)
+        {
+            _timeManager.OnCyclePassage -= OnCyclePassed;
+        }
+        //if (_tierOfGame != null)
+        //{
+        //    _timeManager.OnTierUpgrade -= OnTierUpgrade();
+        //}
+    }
+    private void OnCyclePassed(DayCycle currentCycle)
+    {
+        _currentDay = _timeManager.DayNumber;
+        if (_currentDay > 0 && _currentDay % 5 == 0)
+        {
+            var nextEvent = GetNewEvent();
+            OnNewEvent?.Invoke(nextEvent);
+        }
+    }
+    private void OnTierUpgrade()
+    {
+        _tierOfGame = 2;
+        _firstEvent = true;
+    }
+    private Event_SO GetNewEvent()
+    {
+        Event_SO nextEvent;
+        if (_tierOfGame == 1)
+        {
+            if (_firstEvent)
+            {
+                nextEvent = EventCatalog.GetRandomEasyEvent();
+                _firstEvent = false;
+            }
+            else
+            {
+                int rnd = UnityEngine.Random.Range(0, 99);
+
+                if (rnd > 30)
+                    nextEvent = EventCatalog.GetRandomEasyEvent();
+                else
+                    nextEvent = EventCatalog.GetRandomMediumEvent();
+            }
+        }
+        else
+        {
+            if (_firstEvent)
+            {
+                nextEvent = EventCatalog.GetRandomMediumEvent();
+                _firstEvent = false;
+            }
+            else
+            {
+                int rnd = UnityEngine.Random.Range(0, 99);
+
+                if (rnd < 10)
+                    nextEvent = EventCatalog.GetRandomEasyEvent();
+                else if (rnd > 55)
+                    nextEvent = EventCatalog.GetRandomMediumEvent();
+                else
+                    nextEvent = EventCatalog.GetRandomSevereEvent();
+            }
+        }
+        Debug.Log($"returning event {nextEvent.Tier} {nextEvent.Title}");
+        return nextEvent;
+    }
+
+    public void TestNextEvent()
+    {
+        var nextEvent = GetNewEvent();
+        OnNewEvent?.Invoke(nextEvent);
+    }
+    public void TestStage2()
+    {
+        Debug.Log($"stage 2");
+        OnTierUpgrade();
+    }
+}

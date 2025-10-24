@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bda2fc378349e64794446f94bc1598d, type: 3}
+  m_Name: MediumEvent6
+  m_EditorClassIdentifier: Assembly-CSharp::Event_SO
+  Title: The resurrection went wrong
+  Description: Sometimes a strong will to live is enough to resist the power of necromantic
+    control over a dead body. This time, however, the body itself transformed into
+    a twisted form of lich
+  Tier: 1
+  Choices:
+  - {fileID: 11400000, guid: 627e38a229d271145a6c3c3fbb3f331d, type: 2}
+  - {fileID: 11400000, guid: 0f59febd7bc92544faea75239749071d, type: 2}
+  - {fileID: 11400000, guid: 59be9e830c540ae41b5149479afb25dc, type: 2}

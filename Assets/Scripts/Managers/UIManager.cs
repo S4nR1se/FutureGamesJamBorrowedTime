@@ -1,3 +1,4 @@
+using Assets.Scripts.Managers;
 using Mono.Cecil;
 using System;
 using System.Collections.Generic;
@@ -5,6 +6,7 @@ using TMPro;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
+using static Assets.Scripts.Managers.GameEnderManager;
 
 public class UIManager : Manager
 {
@@ -59,6 +61,10 @@ public class UIManager : Manager
     [SerializeField] private Transform _parentTransform;
     [SerializeField] private Material PURRmat;
 
+    [SerializeField] private GameObject _eventUIPrefab;
+    [SerializeField] private GameObject _gameEnderUIPrefab;
+    [SerializeField] private Button _gameOver;
+
     private CanvasGroup _npcInfoCanvasGroup;
     private CanvasGroup _buildingInfoCanvasGroup;
     private CanvasGroup _graveYardCanvasGroup;
@@ -70,11 +76,17 @@ public class UIManager : Manager
     private Dictionary<string, HudComponent> _hudComponentsDic;
     private List<NPCEntryData> _npcEntries = new();
 
+    private Event_SO _eventToSolve;
+    private GameObject _event;
+    private GameObject _gameEnder;
+
     private ResourceManager _resourceManager;
     private NPCManager _npcManager;
     private TilePlacementManager _buildingsManager;
     private ZoneManager _zoneManager;
     private TimeManager _timeManager;
+    private EventManager _eventManager;
+    private GameEnderManager _gameEnderManager;
 
     private List<Occupation> _availableOccupations = new();
     private int _currentOccupationIndex = 0;
@@ -87,6 +99,8 @@ public class UIManager : Manager
         _buildingsManager = GameManager.Instance.GetManager<TilePlacementManager>();
         _zoneManager = GameManager.Instance.GetManager<ZoneManager>();
         _timeManager = GameManager.Instance.GetManager<TimeManager>();
+        _eventManager = GameManager.Instance.GetManager<EventManager>();
+        _gameEnderManager = GameManager.Instance.GetManager<GameEnderManager>();
 
         if (_resourceManager != null)
         {
@@ -101,6 +115,16 @@ public class UIManager : Manager
         {
             _timeManager.OnCyclePassage += OnTimePassage;
         }
+        if (_eventManager != null)
+        {
+            _eventManager.OnNewEvent += OnNewEvent;
+        }
+        if (_gameEnderManager != null)
+        {
+            _gameEnderManager.GameOver += GameOver;
+        }
+
+        //_gameOver.onClick.AddListener(delegate { TestGameOver(GameResult.GameWon, 2); });
 
         _npcInfoCanvasGroup = _npcInfo.GetComponent<CanvasGroup>();
         _buildingInfoCanvasGroup = _buildingWindowParent.GetComponent<CanvasGroup>();
@@ -509,7 +533,7 @@ public class UIManager : Manager
         _graveYardCanvasGroup.interactable = true;
         _graveYardCanvasGroup.blocksRaycasts = true;
 
-        _graveYardCanvasGroup.onClick.AddListener(() => OnUpgradeButtonClick(building));
+        //_graveYardCanvasGroup.onClick.AddListener(() => OnUpgradeButtonClick(building));
 
         _graveYardTitle.text = $"Graveyard";
         _graveyardTier.text = $"Tier {building.BuildData.BuildingTier}";
@@ -531,7 +555,7 @@ public class UIManager : Manager
         _castleCanvasGroup.interactable = true;
         _castleCanvasGroup.blocksRaycasts = true;
 
-        _castleCanvasGroup.onClick.AddListener(() => OnUpgradeButtonClick(building));
+        //_castleCanvasGroup.onClick.AddListener(() => OnUpgradeButtonClick(building));
 
         _castleTier.text = $"Tier {building.BuildData.BuildingTier}";
     }
@@ -550,5 +574,96 @@ public class UIManager : Manager
     private void OnUpgradeButtonClick(Building building)
     {
         _buildingsManager.TryUpgradeBuilding(building);
+    }
+    public void TestNextEvent()
+    {
+        _eventManager.TestNextEvent();
+    }
+
+    public void TestStage2()
+    {
+        _eventManager.TestStage2();
+    }
+
+    private void OnNewEvent(Event_SO newEvent)
+    {
+        _eventToSolve = newEvent;
+        var textElements = _eventUIPrefab.GetComponentsInChildren<TextMeshProUGUI>();
+        foreach (var text in textElements)
+        {
+            if (text.name == "Title")
+            {
+                text.text = newEvent.Title;
+            }
+            else if (text.name == "Description")
+            {
+                text.text = newEvent.Description;
+            }
+            else if (text.name == "ChoiceText0")
+            {
+                text.text = newEvent.Choices[0].Description;
+            }
+            else if (text.name == "ChoiceText1")
+            {
+                text.text = newEvent.Choices[1].Description;
+            }
+            else if (text.name == "ChoiceText2")
+            {
+                text.text = newEvent.Choices[2].Description;
+            }
+        }
+    }
+
+    public void SolveEventOutcome(int choice)
+    {
+        if (!_eventToSolve)
+        {
+            Debug.Log("There is no triggered event");
+            return;
+        }
+
+        var chosenEvent = _eventToSolve.Choices[choice];
+        Debug.Log($"{chosenEvent.Outcome} {chosenEvent.OutcomeValue}");
+        chosenEvent.SolveEncounter();
+        _eventUIPrefab.SetActive(false);
+    }
+
+    public void TestGameOver(GameResult result, int lostCondition = 0)
+    {
+        switch (result)
+        {
+            case GameResult.GameWon:
+                _gameEnderUIPrefab.SetActive(true);
+                _gameEnderManager.GameWon();
+                break;
+            case GameResult.GameLost:
+                _gameEnderUIPrefab.SetActive(true);
+                _gameEnderManager.TestGameLost(lostCondition);
+                break;
+        }
+    }
+
+    private void GameOver(GameResult result, string message)
+    {
+        _gameEnderUIPrefab.SetActive(true);
+        var textElements = _gameEnderUIPrefab.GetComponentsInChildren<TextMeshProUGUI>();
+        foreach (var text in textElements)
+        {
+            if (text.name == "Title")
+            {
+                if (result == GameResult.GameWon)
+                {
+                    text.text = "YOU WIN";
+                }
+                else
+                {
+                    text.text = "YOU LOSE";
+                }
+            }
+            else if (text.name == "Description")
+            {
+                text.text = message;
+            }
+        }
     }
 }
