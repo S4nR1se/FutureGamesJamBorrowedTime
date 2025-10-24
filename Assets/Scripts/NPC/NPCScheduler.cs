@@ -64,7 +64,7 @@ public class NPCScheduler : MonoBehaviour
             if (npc is Peasant peasant)
             {
                 _npcManager.DespawnPeasant(peasant);
-                ParticleSystemManager.Instance.Spawn("CatDie", transform.position);
+                
             }
             else if(npc is Undead undead)
             {

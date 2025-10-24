@@ -1,2 +1,12 @@
 fileFormatVersion: 2
 guid: 48ffa52b64af6304fac9ff4fa1b6ba24
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - PurrOrb: {fileID: 3181368158692788036, guid: a17bd0a8bee24274d955490d5f51e100, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

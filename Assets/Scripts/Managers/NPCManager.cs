@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 public class NPCManager : Manager
 {
@@ -162,11 +163,12 @@ public class NPCManager : Manager
     public Peasant SpawnPeasant()
     {
         IPoolable poolable = _peasantPool.Get();
-
+        
         Peasant peasant = poolable.PoolableComponent.GetComponent<Peasant>();
         if (peasant != null)
         {
             Zone correctZone = _zoneManager.GetRandomAvailableZone(ZoneType.House);
+            
             if (correctZone == null)
             {
                 return null;
@@ -174,7 +176,7 @@ public class NPCManager : Manager
 
             Vector3 position = correctZone.GetRandomPointInZone();
             peasant.transform.position = position;
-
+            ParticleSystemManager.Instance.Spawn("NewCats", position);
             UnityEngine.AI.NavMeshAgent agent = peasant.GetComponent<UnityEngine.AI.NavMeshAgent>();
             if (agent != null)
             {
@@ -197,13 +199,14 @@ public class NPCManager : Manager
         IPoolable poolable = _peasantPool.Get();
 
         Peasant peasant = poolable.PoolableComponent.GetComponent<Peasant>();
-        ParticleSystemManager.Instance.Spawn("NewCats", transform.position);
+        
         if (peasant != null)
         {
             Vector3 position = correctZone.GetRandomPointInZone();
             peasant.transform.position = position;
 
             UnityEngine.AI.NavMeshAgent agent = peasant.GetComponent<UnityEngine.AI.NavMeshAgent>();
+            ParticleSystemManager.Instance.Spawn("NewCats", position);
             if (agent != null)
             {
                 agent.enabled = true;
@@ -214,7 +217,7 @@ public class NPCManager : Manager
             CatIdentity chosenIdentity = _identities[UnityEngine.Random.Range(0, _identities.Length)];
 
             peasant.Initialize(correctZone, chosenIdentity, generatedName);
-
+            
             RegisterNPC(peasant);
             return peasant;
         }
@@ -225,13 +228,14 @@ public class NPCManager : Manager
         IPoolable poolable = _undeadPool.Get(undeadType);
 
         Undead undead = poolable.PoolableComponent.GetComponent<Undead>();
-        ParticleSystemManager.Instance.Spawn("summoning", transform.position);
+        
         if (undead != null)
         {
             Vector3 position = correctZone.GetRandomPointInZone();
             undead.transform.position = position;
 
             UnityEngine.AI.NavMeshAgent agent = undead.GetComponent<UnityEngine.AI.NavMeshAgent>();
+            ParticleSystemManager.Instance.Spawn("SpawnUndead", position);
             if (agent != null)
             {
                 agent.enabled = true;
@@ -281,6 +285,7 @@ public class NPCManager : Manager
     {
         if (zone == null) return new List<NPC>();
         return _activeNPCs.Where(npc => npc.GetCurrentZone() == zone).ToList();
+        
     }
     public List<IWorker> GetAllWorkers()
     {
@@ -304,6 +309,7 @@ public class NPCManager : Manager
     public void TestSpawn()
     {
         Peasant peasant = SpawnPeasant();
+        
     }
     [ContextMenu("KillPeasant")]
     public void TestDespawn()
@@ -312,6 +318,7 @@ public class NPCManager : Manager
 
         if (peasants.Count > 0)
         {
+            
             Peasant randomPeasant = peasants[UnityEngine.Random.Range(0, peasants.Count)];
             DespawnPeasant(randomPeasant);
         }

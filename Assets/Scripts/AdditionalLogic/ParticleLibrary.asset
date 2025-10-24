@@ -37,3 +37,9 @@ MonoBehaviour:
   - name: SpawnUndead
     prefab: {fileID: 884606632092640990, guid: d73398884f3614444aa490fbc0dcef6f, type: 3}
     lifetimeOverride: 0
+  - name: FillPurr
+    prefab: {fileID: 4482411960733345381, guid: f93a1692de2418b4e871de7eed2340f4, type: 3}
+    lifetimeOverride: 0
+  - name: LosePurr
+    prefab: {fileID: 488658410065859104, guid: 9a07725cf7f74da4e8cc736dead32bc2, type: 3}
+    lifetimeOverride: 0
