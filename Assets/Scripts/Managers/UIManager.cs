@@ -68,6 +68,8 @@ public class UIManager : Manager
     [SerializeField] private GameObject _gameEnderUIPrefab;
     [SerializeField] private Button _gameOver;
 
+    [SerializeField] private GameObject Tutorial;
+
     private CanvasGroup _npcInfoCanvasGroup;
     private CanvasGroup _buildingInfoCanvasGroup;
     private CanvasGroup _graveYardCanvasGroup;
@@ -700,5 +702,12 @@ public class UIManager : Manager
                 text.text = message;
             }
         }
+    }
+
+    public void EndTutorial()
+    {
+        GameManager.Instance.GetManager<PlayerInputManager>().IsInputBlocked = false;
+        Tutorial.SetActive(false);
+        GameManager.Instance.SwitchState<PlayingState>();
     }
 }

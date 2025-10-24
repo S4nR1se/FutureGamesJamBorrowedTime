@@ -7,6 +7,6 @@ public class InitializingState : State
     public override void EnterState()
     {
         OnEnterInitializingState?.Invoke();
-        GameManager.Instance.SwitchState<PlayingState>();
+        GameManager.Instance.SwitchState<TutorialState>();
     }
 }
