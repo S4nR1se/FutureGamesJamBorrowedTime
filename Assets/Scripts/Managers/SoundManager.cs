@@ -40,7 +40,7 @@ public class SoundManager : MonoBehaviour
 
     [Header("Volume Settings")]
     [SerializeField][Range(0f, 1f)] private float _masterVolume = 0.5f;
-    [SerializeField][Range(0f, 1f)] private float _masterSFXVolume = 0.5f;
+    [SerializeField][Range(0f, 1f)] private float _masterSFXVolume = 5f;
     [SerializeField][Range(0f, 1f)] private float _masterMusicVolume = 0.5f;
 
     [Header("Audio Settings")]
@@ -63,31 +63,29 @@ public class SoundManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            _audioSourceParent = new GameObject("AudioSourceParent");
+            _audioSourceParent.transform.SetParent(transform);
+
+            for (int i = 0; i < _maxAudioSources; i++)
+            {
+                CreateAudioSource();
+            }
+
+            if (_soundLibrary != null)
+            {
+                _soundLibrary.Initialize();
+            }
+            else
+            {
+                Debug.LogWarning("SoundManager: No SoundLibrary assigned.");
+            }
         }
         else
         {
             Destroy(gameObject);
         }
     }
-    private void Start()
-    {
-        _audioSourceParent = new GameObject("AudioSourceParent");
-        _audioSourceParent.transform.SetParent(transform);
 
-        for (int i = 0; i < _maxAudioSources; i++)
-        {
-            CreateAudioSource();
-        }
-
-        if (_soundLibrary != null)
-        {
-            _soundLibrary.Initialize();
-        }
-        else
-        {
-            Debug.LogWarning("SoundManager: No SoundLibrary assigned.");
-        }
-    }
     private void OnDestroy()
     {
         if (Instance == this)

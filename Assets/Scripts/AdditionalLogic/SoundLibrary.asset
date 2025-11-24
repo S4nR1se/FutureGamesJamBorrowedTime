@@ -15,7 +15,259 @@ MonoBehaviour:
   sounds:
   - name: MainMenuMusic
     clip: {fileID: 8300000, guid: 1033d7948a49516408489cca5f2df0c7, type: 3}
-    volume: 0.5
+    volume: 0.612
+    is2D: 1
+    loop: 1
+    pitch: 1
+  - name: DayMusic
+    clip: {fileID: 8300000, guid: d8c5dc4c07f74974e96ed601f9d41447, type: 3}
+    volume: 1
+    is2D: 1
+    loop: 1
+    pitch: 1
+  - name: DayAmbience
+    clip: {fileID: 8300000, guid: 394ab3061b15511419a065d3c8d1211a, type: 3}
+    volume: 1
+    is2D: 1
+    loop: 1
+    pitch: 1
+  - name: NightMusic
+    clip: {fileID: 8300000, guid: a9789f5596c7848498a3ca9c3e0931a6, type: 3}
+    volume: 1
+    is2D: 1
+    loop: 1
+    pitch: 1
+  - name: NightAmbiance
+    clip: {fileID: 8300000, guid: 6f7fd8ede1e6d884fa3097fc5e8a831d, type: 3}
+    volume: 1
+    is2D: 1
+    loop: 1
+    pitch: 1
+  - name: DayNightCycleTranstion
+    clip: {fileID: 8300000, guid: ddd9e664f524ef249a450d239f2a008b, type: 3}
+    volume: 1
+    is2D: 1
+    loop: 0
+    pitch: 1
+  - name: WinScreen
+    clip: {fileID: 8300000, guid: 839a4a1bb9fe8804bb1e155e8a0e1fde, type: 3}
+    volume: 1
     is2D: 0
     loop: 1
-    pitch: 0
+    pitch: 1
+  - name: GameOverScreen
+    clip: {fileID: 8300000, guid: ecc73a428e4b19b49bb35d7dea453d43, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 1
+    pitch: 1
+  - name: 1
+    clip: {fileID: 8300000, guid: e5c3a3e841f5fe34095cb4d9a8a77014, type: 3}
+    volume: 0.507
+    is2D: 1
+    loop: 0
+    pitch: 1
+  - name: 2
+    clip: {fileID: 8300000, guid: 0086d32a4d02b5e4fb24f324dc0af0d6, type: 3}
+    volume: 0.3
+    is2D: 1
+    loop: 0
+    pitch: 1
+  - name: 3
+    clip: {fileID: 8300000, guid: 0e67a4be9fb865f48829b9b75dd1c868, type: 3}
+    volume: 1
+    is2D: 1
+    loop: 0
+    pitch: 1
+  - name: 4
+    clip: {fileID: 8300000, guid: c386102a67fba4c47a99a2dce99025e3, type: 3}
+    volume: 0.3
+    is2D: 1
+    loop: 0
+    pitch: 1
+  - name: 5
+    clip: {fileID: 8300000, guid: 01047af2714262c48bd182184b12ab1a, type: 3}
+    volume: 1
+    is2D: 1
+    loop: 0
+    pitch: 1
+  - name: 6
+    clip: {fileID: 8300000, guid: 89f4c19d8ac919e47a7f6a9af4ecb3bb, type: 3}
+    volume: 0.3
+    is2D: 1
+    loop: 0
+    pitch: 1
+  - name: 7
+    clip: {fileID: 8300000, guid: a76f267a6d8fe4845af044bde275a6d6, type: 3}
+    volume: 1
+    is2D: 1
+    loop: 0
+    pitch: 1
+  - name: 8
+    clip: {fileID: 8300000, guid: 28be84d2355ff404e8c81b442ba62961, type: 3}
+    volume: 0.3
+    is2D: 1
+    loop: 0
+    pitch: 1
+  - name: 9
+    clip: {fileID: 8300000, guid: d14fe48a9efa1684faae09dde6c1b230, type: 3}
+    volume: 1
+    is2D: 1
+    loop: 0
+    pitch: 1
+  - name: 10
+    clip: {fileID: 8300000, guid: 22b8194f79ba8bf4c8e50daedb3f99e2, type: 3}
+    volume: 1
+    is2D: 1
+    loop: 0
+    pitch: 1
+  - name: 11
+    clip: {fileID: 8300000, guid: e644e94cfe73f054898283e6c509eda3, type: 3}
+    volume: 1
+    is2D: 1
+    loop: 0
+    pitch: 1
+  - name: 12
+    clip: {fileID: 8300000, guid: 81710041b05ef8f40abcc79accfe46d4, type: 3}
+    volume: 1
+    is2D: 1
+    loop: 0
+    pitch: 1
+  - name: 13
+    clip: {fileID: 8300000, guid: facec49985de1264081d5f0252aaafef, type: 3}
+    volume: 1
+    is2D: 1
+    loop: 0
+    pitch: 1
+  - name: Play-Button
+    clip: {fileID: 8300000, guid: af362ea6913abd94d93c95a67a6756dc, type: 3}
+    volume: 1
+    is2D: 1
+    loop: 0
+    pitch: 1
+  - name: BuildingPlaced
+    clip: {fileID: 8300000, guid: b2b35894703419b4db326e8957e47f8e, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 0
+    pitch: 1
+  - name: CatBirth-NewPesant
+    clip: {fileID: 8300000, guid: ade9619ec2184a540a96b7aa924b90cc, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 0
+    pitch: 1
+  - name: DayToNightShiftBell
+    clip: {fileID: 8300000, guid: 12fd638d7a038434faf58a555f9ae3f9, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 0
+    pitch: 1
+  - name: EventNotification
+    clip: {fileID: 8300000, guid: 33c6b4f53454f774dbb99392410584eb, type: 3}
+    volume: 1
+    is2D: 1
+    loop: 0
+    pitch: 1
+  - name: FarmingScythe
+    clip: {fileID: 8300000, guid: a8ffbd8c957d9064ebff564ad78fc9a9, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 1
+    pitch: 1
+  - name: KnifeStab_v1
+    clip: {fileID: 8300000, guid: 9bd7c621f317e6c478056d761fa7df54, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 0
+    pitch: 1
+  - name: KnifeStab_v2
+    clip: {fileID: 8300000, guid: e5ca9d98691a55e40a9609961ce52155, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 0
+    pitch: 1
+  - name: ClickOnPeasant_v1
+    clip: {fileID: 8300000, guid: 224826c58e911db46a3b9e88e6537640, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 0
+    pitch: 1
+  - name: ClickOnPeasant_v2
+    clip: {fileID: 8300000, guid: 1b4a13da103539346a4373c98ad7ea11, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 0
+    pitch: 1
+  - name: PeasantDeath
+    clip: {fileID: 8300000, guid: 76a7b1abe680511489d847983429fa0b, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 0
+    pitch: 1
+  - name: PeasantSeesUndead
+    clip: {fileID: 8300000, guid: c27eea83e694f6f468b96facd4ea7dde, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 0
+    pitch: 1
+  - name: VillagerScreamsAtUndead
+    clip: {fileID: 8300000, guid: 17147a43d3e7f74438287c13fb40b6c1, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 0
+    pitch: 1
+  - name: VilligerDeath
+    clip: {fileID: 8300000, guid: dccff1fc539f0a248b55e17515d39c79, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 0
+    pitch: 1
+  - name: Portal-Airy
+    clip: {fileID: 8300000, guid: 94515d48def7b244a9c0d7109060e2e8, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 1
+    pitch: 1
+  - name: Portal-Idle
+    clip: {fileID: 8300000, guid: 72df8e51866710f42a92f1e16dee737b, type: 3}
+    volume: 0.403
+    is2D: 0
+    loop: 1
+    pitch: 1
+  - name: SkeletonRisingFromGraveyard
+    clip: {fileID: 8300000, guid: a52ba14fbd4dc2f44a0494ff9b9e4175, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 0
+    pitch: 1
+  - name: ClickOnZombie_v1
+    clip: {fileID: 8300000, guid: 7bb880eef22e78243b4c90238523573b, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 0
+    pitch: 1
+  - name: ClickOnZombie_v2
+    clip: {fileID: 8300000, guid: de66966e3426aa94ab76a6d1e08f9c38, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 0
+    pitch: 1
+  - name: ClickOnZombie_v3
+    clip: {fileID: 8300000, guid: d9c8698eb14bec443a8f1689170381d2, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 0
+    pitch: 1
+  - name: ZombieBitesPeasant_V1
+    clip: {fileID: 8300000, guid: 7a150402d35912f458205a485cc34076, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 0
+    pitch: 1
+  - name: ZombieBitesPeasant_V2
+    clip: {fileID: 8300000, guid: bd4c87616d600f24db106c344b3b214e, type: 3}
+    volume: 1
+    is2D: 0
+    loop: 0
+    pitch: 1

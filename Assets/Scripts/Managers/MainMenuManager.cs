@@ -5,7 +5,7 @@ public class MainMenuManager : MonoBehaviour
 {
     AudioSource _mainMenuAudioSource;
     [SerializeField] AudioClip _mainMenuMusic;
-    private void Awake()
+    private void Start()
     {
         //SaveManager.save_instance.Load_Data();
         SetUpAudio();
@@ -13,9 +13,11 @@ public class MainMenuManager : MonoBehaviour
 
     void SetUpAudio()
     {
+        // AudioSource musicSource = SoundManager.Instance.PlaySound("MainMenuMusic");
 
         _mainMenuAudioSource = GetComponent<AudioSource>();
         _mainMenuAudioSource.clip = _mainMenuMusic;
+        
         SoundManager.Instance.RegisterBackgroundMusic(_mainMenuAudioSource);
 
         SoundManager.Instance.SetMasterVolume(SettingsManager.Instance.GetMasterAudioSliderVolume());
