@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SoundLibrary
   m_EditorClassIdentifier: Assembly-CSharp::SoundLibrary
   sounds:
-  - name: 
-    clip: {fileID: 0}
-    volume: 0
+  - name: MainMenuMusic
+    clip: {fileID: 8300000, guid: 1033d7948a49516408489cca5f2df0c7, type: 3}
+    volume: 0.5
     is2D: 0
-    loop: 0
+    loop: 1
     pitch: 0
