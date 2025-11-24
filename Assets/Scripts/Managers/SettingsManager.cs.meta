@@ -1,2 +1,18 @@
 fileFormatVersion: 2
 guid: 74186729efbd58441be402cdc503c3f4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _masterVolumeSlider: {instanceID: 0}
+  - _musicVolumeSlider: {instanceID: 0}
+  - _soundEffectsVolumeSlider: {instanceID: 0}
+  - _audioCanvas: {instanceID: 0}
+  - _controlsCanvas: {instanceID: 0}
+  - _resolutionsCanvas: {fileID: 2835157008685026987, guid: e482f50110d86234f8b7b9d9fa501049, type: 3}
+  - _resolutionsText: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
