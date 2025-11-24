@@ -11763,6 +11763,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sphere2
       objectReference: {fileID: 0}
+    - target: {fileID: 3181368158692788036, guid: a17bd0a8bee24274d955490d5f51e100, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -31748,8 +31752,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.5}
+  m_SizeDelta: {x: 0, y: -1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1587026407
 MonoBehaviour:
@@ -37232,6 +37236,10 @@ PrefabInstance:
     - target: {fileID: 8295179934970264446, guid: f5b39edc88c1fa944b9a9a625165d5b2, type: 3}
       propertyPath: m_Name
       value: BaseTile 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8295179934970264446, guid: f5b39edc88c1fa944b9a9a625165d5b2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8671037455369626052, guid: f5b39edc88c1fa944b9a9a625165d5b2, type: 3}
       propertyPath: m_LocalPosition.x
