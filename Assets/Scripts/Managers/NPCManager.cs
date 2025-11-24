@@ -18,7 +18,12 @@ public class NPCManager : Manager
     [SerializeField] private NPCNames _nPCNames;
     public event Action<Dictionary<Type, List<NPC>>> OnNPCAmountChange;
 
+    public AudioClip SpawnPeasantSFX;
+    public AudioClip SpawnSkeletonSFX;
+    public AudioClip SpawnZombieSFX;
+
     private ZoneManager _zoneManager;
+    private SoundManager _soundManager;
 
     private List<NPC> _activeNPCs = new();
     private List<IWorker> _workers = new();
@@ -32,6 +37,7 @@ public class NPCManager : Manager
     public override void Initialize()
     {
         _zoneManager = GameManager.Instance.GetManager<ZoneManager>();
+        _soundManager = GameManager.Instance.GetManager<SoundManager>();
 
         _scheduler = GetComponent<NPCScheduler>();
         if( _scheduler != null)
@@ -189,6 +195,8 @@ public class NPCManager : Manager
 
             peasant.Initialize(correctZone, chosenIdentity, generatedName);
 
+            _soundManager.PlaySoundEffect(SpawnPeasantSFX, position);
+
             RegisterNPC(peasant);
             return peasant;
         }
@@ -243,6 +251,11 @@ public class NPCManager : Manager
 
             string generatedName = GenerateName(undead);
             undead.Initialize(correctZone, generatedName);
+
+            if (undeadType == UndeadType.Skeleton)
+                _soundManager.PlaySoundEffect(SpawnSkeletonSFX, position);
+            else
+                _soundManager.PlaySoundEffect(SpawnZombieSFX, position);
 
             RegisterNPC(undead);
             return undead;

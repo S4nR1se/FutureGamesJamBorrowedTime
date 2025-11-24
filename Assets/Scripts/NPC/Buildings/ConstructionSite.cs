@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ConstructionSite : Building
 {
+    public AudioClip ConstructionSFX;
+
     protected override Occupation AssociatedOccupation => new BuilderOccupation();
 
     private Tile _targetTile;

@@ -23,6 +23,8 @@ public abstract class Building : MonoBehaviour, IInteractable
 
     public GameObject Component => gameObject;
 
+    protected AudioSource _portalIdleSource;
+
     public virtual void Initialize()
     {
         BuildData = _buildingData;
@@ -34,6 +36,7 @@ public abstract class Building : MonoBehaviour, IInteractable
         BuildingTier = _buildingData.BuildingTier;
 
         ResourceManager = GameManager.Instance?.GetManager<ResourceManager>();
+
         PlayerInputManager = GameManager.Instance.GetManager<PlayerInputManager>();
         UIManager = GameManager.Instance.GetManager<UIManager>();
 
@@ -80,11 +83,25 @@ public abstract class Building : MonoBehaviour, IInteractable
         {
             UIManager.DisplayBuildingInfo(this, AssociatedZone.GetNPCsInZone());
         }
+
+        if (this is Castle)
+        {
+            if (_portalIdleSource == null)
+                _portalIdleSource = SoundManager.Instance.PlaySound("Portal-Idle", transform.position);
+        }
+        if (this is Farm)
+        {
+            SoundManager.Instance.PlaySound("FarmingScythe", transform.position);
+        }
     }
 
     public virtual void OnDeselect()
     {
-
+        if (this is Castle && _portalIdleSource != null)
+        {
+            SoundManager.Instance.StopSound(_portalIdleSource, 1.5f); // fade-out 1.5s
+            _portalIdleSource = null;
+        }
     }
 
     public virtual void OnHover()
