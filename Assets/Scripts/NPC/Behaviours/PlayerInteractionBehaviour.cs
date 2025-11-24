@@ -10,6 +10,8 @@ public class PlayerInteractionBehaviour : Behaviour
     private bool _isOutlineActive = false;
     private bool _isSelected = false;
 
+    private bool _useAltClickSound = false;
+
     public PlayerInteractionBehaviour(Renderer meshRenderer)
     {
         _meshRenderer = meshRenderer;
@@ -22,6 +24,8 @@ public class PlayerInteractionBehaviour : Behaviour
     {
         _isSelected = true;
         EnableOutline();
+
+        SoundManager.Instance.PlaySound("ClickOnPeasant_v1", transform.position);
     }
     public void OnDeselect()
     {

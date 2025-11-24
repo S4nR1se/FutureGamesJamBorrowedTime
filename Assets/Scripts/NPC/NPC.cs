@@ -10,13 +10,15 @@ public abstract class NPC : MonoBehaviour
     public float MovementSpeed { get; protected set; }
     public bool MarkedForDeath { get; protected set; } = false;
 
+    internal SoundManager _soundManager;
+
     protected Zone _currentZone;
 
     protected ZoneType _restZoneType;
 
     protected DayCycle _activeCycle;
 
-    public abstract void Initialize(Zone startingZone,string name, int lifeSpan, float movementSpeed, Occupation occupation = null, ZoneType restZoneType = ZoneType.House, DayCycle activeCycle = DayCycle.Day);
+    public abstract void Initialize(Zone startingZone,string name, int lifeSpan, float movementSpeed, Occupation occupation = null, ZoneType restZoneType = ZoneType.House, DayCycle activeCycle = DayCycle.Day, SoundManager soundManager = null);
     public void DecreaseLifeSpan(int amount)
     {
         if (LifeSpan <= 0) return;
