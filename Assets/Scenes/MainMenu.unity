@@ -806,7 +806,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &133123575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2063,7 +2063,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce6a44a89e3c82a4faa6ce2d9879fc41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuManager
-  _mainMenuMusic: {fileID: 8300000, guid: 1033d7948a49516408489cca5f2df0c7, type: 3}
+  _mainMenuMusic: {fileID: 8300000, guid: dccff1fc539f0a248b55e17515d39c79, type: 3}
 --- !u!1 &1992319138
 GameObject:
   m_ObjectHideFlags: 0
@@ -2272,6 +2272,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 431579542945173925, guid: e482f50110d86234f8b7b9d9fa501049, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 431579542945173925, guid: e482f50110d86234f8b7b9d9fa501049, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
@@ -2456,7 +2460,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3435057590039334767, guid: e482f50110d86234f8b7b9d9fa501049, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3435057590039334767, guid: e482f50110d86234f8b7b9d9fa501049, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3435057590039334767, guid: e482f50110d86234f8b7b9d9fa501049, type: 3}
+      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3567401752701420717, guid: e482f50110d86234f8b7b9d9fa501049, type: 3}
@@ -2576,7 +2588,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3984480273061594931, guid: e482f50110d86234f8b7b9d9fa501049, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3984480273061594931, guid: e482f50110d86234f8b7b9d9fa501049, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3984480273061594931, guid: e482f50110d86234f8b7b9d9fa501049, type: 3}
+      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4144484825019442131, guid: e482f50110d86234f8b7b9d9fa501049, type: 3}
@@ -2665,6 +2685,10 @@ PrefabInstance:
       objectReference: {fileID: -3434873975106548468, guid: 974d692bebeecfd418399884b3ffed1b, type: 2}
     - target: {fileID: 5099460200294987468, guid: e482f50110d86234f8b7b9d9fa501049, type: 3}
       propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5289968670599458819, guid: e482f50110d86234f8b7b9d9fa501049, type: 3}
+      propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5289968670599458819, guid: e482f50110d86234f8b7b9d9fa501049, type: 3}
