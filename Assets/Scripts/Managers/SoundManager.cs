@@ -40,7 +40,7 @@ public class SoundManager : MonoBehaviour
 
     [Header("Volume Settings")]
     [SerializeField][Range(0f, 1f)] private float _masterVolume = 0.5f;
-    [SerializeField][Range(0f, 1f)] private float _masterSFXVolume = 5f;
+    [SerializeField][Range(0f, 1f)] private float _masterSFXVolume = 0.5f;
     [SerializeField][Range(0f, 1f)] private float _masterMusicVolume = 0.5f;
 
     [Header("Audio Settings")]
@@ -127,8 +127,12 @@ public class SoundManager : MonoBehaviour
             return null;
         }
 
+        
         ConfigureAudioSource(source, clip, position, volume, is2D, pitch, false);
-        StartSoundPlayback(source, clip.length);
+
+        source.volume = Mathf.Clamp01(volume * _masterVolume * _masterSFXVolume);
+
+        StartSoundPlayback(source, clip.length, volume, false);
 
         return source;
     }
@@ -142,10 +146,14 @@ public class SoundManager : MonoBehaviour
         AudioSource source = GetOrCreateAudioSource();
         if (source == null) return null;
 
+        // Configure raw/original volume
         ConfigureAudioSource(source, clip, position, volume, is2D, pitch, true);
-        source.volume = Mathf.Clamp01(volume * _masterVolume * _masterSFXVolume);
+
+        // Apply Master * MUSIC for playback (correct slider)
+        source.volume = Mathf.Clamp01(volume * _masterVolume * _masterMusicVolume);
         source.Play();
 
+        // Record original unscaled volume and mark as looping
         _activeSounds[source] = new SoundInstance(volume, null, true);
 
         return source;
@@ -180,17 +188,21 @@ public class SoundManager : MonoBehaviour
 
     public void RegisterBackgroundMusic(AudioSource musicSource)
     {
-        if (musicSource == null)
+        if (musicSource == null) return;
+ 
+        if (_backgroundMusicSources.Add(musicSource))
         {
-            return;
+            if (!_activeSounds.ContainsKey(musicSource))
+            {
+                float product = _masterVolume * _masterMusicVolume;
+                float original = musicSource.volume;
+                if (product > 0f) original = musicSource.volume / product;
+
+                _activeSounds[musicSource] = new SoundInstance(original, null, true);
+            }
+
+            UpdateMusicVolumes();
         }
-
-
-        musicSource.volume = musicSource.volume * _masterVolume * _masterMusicVolume;
-
-        _backgroundMusicSources.Add(musicSource);
-
-        UpdateMusicVolumes();
     }
 
     public void UnregisterBackgroundMusic(AudioSource musicSource)
@@ -263,9 +275,9 @@ public class SoundManager : MonoBehaviour
             AudioSource source = kvp.Key;
             SoundInstance instance = kvp.Value;
 
-            if (source != null && source.isPlaying)
+            if (source != null && source.isPlaying && !instance.IsLooping)
             {
-                source.volume = instance.OriginalVolume * _masterVolume * _masterSFXVolume;
+                source.volume = Mathf.Clamp01(instance.OriginalVolume * _masterVolume * _masterSFXVolume);
             }
         }
     }
@@ -274,19 +286,18 @@ public class SoundManager : MonoBehaviour
     {
         foreach (var musicSource in _backgroundMusicSources)
         {
-            float normalizedVolume = 0f;
-            if (musicSource != null)
+            if (musicSource == null) continue;
+
+            if (_activeSounds.TryGetValue(musicSource, out SoundInstance instance))
             {
-               
-                musicSource.volume = normalizedVolume * _masterVolume * _masterMusicVolume;
-            }
-            if (_masterVolume * _masterMusicVolume > 0f)
-            {
-                normalizedVolume = musicSource.volume / (_masterVolume * _masterMusicVolume);
+                musicSource.volume = Mathf.Clamp01(instance.OriginalVolume * _masterVolume * _masterMusicVolume);
             }
             else
             {
-                normalizedVolume = musicSource.volume;
+                float product = _masterVolume * _masterMusicVolume;
+                float normalized = musicSource.volume;
+                if (product > 0f) normalized = musicSource.volume / product;
+                musicSource.volume = Mathf.Clamp01(normalized * product);
             }
         }
     }
@@ -335,7 +346,10 @@ public class SoundManager : MonoBehaviour
     {
         source.transform.position = position;
         source.clip = clip;
-        source.volume = volume * _masterVolume * _masterSFXVolume;
+
+        // store raw/original volume — do not apply master multipliers here
+        source.volume = volume;
+
         source.spatialBlend = is2D ? 0f : 1f;
         source.loop = loop;
 
@@ -349,11 +363,12 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    private void StartSoundPlayback(AudioSource source, float duration)
+    // Start playback for transient SFX and store original volume
+    private void StartSoundPlayback(AudioSource source, float duration, float originalVolume, bool isLooping)
     {
         source.Play();
-        Coroutine cleanupCoroutine = StartCoroutine(CleanupAfterPlayback(source, duration));
-        _activeSounds[source] = new SoundInstance(source.volume / (_masterVolume * _masterSFXVolume), cleanupCoroutine, false);
+        Coroutine cleanupCoroutine = isLooping ? null : StartCoroutine(CleanupAfterPlayback(source, duration));
+        _activeSounds[source] = new SoundInstance(originalVolume, cleanupCoroutine, isLooping);
     }
 
     private void ReturnSourceToPool(AudioSource source)
