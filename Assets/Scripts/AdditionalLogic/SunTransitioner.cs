@@ -19,7 +19,8 @@ public class SunTransitioner : MonoBehaviour
 
     private Coroutine _transitionCoroutine;
 
-    private AudioSource _musicSource;
+    private AudioSource _musicDay;
+    private AudioSource _musicNight;
 
     [SerializeField] private string dayMusicName = "DayMusic";
     [SerializeField] private string nightMusicName = "NightMusic";
@@ -36,41 +37,25 @@ public class SunTransitioner : MonoBehaviour
         {
             sunLight.transform.rotation = Quaternion.Euler(dayRotation);
             sunLight.intensity = DAYINTENSITY;
-            //_musicSource = SoundManager.Instance.PlaySound("DayMusic");
-            //SoundManager.Instance.RegisterBackgroundMusic(_musicSource);
-
+            PlayMusicDay();
         }
         else
         {
             sunLight.transform.rotation = Quaternion.Euler(nightRotation);
             sunLight.intensity = NIGHTINTENSITY;
-            //_musicSource = SoundManager.Instance.PlaySound("NightMusic");
-            //SoundManager.Instance.RegisterBackgroundMusic(_musicSource);
-
+            PlayMusicNight();
         }
     }
 
-    /*public void PlayMusicOnCycle(DayCycle cycle)
+    private void PlayMusicDay()
+     {
+        _musicDay = SoundManager.Instance.PlaySound("DayMusic");
+     }
+    private void PlayMusicNight()
     {
-        string musicToPlay = cycle == DayCycle.Day ? dayMusicName : nightMusicName;
-        if (_musicSource != null)
-        {
-            SoundManager.Instance.FadeMusicOut(_musicSource, 1.5f);
-        }
-        
-        _musicSource = SoundManager.Instance.PlaySound(musicToPlay);
-        
-        if (_musicSource != null)
-        {
-            SoundManager.Instance.RegisterBackgroundMusic(_musicSource);
-        }
-        else
-        {
-            Debug.LogWarning("Failed to create/play day/night cycle music AudioSource.");
-        }
+        _musicNight = SoundManager.Instance.PlaySound("NightMusic");
+    }
 
-   }
-     */
     public void TransitionToCycle(DayCycle targetCycle)
     {
         if(targetCycle  == DayCycle.Day)

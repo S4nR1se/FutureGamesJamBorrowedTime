@@ -9883,6 +9883,8 @@ MonoBehaviour:
   daySprite: {fileID: 2800000, guid: 5f43615d05958144ebba943cd5a03d7e, type: 3}
   nightSprite: {fileID: 2800000, guid: b4215378eb64be945ba97aa05943c092, type: 3}
   dayUI: {fileID: 1489532209}
+  dayMusicName: DayMusic
+  nightMusicName: NightMusic
 --- !u!114 &452088014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10556,12 +10558,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 467919276}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 949334137}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &467919279
 AudioSource:
@@ -20645,6 +20647,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 467919278}
   - {fileID: 1836422721}
   - {fileID: 452088012}
   - {fileID: 576182808}
@@ -34660,7 +34663,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1848753815}
   m_HandleRect: {fileID: 1848753814}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -49755,7 +49758,6 @@ SceneRoots:
   - {fileID: 949334137}
   - {fileID: 1364655309}
   - {fileID: 1708636859}
-  - {fileID: 467919278}
   - {fileID: 131675248}
   - {fileID: 1342991591}
   - {fileID: 1848076870}

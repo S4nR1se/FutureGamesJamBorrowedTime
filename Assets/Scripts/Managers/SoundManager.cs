@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour
+public class SoundManager : Manager
 {
     public static SoundManager Instance { get; private set; }
 
@@ -57,7 +57,7 @@ public class SoundManager : MonoBehaviour
     public int GetSFXVolumeUI() => Mathf.RoundToInt(_masterSFXVolume * MAX_VOLUME_UI);
     public int GetMusicVolumeUI() => Mathf.RoundToInt(_masterMusicVolume * MAX_VOLUME_UI);
 
-    private void Awake()
+    public override void Initialize()
     {
         if (Instance == null)
         {
