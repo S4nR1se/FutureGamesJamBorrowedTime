@@ -19,6 +19,11 @@ public class SunTransitioner : MonoBehaviour
 
     private Coroutine _transitionCoroutine;
 
+    private AudioSource _musicSource;
+
+    [SerializeField] private string dayMusicName = "DayMusic";
+    [SerializeField] private string nightMusicName = "NightMusic";
+
     public void InitializeLighting(DayCycle initialCycle)
     {
         sunLight = FindFirstObjectByType(typeof(Light)) as Light;
@@ -31,14 +36,41 @@ public class SunTransitioner : MonoBehaviour
         {
             sunLight.transform.rotation = Quaternion.Euler(dayRotation);
             sunLight.intensity = DAYINTENSITY;
+            //_musicSource = SoundManager.Instance.PlaySound("DayMusic");
+            //SoundManager.Instance.RegisterBackgroundMusic(_musicSource);
+
         }
         else
         {
             sunLight.transform.rotation = Quaternion.Euler(nightRotation);
             sunLight.intensity = NIGHTINTENSITY;
+            //_musicSource = SoundManager.Instance.PlaySound("NightMusic");
+            //SoundManager.Instance.RegisterBackgroundMusic(_musicSource);
+
         }
     }
 
+    /*public void PlayMusicOnCycle(DayCycle cycle)
+    {
+        string musicToPlay = cycle == DayCycle.Day ? dayMusicName : nightMusicName;
+        if (_musicSource != null)
+        {
+            SoundManager.Instance.FadeMusicOut(_musicSource, 1.5f);
+        }
+        
+        _musicSource = SoundManager.Instance.PlaySound(musicToPlay);
+        
+        if (_musicSource != null)
+        {
+            SoundManager.Instance.RegisterBackgroundMusic(_musicSource);
+        }
+        else
+        {
+            Debug.LogWarning("Failed to create/play day/night cycle music AudioSource.");
+        }
+
+   }
+     */
     public void TransitionToCycle(DayCycle targetCycle)
     {
         if(targetCycle  == DayCycle.Day)

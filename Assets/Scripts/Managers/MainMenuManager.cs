@@ -3,8 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
-    AudioSource _mainMenuAudioSource;
-    [SerializeField] AudioClip _mainMenuMusic;
+    private AudioSource _musicSource;
     private void Start()
     {
         //SaveManager.save_instance.Load_Data();
@@ -13,37 +12,14 @@ public class MainMenuManager : MonoBehaviour
 
     void SetUpAudio()
     {
-        // AudioSource musicSource = SoundManager.Instance.PlaySound("MainMenuMusic");
+        _musicSource = SoundManager.Instance.PlaySound("MainMenuMusic");
 
-        _mainMenuAudioSource = GetComponent<AudioSource>();
-        if(_mainMenuAudioSource == null)
-        {            
-            _mainMenuAudioSource = gameObject.AddComponent<AudioSource>();
-        }
-        SoundManager.SoundDefinition sound;
-        if (!SoundManager.Instance._soundLibrary.TryGetSound("MainMenuMusic", out sound))
-        {
-            Debug.LogError("MainMenuMusic sound not found in SoundLibrary.");
-            return;
-        }
-        ;
-        AudioSource musicSource = SoundManager.Instance.PlayLoopingSound(
-        sound.clip, Vector3.zero, sound.volume, sound.is2D, sound.pitch
-    );
-        // _mainMenuAudioSource.clip = _mainMenuMusic;
-        // _mainMenuAudioSource.loop = true;
-        // _mainMenuAudioSource.Play();
-        if (musicSource != null)
-        {
-            _mainMenuAudioSource = musicSource;
-            SoundManager.Instance.RegisterBackgroundMusic(_mainMenuAudioSource);
-        }
-        else
+
+        if (_musicSource == null)
         {
             Debug.LogWarning("Failed to create/play main menu music AudioSource.");
         }
-
-        // SoundManager.Instance.RegisterBackgroundMusic(_mainMenuAudioSource);
+        SoundManager.Instance.RegisterBackgroundMusic(_musicSource);
 
         SoundManager.Instance.SetMasterVolume(SettingsManager.Instance.GetMasterAudioSliderVolume());
         SoundManager.Instance.SetMusicVolume(SettingsManager.Instance.GetMusicAudioSliderVolume());
@@ -54,12 +30,11 @@ public class MainMenuManager : MonoBehaviour
 
     public void Start_Game()
     {
-        SceneManager.LoadSceneAsync("MAINSCENE");
+        
         Debug.Log("Start Game");
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
+        SoundManager.Instance.FadeMusicOut(_musicSource, 1.5f);
+        SceneManager.LoadSceneAsync("MAINSCENE");
+
     }
 
     public void Open_Settings_Menu()
@@ -75,5 +50,9 @@ public class MainMenuManager : MonoBehaviour
     public void Quit_Game()
     {
         Application.Quit();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 }
