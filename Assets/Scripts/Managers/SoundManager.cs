@@ -57,6 +57,17 @@ public class SoundManager : Manager
     public int GetSFXVolumeUI() => Mathf.RoundToInt(_masterSFXVolume * MAX_VOLUME_UI);
     public int GetMusicVolumeUI() => Mathf.RoundToInt(_masterMusicVolume * MAX_VOLUME_UI);
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
     public override void Initialize()
     {
         if (Instance == null)
@@ -146,14 +157,11 @@ public class SoundManager : Manager
         AudioSource source = GetOrCreateAudioSource();
         if (source == null) return null;
 
-        // Configure raw/original volume
         ConfigureAudioSource(source, clip, position, volume, is2D, pitch, true);
 
-        // Apply Master * MUSIC for playback (correct slider)
         source.volume = Mathf.Clamp01(volume * _masterVolume * _masterMusicVolume);
         source.Play();
 
-        // Record original unscaled volume and mark as looping
         _activeSounds[source] = new SoundInstance(volume, null, true);
 
         return source;
