@@ -41,7 +41,7 @@ public class NPCScheduler : MonoBehaviour
     {
         if(currentCycle == DayCycle.Day)
         {
-            SoundManager.Instance.PlaySound("DayNightCycleTransition", transform.position);
+            SoundManager.Instance.PlaySound("DayToNightShiftBell");
             ScheduleNightTimeCalculations(); 
         }
         else
