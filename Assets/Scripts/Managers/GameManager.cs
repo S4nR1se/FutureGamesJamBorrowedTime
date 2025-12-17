@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : StateMachine
 {
@@ -22,8 +23,11 @@ public class GameManager : StateMachine
         RegisterState(new InitializingState());
         RegisterState(new PlayingState());
         RegisterState(new TutorialState());
-
-        GetManager<GridManager>().PlaceSpecialTiles();
+        if (SceneManager.GetActiveScene().name == "MAINSCENE")
+        {
+            GetManager<GridManager>().PlaceSpecialTiles();
+        }
+        
         StartCoroutine(InitializationRoutine());
     }
     private void Update()

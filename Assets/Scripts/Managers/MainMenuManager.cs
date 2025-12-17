@@ -10,24 +10,25 @@ public class MainMenuManager : MonoBehaviour
         SetUpAudio();
     }
 
-    void SetUpAudio()
-    {
-        _musicSource = SoundManager.Instance.PlaySound("MainMenuMusic");
+     void SetUpAudio()
+     {
+         _musicSource = SoundManager.Instance.PlaySound("MainMenuMusic");
 
 
-        if (_musicSource == null)
-        {
-            Debug.LogWarning("Failed to create/play main menu music AudioSource.");
-        }
-        SoundManager.Instance.RegisterBackgroundMusic(_musicSource);
+         if (_musicSource == null)
+         {
+             Debug.LogWarning("Failed to create/play main menu music AudioSource.");
+         }
+         SoundManager.Instance.RegisterBackgroundMusic(_musicSource);
 
-        SoundManager.Instance.SetMasterVolume(SettingsManager.Instance.GetMasterAudioSliderVolume());
-        SoundManager.Instance.SetMusicVolume(SettingsManager.Instance.GetMusicAudioSliderVolume());
-        SoundManager.Instance.SetSFXVolume(SettingsManager.Instance.GetSoundEffectsAudioSliderVolume());
+         SoundManager.Instance.SetMasterVolume(SettingsManager.Instance.GetMasterAudioSliderVolume());
+         SoundManager.Instance.SetMusicVolume(SettingsManager.Instance.GetMusicAudioSliderVolume());
+         SoundManager.Instance.SetSFXVolume(SettingsManager.Instance.GetSoundEffectsAudioSliderVolume());
 
-        // SoundManager.Instance.PlayLoopingSound(_mainMenuAudioSource.clip, Vector3.one);
-    }
+          // SoundManager.Instance.PlayLoopingSound(_mainMenuAudioSource.clip, Vector3.one);
 
+      }
+     
     public void Start_Game()
     {
         
