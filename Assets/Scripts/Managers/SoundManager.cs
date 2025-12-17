@@ -57,43 +57,59 @@ public class SoundManager : Manager
     public int GetSFXVolumeUI() => Mathf.RoundToInt(_masterSFXVolume * MAX_VOLUME_UI);
     public int GetMusicVolumeUI() => Mathf.RoundToInt(_masterMusicVolume * MAX_VOLUME_UI);
 
+    private bool _initialized = false;
+
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
-
-    public override void Initialize()
-    {
+        // Make SoundManager an independent, persistent singleton.
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            _audioSourceParent = new GameObject("AudioSourceParent");
-            _audioSourceParent.transform.SetParent(transform);
+            Setup();
+        }
+        else if (Instance != this)
+        {
+            // If there is already a singleton, destroy this duplicate component's GameObject.
+            // If you prefer to keep the GameObject (scene placeholders), use Destroy(this) instead.
+            Destroy(gameObject);
+        }
+    }
 
-            for (int i = 0; i < _maxAudioSources; i++)
-            {
-                CreateAudioSource();
-            }
+    private void Setup()
+    {
+        if (_initialized) return;
 
-            if (_soundLibrary != null)
-            {
-                _soundLibrary.Initialize();
-            }
-            else
-            {
-                Debug.LogWarning("SoundManager: No SoundLibrary assigned.");
-            }
+        _audioSourceParent = new GameObject("AudioSourceParent");
+        _audioSourceParent.transform.SetParent(transform);
+
+        for (int i = 0; i < _maxAudioSources; i++)
+        {
+            CreateAudioSource();
+        }
+
+        if (_soundLibrary != null)
+        {
+            _soundLibrary.Initialize();
         }
         else
         {
-            Destroy(gameObject);
+            Debug.LogWarning("SoundManager: No SoundLibrary assigned.");
+        }
+
+        _initialized = true;
+    }
+
+    // Make Initialize idempotent and safe if GameManager still calls it.
+    public override void Initialize()
+    {
+        // If Awake already ran Setup, nothing to do.
+        if (!_initialized)
+        {
+            // If this instance somehow became the singleton later, claim it.
+            if (Instance == null) Instance = this;
+
+            Setup();
         }
     }
 
