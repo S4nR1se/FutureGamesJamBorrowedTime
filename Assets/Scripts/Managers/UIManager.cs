@@ -95,6 +95,7 @@ public class UIManager : Manager
     private NPC _currentNPC;
 
     private AudioSource _musicSource;
+    private string[] ZombieSound = { "ClickOnZombie_v1", "ClickOnZombie_v2", "ClickOnZombie_v3" };
     public override void Initialize()
     {
         _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
@@ -271,7 +272,7 @@ public class UIManager : Manager
 
     public void DisplayNPCInfo(NPC npc)
     {
-        _musicSource = SoundManager.Instance.PlaySound(UnityEngine.Random.value <0.5f ? "ClickOnPeasant_v1" : "ClickOnPeasant_v2");
+        
         _currentNPC = npc;
 
         _npcInfoCanvasGroup.alpha = 1;
@@ -299,13 +300,15 @@ public class UIManager : Manager
         if (npc is Peasant peasant)
         {
             _npcMoodText.text = "Mood: " + peasant.GetMood();
+            _musicSource = SoundManager.Instance.PlaySound(UnityEngine.Random.value < 0.5f ? "ClickOnPeasant_v1" : "ClickOnPeasant_v2");
         }
         else
         {
             _npcMoodText.text = " ";
+            _musicSource = SoundManager.Instance.PlaySound(ZombieSound[UnityEngine.Random.Range(0, ZombieSound.Length)]);
         }
     }
-
+  
     private void OnTimePassage(DayCycle cycle)
     {
         if (cycle == DayCycle.Day)
