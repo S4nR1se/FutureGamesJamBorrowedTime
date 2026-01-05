@@ -15,6 +15,8 @@ public class Graveyard : Building
     internal const int ZOMBIEPURRCOSTWITHGRAVE = 70;
     internal const int ZOMBIEPURRCOSTWITHOUTGRAVE = 210;
 
+    private AudioSource _musicSound;
+
     public override void Initialize()
     {
         TileType = TileType.Graveyard;
@@ -108,9 +110,12 @@ public class Graveyard : Building
     }
     private void SpawnUndead(UndeadType undeadType)
     {
-        if(undeadType == UndeadType.Skeleton)
+        _musicSound = SoundManager.Instance.PlaySound("SkeletonRisingFromGraveyard");
+        if (undeadType == UndeadType.Skeleton)
         {
             _npcManager.SpawnUndead(AssociatedZone, undeadType);
+            
+
         }
         else
         {

@@ -14,6 +14,8 @@ public class NPCScheduler : MonoBehaviour
     private TimeManager _timeManager;
     private NPCManager _npcManager;
     private ZoneManager _zoneManager;
+
+    private AudioSource _musicSound;
     public void Initialize(NPCManager npcManager, TimeManager timeManager)
     {
         if (Instance == null)
@@ -73,7 +75,8 @@ public class NPCScheduler : MonoBehaviour
             if (npc is Peasant peasant)
             {
                 _npcManager.DespawnPeasant(peasant);
-                
+                _musicSound = SoundManager.Instance.PlaySound("VilligerDeath");
+
             }
             else if(npc is Undead undead)
             {
