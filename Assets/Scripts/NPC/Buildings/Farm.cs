@@ -4,6 +4,7 @@ public class Farm : Building
 {
     private int _foodStockGenerated = 0;
     //private const int FOODSTOCKPERPEASANT = 2;
+    private AudioSource _musicSource;
 
     protected override Occupation AssociatedOccupation => new FarmerOccupation();
 
@@ -52,6 +53,7 @@ public class Farm : Building
     }
     public override void OnSelect(PlayerInputManager playerInputManager)
     {
+        _musicSource = SoundManager.Instance.PlaySound("FarmingScythe");
         base.OnSelect(playerInputManager);
     }
 }
