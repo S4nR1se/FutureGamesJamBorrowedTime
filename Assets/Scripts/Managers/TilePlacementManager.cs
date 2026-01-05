@@ -20,6 +20,8 @@ public class TilePlacementManager : Manager
 
     private HashSet<TileType> _builtTypes = new HashSet<TileType>();
 
+    private AudioSource _musicSound;
+
     public override void Initialize()
     {
         _constructionPopupCanvas = _constructionPopupUI.GetComponent<CanvasGroup>();
@@ -123,6 +125,7 @@ public class TilePlacementManager : Manager
         );
 
         constructionGO.GetComponent<ZoneMarker>().InitializeZone(data);
+        _musicSound = SoundManager.Instance.PlaySound("BuildingPlaced");
 
         ConstructionSite constructionSite = constructionGO.GetComponent<ConstructionSite>();
         if (constructionSite != null)

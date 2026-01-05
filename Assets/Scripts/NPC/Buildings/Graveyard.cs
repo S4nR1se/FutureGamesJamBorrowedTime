@@ -40,6 +40,7 @@ public class Graveyard : Building
         {
             return;
         }
+
         UIManager.DisplayGraveyardInfo(this);
     }
 
