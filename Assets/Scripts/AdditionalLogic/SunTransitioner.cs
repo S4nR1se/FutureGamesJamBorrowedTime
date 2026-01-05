@@ -63,15 +63,18 @@ public class SunTransitioner : MonoBehaviour
         {
             dayUI.texture = daySprite;
 
-            SoundManager.Instance.FadeMusicOut(_musicSource, 3f);
+            SoundManager.Instance.StopAllSounds(3f);
             _musicSource = SoundManager.Instance.PlaySound("DayMusic");
-                
+            _musicSource = SoundManager.Instance.PlaySound("DayAmbience");
+
         }
         else
         {
             dayUI.texture = nightSprite;
-            SoundManager.Instance.FadeMusicOut(_musicSource, 3f);
+
+            SoundManager.Instance.StopAllSounds(3f);
             _musicSource = SoundManager.Instance.PlaySound("NightMusic");
+            _musicSource = SoundManager.Instance.PlaySound("NightAmbiance");
         }
         if (_transitionCoroutine != null)
             StopCoroutine(_transitionCoroutine);
