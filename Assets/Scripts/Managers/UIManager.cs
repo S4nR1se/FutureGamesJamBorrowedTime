@@ -584,6 +584,7 @@ public class UIManager : Manager
     }
     public void DisplayCastleInfo(Building building)
     {
+        _musicSource = SoundManager.Instance.PlaySound("Portal-Idle");
         HideAllInfo();
         _castleCanvasGroup.alpha = 1;
         _castleCanvasGroup.interactable = true;
