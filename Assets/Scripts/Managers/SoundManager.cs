@@ -251,6 +251,7 @@ public class SoundManager : Manager
         {
             StartCoroutine(FadeMusic(musicSource, 0f, duration, stopOnComplete));
         }
+        
     }
     
     public void SetMasterVolume(float volume)
