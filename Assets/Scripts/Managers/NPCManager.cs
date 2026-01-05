@@ -28,7 +28,7 @@ public class NPCManager : Manager
     private UndeadPool _undeadPool;
 
     private NPCScheduler _scheduler;
-
+    private AudioSource _musicSource;
     public override void Initialize()
     {
         _zoneManager = GameManager.Instance.GetManager<ZoneManager>();
@@ -254,6 +254,7 @@ public class NPCManager : Manager
     {
         if (peasant != null)
         {
+            _musicSource = SoundManager.Instance.PlaySound("VilligerDeath");
             UnregisterNPC(peasant);
         }
     }
