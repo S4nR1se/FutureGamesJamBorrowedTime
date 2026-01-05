@@ -4,6 +4,7 @@ using System.Linq;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Managers
@@ -26,6 +27,9 @@ namespace Assets.Scripts.Managers
         
         public delegate void GameOverHandler(GameResult resut, string message);
         public event GameOverHandler GameOver;
+
+        private AudioSource _musicSource;
+
 
         public override void Initialize()
         {
@@ -51,21 +55,25 @@ namespace Assets.Scripts.Managers
             // Inquisition comes on day 51
             if (INQUISITIONDAY == _timeManager.DayNumber)
             {
+                SoundManager.Instance.StopAllSounds();
                 SceneManager.LoadScene("GameOver");
             }
             // Peasant count reaches 0
             else if (_npcManager.GetActivePeasantCount() <= ZERO)
             {
+                SoundManager.Instance.StopAllSounds();
                 SceneManager.LoadScene("GameOver1");
             }
             // Peasants count is less than half since prior day
             else if (_npcManager.GetActivePeasantCount() < _yersterdaysPeasants/2)
             {
+                SoundManager.Instance.StopAllSounds();
                 SceneManager.LoadScene("GameOver2");
             }
             // Total dread count is twice as peasant count
             else if (_npcManager.GetNPCsOfType<Peasant>().Sum(peasant => peasant.DreadFactor) > _npcManager.GetActivePeasantCount())
             {
+                SoundManager.Instance.StopAllSounds();
                 SceneManager.LoadScene("GameOver3");
             }
             _yersterdaysPeasants = _npcManager.GetActivePeasantCount();
