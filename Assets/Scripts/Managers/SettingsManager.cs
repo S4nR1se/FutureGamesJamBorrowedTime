@@ -20,6 +20,10 @@ public class SettingsManager : Manager
     private int _selectedResolution = 0;
     public Vector2 _resolution = new();
 
+    private AudioSource _buttonMeow;   
+    public string[] _buttonSound = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13" };
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -49,6 +53,7 @@ public class SettingsManager : Manager
     {
         if (this.gameObject.activeInHierarchy)
         {
+            _buttonMeow = SoundManager.Instance.PlaySound(_buttonSound[UnityEngine.Random.Range(0, _buttonSound.Length)]);
             this.gameObject.SetActive(false);
         }
     }
@@ -83,6 +88,7 @@ public class SettingsManager : Manager
 
     public void OpenAudioPanel()
     {
+        _buttonMeow = SoundManager.Instance.PlaySound(_buttonSound[UnityEngine.Random.Range(0, _buttonSound.Length)]);
         _audioCanvas.SetActive(true);
 
         _controlsCanvas.SetActive(false);
@@ -91,6 +97,7 @@ public class SettingsManager : Manager
 
     public void OpenResolutionsPanel()
     {
+        _buttonMeow = SoundManager.Instance.PlaySound(_buttonSound[UnityEngine.Random.Range(0, _buttonSound.Length)]);
         _resolutionsCanvas.SetActive(true);
 
         _audioCanvas.SetActive(false);
@@ -99,6 +106,7 @@ public class SettingsManager : Manager
 
     public void OpenControlsPanel()
     {
+        _buttonMeow = SoundManager.Instance.PlaySound(_buttonSound[UnityEngine.Random.Range(0, _buttonSound.Length)]);
         _controlsCanvas.SetActive(true);
 
         _resolutionsCanvas.SetActive(false);
@@ -146,6 +154,7 @@ public class SettingsManager : Manager
 
     public void Apply_Changes()
     {
+        _buttonMeow = SoundManager.Instance.PlaySound(_buttonSound[UnityEngine.Random.Range(0, _buttonSound.Length)]);
         Screen.SetResolution((int)_resolutions[_selectedResolution].x, (int)_resolutions[_selectedResolution].y, true);
     }
 

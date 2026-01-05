@@ -3,7 +3,13 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
+
+
+
+    private AudioSource _buttonMeow;
     private AudioSource _musicSource;
+    private string[] _buttonSound = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13" };
+
     private void Start()
     {
         //SaveManager.save_instance.Load_Data();
@@ -34,7 +40,9 @@ public class MainMenuManager : MonoBehaviour
         
         Debug.Log("Start Game");
         SoundManager.Instance.FadeMusicOut(_musicSource, 1.5f);
+       
         SceneManager.LoadSceneAsync("MAINSCENE");
+        _musicSource = SoundManager.Instance.PlaySound("Play-Button");
 
     }
 
@@ -50,6 +58,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void Quit_Game()
     {
+        _buttonMeow = SoundManager.Instance.PlaySound(_buttonSound[UnityEngine.Random.Range(0, _buttonSound.Length)]);
         Application.Quit();
         if (Input.GetKeyDown(KeyCode.Escape))
         {
