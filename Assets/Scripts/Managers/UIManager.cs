@@ -94,6 +94,7 @@ public class UIManager : Manager
     private int _currentOccupationIndex = 0;
     private NPC _currentNPC;
 
+    private AudioSource _musicSource;
     public override void Initialize()
     {
         _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
@@ -270,6 +271,7 @@ public class UIManager : Manager
 
     public void DisplayNPCInfo(NPC npc)
     {
+        _musicSource = SoundManager.Instance.PlaySound(UnityEngine.Random.value <0.5f ? "ClickOnPeasant_v1" : "ClickOnPeasant_v2");
         _currentNPC = npc;
 
         _npcInfoCanvasGroup.alpha = 1;
