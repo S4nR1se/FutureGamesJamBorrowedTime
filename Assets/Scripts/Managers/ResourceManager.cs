@@ -84,10 +84,7 @@ public class ResourceManager : Manager
             int updatedValue = _resources[resource] + amount;
             _resources[resource] = Mathf.Max(0, updatedValue);
 
-            if (resource == Resources.Purr && amount < 0)
-            {
-                ParticleSystemManager.Instance.Spawn("LosePurr", transform.position);
-            }
+
 
             OnResourceChange?.Invoke(_resources);
 
