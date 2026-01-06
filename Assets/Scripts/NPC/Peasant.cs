@@ -413,7 +413,9 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     public void OnHover() => _playerInteractionBehaviour.OnHover();
     public void OnHoverExit() => _playerInteractionBehaviour?.OnHoverExit();
     public void UndeadContact() => IncreaseDread();
-    public void IncreaseDread(int amount = 1) => _dreadFactor += amount;
+    // dread need to be fix later , I changed only amount = 1 to 0
+    public void IncreaseDread(int amount = 0) => _dreadFactor += amount;
+    
 
     public void RunNightChecklist()
     {

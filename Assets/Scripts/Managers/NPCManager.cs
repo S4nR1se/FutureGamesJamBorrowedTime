@@ -177,6 +177,7 @@ public class NPCManager : Manager
             Vector3 position = correctZone.GetRandomPointInZone();
             peasant.transform.position = position;
             ParticleSystemManager.Instance.Spawn("NewCats", position);
+
             UnityEngine.AI.NavMeshAgent agent = peasant.GetComponent<UnityEngine.AI.NavMeshAgent>();
             if (agent != null)
             {
@@ -207,6 +208,7 @@ public class NPCManager : Manager
 
             UnityEngine.AI.NavMeshAgent agent = peasant.GetComponent<UnityEngine.AI.NavMeshAgent>();
             ParticleSystemManager.Instance.Spawn("NewCats", position);
+            _musicSource = SoundManager.Instance.PlaySound("CatBirth-NewPesant");
             if (agent != null)
             {
                 agent.enabled = true;
