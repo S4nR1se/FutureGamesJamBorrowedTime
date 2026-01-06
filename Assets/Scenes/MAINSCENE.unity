@@ -9897,8 +9897,6 @@ MonoBehaviour:
   daySprite: {fileID: 2800000, guid: 5f43615d05958144ebba943cd5a03d7e, type: 3}
   nightSprite: {fileID: 2800000, guid: b4215378eb64be945ba97aa05943c092, type: 3}
   dayUI: {fileID: 1489532209}
-  dayMusicName: DayMusic
-  nightMusicName: NightMusic
 --- !u!114 &452088014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20002,7 +20000,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 1
+  m_UiScaleMode: 2
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
@@ -49775,8 +49773,6 @@ SceneRoots:
   - {fileID: 949334137}
   - {fileID: 1364655309}
   - {fileID: 1708636859}
-  - {fileID: 131675248}
-  - {fileID: 467919278}
   - {fileID: 1342991591}
   - {fileID: 1848076870}
   - {fileID: 546214214}
