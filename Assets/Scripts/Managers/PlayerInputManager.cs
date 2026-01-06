@@ -1,5 +1,8 @@
-using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+
 
 [System.Serializable]
 public class KeyMapping
@@ -53,6 +56,10 @@ public class PlayerInputManager : Manager
 
     private void KeyboardInput()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadSceneAsync("MainMenu");
+        }
         if (IsInputBlocked == true) return;
 
         foreach (var mapping in keyMappingConfig.keyMappings)
@@ -62,6 +69,7 @@ public class PlayerInputManager : Manager
                 HandleAction(mapping.actionName);
             }
         }
+
     }
 
     private void MouseInput()
@@ -266,4 +274,5 @@ public class PlayerInputManager : Manager
                 break;
         }
     }
+
 }
