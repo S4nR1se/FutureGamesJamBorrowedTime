@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class ParticleSystemManager : MonoBehaviour
 {
+    [SerializeField] private GameObject FillingPurr;
+    [SerializeField] private GameObject TakedPurr;
+    [SerializeField] private int PurrValue;
+    
     [System.Serializable]
+
     public struct ParticleDefinition
     {
         public string name;
@@ -65,4 +70,31 @@ public class ParticleSystemManager : MonoBehaviour
         if (ps != null)
             Destroy(ps.gameObject);
     }
+    public void PurrChange(int newPurr)
+    {
+
+
+        if ( PurrValue < newPurr )
+        {
+            StartCoroutine(CdFill(3f));
+        }
+        else
+        {
+            StartCoroutine(CdTake(3f));
+        }
+        PurrValue = newPurr;
+    }
+    private IEnumerator CdFill(float seconds)
+    {
+        FillingPurr.gameObject.SetActive(true);
+        yield return new WaitForSeconds(seconds);
+        FillingPurr.gameObject.SetActive(false);
+    }
+    private IEnumerator CdTake(float seconds)
+    {
+        TakedPurr.gameObject.SetActive(true);
+        yield return new WaitForSeconds(seconds);
+        TakedPurr.gameObject.SetActive(false);
+    }
+
 }

@@ -93,7 +93,6 @@ public class UIManager : Manager
     private List<Occupation> _availableOccupations = new();
     private int _currentOccupationIndex = 0;
     private NPC _currentNPC;
-
     public override void Initialize()
     {
         _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
@@ -190,7 +189,7 @@ public class UIManager : Manager
         {
             return;
         }
-
+        
         foreach (var resource in resources)
         {
             if (resource.Key == Resources.Purr)
@@ -199,6 +198,7 @@ public class UIManager : Manager
                 if (PURRmat != null)
                 {
                     PURRmat.SetFloat("_Fill",resource.Value);
+                    ParticleSystemManager.Instance.PurrChange(resource.Value);
                 }
             }
             else if (resource.Key == Resources.Graves)

@@ -173,7 +173,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: a8ffbd8c957d9064ebff564ad78fc9a9, type: 3}
     volume: 1
     is2D: 0
-    loop: 1
+    loop: 0
     pitch: 1
   - name: KnifeStab_v1
     clip: {fileID: 8300000, guid: 9bd7c621f317e6c478056d761fa7df54, type: 3}
@@ -231,7 +231,7 @@ MonoBehaviour:
     pitch: 1
   - name: Portal-Idle
     clip: {fileID: 8300000, guid: 72df8e51866710f42a92f1e16dee737b, type: 3}
-    volume: 0.403
+    volume: 1
     is2D: 0
     loop: 1
     pitch: 1
