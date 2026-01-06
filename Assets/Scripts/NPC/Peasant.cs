@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
 {
+    
     public GameObject PoolableComponent => gameObject;
     public GameObject Component => gameObject;
 
@@ -39,6 +40,8 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
     private TimeManager _timeManager;
     private ResourceManager _resourceManager;
     private ZoneManager _zoneManager;
+
+    ParticleSystemManager particleSystemManager;
 
     private void OnEnable()
     {
@@ -467,8 +470,10 @@ public class Peasant : NPC, IWorker, IPeasant, IPoolable, IInteractable
         if (resourceManager == null) return;
         resourceManager.UpdateValue(Resources.Purr, 9);
         DecreaseLifeSpan(1);
-        ParticleSystemManager.Instance.Spawn("GetPurr", transform.position);
+        
         if (LifeSpan == 0) NPCScheduler.Instance.ScheduleDeath(this);
+
+       
     }
     private IEnumerator WaitForCalculation(DayCycle newCycle)
     {

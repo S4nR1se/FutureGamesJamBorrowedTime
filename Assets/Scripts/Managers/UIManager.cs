@@ -1,4 +1,5 @@
 using Assets.Scripts.Managers;
+using Mono.Cecil;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -96,6 +97,9 @@ public class UIManager : Manager
 
     private AudioSource _musicSource;
     private string[] ZombieSound = { "ClickOnZombie_v1", "ClickOnZombie_v2", "ClickOnZombie_v3" };
+
+    private int _lastPurrValue = 0;
+
     public override void Initialize()
     {
         _resourceManager = GameManager.Instance.GetManager<ResourceManager>();
@@ -192,7 +196,14 @@ public class UIManager : Manager
         {
             return;
         }
-
+        if (resources.TryGetValue(Resources.Purr, out int purrValue))
+        {
+            if (purrValue != _lastPurrValue)
+            {
+                _lastPurrValue = purrValue;
+                ParticleSystemManager.Instance.PurrChange(purrValue);
+            }
+        }
         foreach (var resource in resources)
         {
             if (resource.Key == Resources.Purr)

@@ -2156,7 +2156,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2933623218739451286, guid: 9a07725cf7f74da4e8cc736dead32bc2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0000000018626451
+      value: 0.0000000018626449
       objectReference: {fileID: 0}
     - target: {fileID: 2933623218739451286, guid: 9a07725cf7f74da4e8cc736dead32bc2, type: 3}
       propertyPath: m_LocalRotation.z
@@ -3302,7 +3302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParticleSystemManager
   FillingPurr: {fileID: 1429797331}
-  TakedPurr: {fileID: 1384744199}
+  TakedPurr: {fileID: 549421370}
   PurrValue: 0
   _particleLibrary: {fileID: 11400000, guid: 3cf4d3d57d6a8ee418540211192ff6ff, type: 2}
 --- !u!4 &131675248
@@ -9897,8 +9897,6 @@ MonoBehaviour:
   daySprite: {fileID: 2800000, guid: 5f43615d05958144ebba943cd5a03d7e, type: 3}
   nightSprite: {fileID: 2800000, guid: b4215378eb64be945ba97aa05943c092, type: 3}
   dayUI: {fileID: 1489532209}
-  dayMusicName: DayMusic
-  nightMusicName: NightMusic
 --- !u!114 &452088014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10572,12 +10570,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 467919276}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 949334137}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &467919279
 AudioSource:
@@ -10586,12 +10584,12 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 467919276}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 394ab3061b15511419a065d3c8d1211a, type: 3}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
@@ -11788,6 +11786,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a17bd0a8bee24274d955490d5f51e100, type: 3}
+--- !u!1 &549421370 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 488658410065859104, guid: 9a07725cf7f74da4e8cc736dead32bc2, type: 3}
+  m_PrefabInstance: {fileID: 66960800}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &551948777
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20653,7 +20656,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 467919278}
   - {fileID: 1836422721}
   - {fileID: 452088012}
   - {fileID: 576182808}
@@ -28010,11 +28012,6 @@ Transform:
   - {fileID: 563736366}
   m_Father: {fileID: 611194324}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1384744199 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 488658410065859104, guid: 9a07725cf7f74da4e8cc736dead32bc2, type: 3}
-  m_PrefabInstance: {fileID: 66960800}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1392739533
 GameObject:
   m_ObjectHideFlags: 0
@@ -34680,7 +34677,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1848753815}
   m_HandleRect: {fileID: 1848753814}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -34934,7 +34931,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1708636855}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -49775,7 +49772,6 @@ SceneRoots:
   - {fileID: 949334137}
   - {fileID: 1364655309}
   - {fileID: 1708636859}
-  - {fileID: 131675248}
   - {fileID: 467919278}
   - {fileID: 1342991591}
   - {fileID: 1848076870}
