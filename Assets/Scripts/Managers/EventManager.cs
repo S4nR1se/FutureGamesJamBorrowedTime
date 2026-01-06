@@ -14,6 +14,7 @@ public class EventManager : Manager
 
     public delegate void GetNewEventHandler(Event_SO newEvent);
     public event GetNewEventHandler OnNewEvent;
+    private AudioSource _musicSource;
 
     //Initialize gets called by GameManager on Awake
     public override void Initialize()
@@ -60,6 +61,7 @@ public class EventManager : Manager
     }
     private Event_SO GetNewEvent()
     {
+        _musicSource = SoundManager.Instance.PlaySound("EventNotification");
         Event_SO nextEvent;
         if (_tierOfGame == 1)
         {
